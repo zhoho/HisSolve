@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Assignment Details</title>
+</head>
+<body>
+<h1>Assignment: <span th:text="${assignment.title}"></span></h1>
+<div>
+    <p th:text="${assignment.description}"></p>
+</div>
+<div th:if="${user.role == 'STUDENT'}">
+    <h2>Submit Assignment</h2>
+    <form th:action="@{/assignment/submit}" method="post">
+        <div>
+            <label>Code: </label>
+            <textarea name="code"></textarea>
+        </div>
+        <input type="hidden" name="assignmentId" th:value="${assignment.id}" />
+        <button type="submit">Submit</button>
+    </form>
+</div>
+<div th:if="${user.role == 'PROFESSOR'}">
+    <h2>Submissions</h2>
+    <ul>
+        <li th:each="submission : ${submissions}">
+            <span th:text="${submission.student.username}"></span>:
+            <span th:text="${submission.result}"></span>
+        </li>
+    </ul>
+</div>
+</body>
+</html>

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Dashboard</title>
+</head>
+<body>
+<h1>Welcome, <span th:text="${user.username}"></span>!</h1>
+<div>
+    <a th:if="${user.role == 'PROFESSOR'}" th:href="@{/class/create}">Create Class</a>
+    <a th:if="${user.role == 'STUDENT'}" th:href="@{/class/join}">Join Class</a>
+</div>
+<div>
+    <h2>Your Classes</h2>
+    <ul>
+        <li th:each="class : ${classes}" th:text="${class.name}"></li>
+    </ul>
+</div>
+</body>
+</html>

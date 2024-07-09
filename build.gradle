@@ -1,0 +1,55 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.3.1'
+    id 'io.spring.dependency-management' version '1.1.5'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // Spring Boot Starter Web
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    // Spring Boot Starter Thymeleaf
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+
+    // Spring Boot Starter Data JPA
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+    // MySQL Connector
+    runtimeOnly 'mysql:mysql-connector-java'
+
+    // Spring Boot Starter Security
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+
+    // Spring Boot Starter Test
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    // Spring Security Test
+    testImplementation 'org.springframework.security:spring-security-test'
+
+    // BCrypt Password Encoder
+    implementation 'org.springframework.security:spring-security-crypto'
+
+    // Lombok
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    // Swagger
+    implementation 'io.springfox:springfox-boot-starter:3.0.0'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Join Class</title>
+</head>
+<body>
+<h1>Join Class</h1>
+<form th:action="@{/class/join}" method="post">
+  <div>
+    <label>Class Code: </label>
+    <input type="text" name="code" />
+  </div>
+  <button type="submit">Join</button>
+</form>
+</body>
+</html>
