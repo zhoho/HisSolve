@@ -16,6 +16,15 @@
     <textarea id="description" th:field="*{description}" rows="5" cols="30"></textarea>
   </div>
   <div>
+    <label for="language">Language:</label>
+    <select id="language" th:field="*{language}">
+      <option value="c">C</option>
+      <option value="cpp">C++</option>
+      <option value="java">Java</option>
+      <option value="python">Python</option>
+    </select>
+  </div>
+  <div>
     <label for="test_cases">Test Cases:</label>
     <textarea id="test_cases" th:field="*{testCases}" rows="5" cols="30"></textarea>
   </div>

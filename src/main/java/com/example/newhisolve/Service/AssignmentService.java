@@ -9,5 +9,5 @@ public interface AssignmentService {
     Assignment createAssignment(Assignment assignment, Long courseId);
     Assignment findById(Long id);
     List<Submission> findSubmissionsByAssignment(Assignment assignment);
-    void submitAssignment(Long assignmentId, String code, String username);
+    void submitAssignment(Long assignmentId, String code, String language, String username);
 }
