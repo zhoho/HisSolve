@@ -11,6 +11,8 @@
     <a th:href="@{/assignment/{id}(id=${assignment.id})}" th:text="${assignment.title}"></a>
   </li>
 </ul>
-<!--  <a th:href="@{/assignment/submit(courseId=${course.id})}">submit Assignment</a>-->
+<!--<div th:if="${user.role == 'PROFESSOR'}">-->
+  <a th:href="@{/assignment/create(courseId=${course.id})}">Create Assignment</a>
+<!--</div>-->
 </body>
 </html>

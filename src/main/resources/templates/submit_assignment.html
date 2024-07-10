@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Online Compiler</title>
+  <style>
+    #editor { height: 500px; }
+  </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.30.1/min/vs/loader.js"></script>
+</head>
+<body>
+<h1>Online Compiler</h1>
+<div>
+  <label for="language">Language:</label>
+  <select id="language">
+    <option value="python">Python</option>
+    <option value="java">Java</option>
+    <option value="c">C</option>
+    !-- 필요한 다른 언어 추가 --><
+  </select>
+</div>
+<div id="editor"></div>
+<button onclick="compileCode()">Compile & Run</button>
+<pre id="output"></pre>
+
+<script>
+  require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.30.1/min/vs' }});
+  require(['vs/editor/editor.main'], function() {
+    window.editor = monaco.editor.create(document.getElementById('editor'), {
+      value: 'print("Hello, World!")',
+      language: 'python'
+    });
+  });
+
+  function compileCode() {
+    const code = editor.getValue();
+    const language = document.getElementById('language').value;
+    fetch('/api/compile', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ code, language })
+    })
+            .then(response => response.json())
+            .then(data => {
+              document.getElementById('output').innerText = data.output;
+            });
+  }
+</script>
+</body>
+</html>

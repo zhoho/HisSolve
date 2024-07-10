@@ -9,15 +9,18 @@
 
 <div th:if="${user.role == 'STUDENT'}">
   <h2>Submit Your Solution</h2>
-  <form action="#" th:action="@{/assignment/submit}" method="post">
-    <input type="hidden" th:name="assignmentId" th:value="${assignment.id}" />
-    <input type="hidden" th:name="language" th:value="${assignment.language}" />
+  <form id="submitForm">
+    <input type="hidden" id="assignmentId" th:value="${assignment.id}" />
     <div>
-      <label for="code">Your Code:</label>
-      <textarea id="code" name="code" rows="10" cols="50"></textarea>
+      <label for="language">Language:</label>
+      <select id="language" name="language">
+        <option value="python">Python</option>
+        <option value="java">Java</option>
+        <!-- 필요한 다른 언어 추가 -->
+      </select>
     </div>
     <div>
-      <button type="submit">Submit</button>
+      <button type="button" onclick="openEditor()">Submit</button>
     </div>
   </form>
 </div>
@@ -30,5 +33,14 @@
     </li>
   </ul>
 </div>
+
+<script>
+  function openEditor() {
+    const assignmentId = document.getElementById('assignmentId').value;
+    const language = document.getElementById('language').value;
+    const url = `/index?assignmentId=${assignmentId}&language=${language}`;
+    window.location.href = url;
+  }
+</script>
 </body>
 </html>

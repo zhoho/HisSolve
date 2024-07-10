@@ -27,6 +27,7 @@ dependencies {
 
     // Spring Boot Starter Security
     implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'junit:junit:3.8.2'
 
     // Spring Boot Starter Test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
