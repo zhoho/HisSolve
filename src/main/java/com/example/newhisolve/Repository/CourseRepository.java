@@ -1,4 +1,5 @@
 package com.example.newhisolve.Repository;
+
 import com.example.newhisolve.Model.Course;
 import com.example.newhisolve.Model.User;
 import org.springframework.data.jpa.repository.JpaRepository;

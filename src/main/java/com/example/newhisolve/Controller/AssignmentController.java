@@ -20,9 +20,9 @@ public class AssignmentController {
     private UserService userService;
 
     @PostMapping("/assignment/create")
-    public String createAssignment(@ModelAttribute Assignment assignment, @RequestParam Long classId) {
-        assignmentService.createAssignment(assignment, classId);
-        return "redirect:/class/" + classId;
+    public String createAssignment(@ModelAttribute Assignment assignment, @RequestParam Long courseId) {
+        assignmentService.createAssignment(assignment, courseId);
+        return "redirect:/course/" + courseId;
     }
 
     @GetMapping("/assignment/view/{id}")

@@ -1,10 +1,11 @@
 package com.example.newhisolve.Service;
 
 import com.example.newhisolve.Model.Assignment;
+import com.example.newhisolve.Model.Course;
 import com.example.newhisolve.Model.Submission;
 import com.example.newhisolve.Model.User;
 import com.example.newhisolve.Repository.AssignmentRepository;
-import com.example.newhisolve.Repository.ClassRepository;
+import com.example.newhisolve.Repository.CourseRepository;
 import com.example.newhisolve.Repository.SubmissionRepository;
 import com.example.newhisolve.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,7 @@ public class AssignmentServiceImpl implements AssignmentService {
     @Autowired
     private AssignmentRepository assignmentRepository;
     @Autowired
-    private ClassRepository classRepository;
+    private CourseRepository courseRepository;
     @Autowired
     private UserRepository userRepository;
     @Autowired
@@ -26,8 +27,8 @@ public class AssignmentServiceImpl implements AssignmentService {
 
     @Override
     public Assignment createAssignment(Assignment assignment, Long classId) {
-        Class classEntity = classRepository.findById(classId).orElseThrow(() -> new RuntimeException("Class not found"));
-        assignment.setClassEntity(classEntity);
+        Course courseEntity = courseRepository.findById(classId).orElseThrow(() -> new RuntimeException("Class not found"));
+        assignment.setCourseEntity(courseEntity);
         return assignmentRepository.save(assignment);
     }
 

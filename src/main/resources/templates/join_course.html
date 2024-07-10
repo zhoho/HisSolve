@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Join Course</title>
+</head>
+<body>
+<h1>Join a Course</h1>
+<form action="#" th:action="@{/course/join}" method="post">
+  <div>
+    <label for="code">Course Code:</label>
+    <input type="text" id="code" name="code" />
+  </div>
+  <div>
+    <button type="submit">Join Course</button>
+  </div>
+</form>
+</body>
+</html>

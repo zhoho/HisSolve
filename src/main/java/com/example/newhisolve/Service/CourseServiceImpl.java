@@ -1,4 +1,5 @@
 package com.example.newhisolve.Service;
+
 import com.example.newhisolve.Model.Assignment;
 import com.example.newhisolve.Model.Course;
 import com.example.newhisolve.Model.User;
@@ -13,6 +14,7 @@ import java.util.UUID;
 
 @Service
 public class CourseServiceImpl implements CourseService {
+
     @Autowired
     private CourseRepository courseRepository;
 

@@ -1,17 +1,12 @@
 plugins {
-    id 'java'
     id 'org.springframework.boot' version '3.3.1'
-    id 'io.spring.dependency-management' version '1.1.5'
+    id 'io.spring.dependency-management' version '1.0.14.RELEASE'
+    id 'java'
 }
 
 group = 'com.example'
 version = '0.0.1-SNAPSHOT'
-
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
-    }
-}
+sourceCompatibility = '17'
 
 repositories {
     mavenCentral()
@@ -28,7 +23,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 
     // MySQL Connector
-    runtimeOnly 'mysql:mysql-connector-java'
+    implementation 'mysql:mysql-connector-java'
 
     // Spring Boot Starter Security
     implementation 'org.springframework.boot:spring-boot-starter-security'
@@ -42,6 +37,9 @@ dependencies {
     // BCrypt Password Encoder
     implementation 'org.springframework.security:spring-security-crypto'
 
+    implementation 'mysql:mysql-connector-java:8.0.27'
+
+
     // Lombok
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
@@ -50,6 +48,6 @@ dependencies {
     implementation 'io.springfox:springfox-boot-starter:3.0.0'
 }
 
-tasks.named('test') {
+test {
     useJUnitPlatform()
 }

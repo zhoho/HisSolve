@@ -1,12 +1,27 @@
 package com.example.newhisolve.Model;
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import java.util.List;
 
 @Entity
+@Table(name = "user")
 public class User {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String username;
+    private String password;
+    private String role;
+
+    @OneToMany(mappedBy = "professor")
+    private List<Course> courses;
+
+    @ManyToMany(mappedBy = "students")
+    private List<Course> enrolledCourses;
+
+    // Getters and Setters
+
     public Long getId() {
         return id;
     }
@@ -39,12 +54,19 @@ public class User {
         this.role = role;
     }
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String username;
-    private String password;
-    private String role;  // STUDENT or PROFESSOR
+    public List<Course> getCourses() {
+        return courses;
+    }
 
-    // Getters and Setters
+    public void setCourses(List<Course> courses) {
+        this.courses = courses;
+    }
+
+    public List<Course> getEnrolledCourses() {
+        return enrolledCourses;
+    }
+
+    public void setEnrolledCourses(List<Course> enrolledCourses) {
+        this.enrolledCourses = enrolledCourses;
+    }
 }

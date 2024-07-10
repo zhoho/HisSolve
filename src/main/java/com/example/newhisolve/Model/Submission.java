@@ -1,53 +1,32 @@
 package com.example.newhisolve.Model;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 
 import java.time.LocalDateTime;
 
+@Getter
 @Entity
 public class Submission {
-    public Long getId() {
-        return id;
-    }
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public User getStudent() {
-        return student;
     }
 
     public void setStudent(User student) {
         this.student = student;
     }
 
-    public Assignment getAssignment() {
-        return assignment;
-    }
-
     public void setAssignment(Assignment assignment) {
         this.assignment = assignment;
-    }
-
-    public String getCode() {
-        return code;
     }
 
     public void setCode(String code) {
         this.code = code;
     }
 
-    public String getResult() {
-        return result;
-    }
-
     public void setResult(String result) {
         this.result = result;
-    }
-
-    public LocalDateTime getSubmittedAt() {
-        return submittedAt;
     }
 
     public void setSubmittedAt(LocalDateTime submittedAt) {

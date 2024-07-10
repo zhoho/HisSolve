@@ -1,8 +1,5 @@
 package com.example.newhisolve.Model;
-
-
 import jakarta.persistence.*;
-
 import java.util.ArrayList;
 import java.util.List;
 
