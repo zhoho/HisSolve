@@ -61,6 +61,16 @@ public class AssignmentServiceImpl implements AssignmentService {
     public List<Submission> findSubmissionsByAssignment(Assignment assignment) {
         return null;
     }
+    @Override
+    public Assignment getAssignmentById(Long assignmentId) {
+        Optional<Assignment> assignment = assignmentRepository.findById(assignmentId);
+        if (assignment.isPresent()) {
+            return assignment.get();
+        } else {
+            throw new RuntimeException("Assignment를 찾을 수 없습니다~: " + assignmentId);
+        }
+    }
+
 
     @Override
     public void submitAssignment(Long assignmentId, String code, String language, String username) {

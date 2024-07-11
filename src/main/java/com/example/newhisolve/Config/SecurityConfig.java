@@ -28,7 +28,7 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
-                                .requestMatchers("/welcome", "/register", "/login", "/api/compile", "/img/**", "/css/**", "/js/**").permitAll() // 정적 리소스에 대한 접근 허용
+                                .requestMatchers("/", "/register", "/login", "/api/compile", "/img/**", "/css/**", "/js/**").permitAll() // 정적 리소스에 대한 접근 허용
                                 .anyRequest().authenticated()
                 )
                 .formLogin(formLogin ->

@@ -1,6 +1,6 @@
 package com.example.newhisolve.Controller;
 
-import com.example.newhisolve.Model.CompileRequest;
+import com.example.newhisolve.Request.CompileRequest;
 import com.example.newhisolve.Model.TestCase;
 import com.example.newhisolve.Service.AssignmentService;
 import com.example.newhisolve.Service.CompilerService;

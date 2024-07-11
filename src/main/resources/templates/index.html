@@ -2,37 +2,129 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Online Compiler</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
-        #editor { height: 500px; }
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        #editor {
+            height: 70vh;
+            border: 1px solid #ced4da;
+            border-radius: .25rem;
+        }
+        #output {
+            height: 20vh;
+            border: 1px solid #ced4da;
+            border-radius: .25rem;
+            background-color: #f8f9fa;
+            padding: 10px;
+        }
+        body {
+            background-color: #f8f9fa;
+        }
+        .container-fluid {
+            height: 100%;
+        }
+        .btn-compile {
+            margin-top: 20px;
+        }
+        .problem-statement {
+            border: 1px solid #ced4da;
+            border-radius: .25rem;
+            padding: 20px;
+            background-color: #fff;
+            height: 100%;
+            overflow-y: auto;
+        }
+        .col-md-6 {
+            padding: 0;
+        }
+        .row {
+            height: 100%;
+            margin: 0;
+        }
+        /* Custom modal styles */
+        .custom-modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.5);
+        }
+        .custom-modal-content {
+            background-color: #fff;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 500px;
+            text-align: center;
+            border-radius: .25rem;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.30.1/min/vs/loader.js"></script>
 </head>
 <body>
-<h1>Online Compiler</h1>
-<div>
-    <label for="language">Language:</label>
-    <select id="language">
-        <option value="python">Python</option>
-        <option value="java">Java</option>
-        <!-- 필요한 다른 언어 추가 -->
-    </select>
+<div class="container-fluid">
+    <div class="row no-gutters">
+        <div class="col-md-6">
+            <div class="problem-statement">
+                <h1 class="my-4">Assignment: <span th:text="${assignment.title}"></span></h1>
+                <div>
+                    <p th:text="${assignment.description}"></p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 d-flex flex-column">
+            <div id="editor" class="flex-grow-1"></div>
+            <button class="btn btn-primary btn-compile align-self-center" onclick="compileCode()">Compile & Run</button>
+            <h5>Output:</h5>
+            <pre id="output"></pre>
+        </div>
+    </div>
 </div>
-<div id="editor"></div>
-<button onclick="compileCode()">Compile & Run</button>
-<pre id="output"></pre>
+
+<!-- Custom Modal -->
+<div id="submissionModal" class="custom-modal">
+    <div class="custom-modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <h5>모든 테스트를 통과했습니다!</h5>
+        <p>제출하러가기</p>
+        <button type="button" class="btn btn-secondary" onclick="closeModal()">Close</button>
+        <button type="button" class="btn btn-primary" onclick="submitCode()">Submit</button>
+    </div>
+</div>
 
 <script>
     const urlParams = new URLSearchParams(window.location.search);
     const assignmentId = urlParams.get('assignmentId');
-    const language = urlParams.get('language');
-
-    document.getElementById('language').value = language;
+    const language = urlParams.get('language') || 'python';
 
     require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.30.1/min/vs' }});
     require(['vs/editor/editor.main'], function() {
         window.editor = monaco.editor.create(document.getElementById('editor'), {
             value: '',
-            language: language
+            language: language,
+            fontSize: 16,
+            theme: 'vs-dark'
         });
     });
 
@@ -51,12 +143,46 @@
             })
             .then(data => {
                 document.getElementById('output').innerText = data.output;
+                if (data.output.includes('Pass')) {  // 모든 테스트가 Pass인 경우
+                    showModal();
+                }
             })
             .catch(error => {
                 console.error('Error:', error);
                 document.getElementById('output').innerText = error.message;
             });
     }
+
+    function showModal() {
+        document.getElementById('submissionModal').style.display = 'block';
+    }
+
+    function closeModal() {
+        document.getElementById('submissionModal').style.display = 'none';
+    }
+
+    function submitCode() {
+        const code = editor.getValue();
+        fetch('/api/submit', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ assignmentId: assignmentId, code: code, language: language })
+        })
+            .then(response => {
+                if (!response.ok) {
+                    return response.text().then(text => { throw new Error(text) });
+                }
+                return response.json();
+            })
+            .then(data => {
+                closeModal();
+                alert('제출 성공!');
+            })
+    }
 </script>
+<!-- jQuery and Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

@@ -24,6 +24,7 @@ public class Submission {
     private User student;
 
     @Lob
+    @Column(columnDefinition = "LONGTEXT")
     private String code;
 
     private String result;

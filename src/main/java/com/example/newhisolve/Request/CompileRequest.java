@@ -1,4 +1,4 @@
-package com.example.newhisolve.Model;
+package com.example.newhisolve.Request;
 
 import lombok.Getter;
 
