@@ -3,42 +3,52 @@ package com.example.newhisolve.Service;
 import com.example.newhisolve.Model.TestCase;
 import org.springframework.stereotype.Service;
 
-import java.io.BufferedReader;
-import java.io.FileWriter;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.List;
 
 @Service
 public class CompilerService {
 
-    public String compileAndRun(Long assignmentId, String code, String language) {
-        List<TestCase> testCases = getTestCasesForAssignment(assignmentId);
-
+    public String compileAndRun(Long assignmentId, String code, String language, List<TestCase> testCases) {
         try {
+            // 임시 디렉토리 생성
+            File tempDir = new File("tempDir");
+            if (!tempDir.exists()) {
+                tempDir.mkdir();
+            }
+
+            // 임시 파일 생성 및 저장
             String fileName = "TempCode";
             String fileExtension = getFileExtension(language);
-            String filePath = fileName + fileExtension;
+            String filePath = tempDir.getAbsolutePath() + "/" + fileName + fileExtension;
 
+            // 코드 파일로 저장
             saveCodeToFile(filePath, code);
+            System.out.println("Code saved to file: " + filePath);
 
-            String compileCommand = getCompileCommand(language, filePath);
-            String runCommand = getRunCommand(language, fileName);
+            // Docker 명령어 실행
+            String dockerImage = getDockerImage(language);
+            String command = getDockerCommand(language, fileName + fileExtension, tempDir.getAbsolutePath());
 
+            // 결과 변수
             StringBuilder results = new StringBuilder();
 
             for (TestCase testCase : testCases) {
-                if (!compileCommand.isEmpty()) {
-                    Process compileProcess = Runtime.getRuntime().exec(new String[]{"sh", "-c", compileCommand});
-                    compileProcess.waitFor();
+                System.out.println("Executing command: " + command);
+
+                ProcessBuilder processBuilder = new ProcessBuilder("sh", "-c", command);
+                processBuilder.redirectErrorStream(true);
+                Process process = processBuilder.start();
+
+                if (testCase.getInput() != null) {
+                    try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(process.getOutputStream()))) {
+                        writer.write(testCase.getInput());
+                        writer.newLine();
+                        writer.flush();
+                    }
                 }
 
-                Process runProcess = Runtime.getRuntime().exec(new String[]{"sh", "-c", runCommand});
-
-                runProcess.getOutputStream().write(testCase.getInput().getBytes());
-                runProcess.getOutputStream().flush();
-                runProcess.getOutputStream().close();
-
-                BufferedReader reader = new BufferedReader(new InputStreamReader(runProcess.getInputStream()));
+                BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
                 StringBuilder output = new StringBuilder();
                 String line;
                 while ((line = reader.readLine()) != null) {
@@ -46,12 +56,25 @@ public class CompilerService {
                 }
                 reader.close();
 
-                if (output.toString().trim().equals(testCase.getExpectedOutput().trim())) {
+                process.waitFor();
+
+                String actualOutput = output.toString().trim();
+                String expectedOutput = testCase.getExpectedOutput().trim();
+
+                // 디버깅 출력 추가
+                System.out.println("Test Case - Input: " + testCase.getInput());
+                System.out.println("Expected Output: " + expectedOutput);
+                System.out.println("Actual Output: " + actualOutput);
+
+                if (actualOutput.equals(expectedOutput)) {
                     results.append("Pass\n");
                 } else {
                     results.append("Fail\n");
                 }
             }
+
+            // 임시 디렉토리 삭제
+            deleteDirectory(tempDir);
 
             return results.toString();
         } catch (Exception e) {
@@ -63,6 +86,7 @@ public class CompilerService {
     private void saveCodeToFile(String filePath, String code) throws Exception {
         try (FileWriter writer = new FileWriter(filePath)) {
             writer.write(code);
+            System.out.println("Code written: " + code);
         }
     }
 
@@ -75,28 +99,33 @@ public class CompilerService {
         }
     }
 
-    private String getCompileCommand(String language, String filePath) {
+    private String getDockerImage(String language) {
         switch (language) {
-            case "python": return "";
-            case "java": return String.format("docker run --rm -v $(pwd):/app mycompiler-java sh -c \"javac %s\"", filePath);
-            case "c": return String.format("docker run --rm -v $(pwd):/app mycompiler-c sh -c \"gcc -o %s %s\"", filePath.replace(".c", ""), filePath);
+            case "python": return "python:3.8-slim";
+            case "java": return "openjdk:11-slim";
+            case "c": return "gcc:latest";
             default: throw new IllegalArgumentException("Unsupported language: " + language);
         }
     }
 
-    private String getRunCommand(String language, String fileName) {
+    private String getDockerCommand(String language, String filePath, String hostPath) {
         switch (language) {
-            case "python": return String.format("docker run --rm -v $(pwd):/app mycompiler-python python %s.py", fileName);
-            case "java": return String.format("docker run --rm -v $(pwd):/app mycompiler-java java %s", fileName);
-            case "c": return String.format("docker run --rm -v $(pwd):/app mycompiler-c ./%s", fileName);
+            case "python": return String.format("docker run --rm -i -v %s:/app -w /app python:3.8-slim python %s", hostPath, filePath);
+            case "java": return String.format("docker run --rm -i -v %s:/app -w /app openjdk:11-slim sh -c 'javac %s && java TempCode'", hostPath, filePath);
+            case "c": return String.format("docker run --rm -i -v %s:/app -w /app gcc:latest sh -c 'gcc -o TempCode %s && ./TempCode'", hostPath, filePath);
             default: throw new IllegalArgumentException("Unsupported language: " + language);
         }
     }
 
-    private List<TestCase> getTestCasesForAssignment(Long assignmentId) {
-        // assignmentId를 사용하여 데이터베이스에서 해당 과제의 테스트 케이스를 가져옵니다.
-        // 이 부분은 실제 데이터베이스 조회 로직으로 구현해야 합니다.
-        // 여기에 임시로 더미 데이터를 반환하도록 하겠습니다.
-        return List.of(new TestCase(), new TestCase());
+    private void deleteDirectory(File directory) {
+        if (directory.isDirectory()) {
+            File[] files = directory.listFiles();
+            if (files != null) {
+                for (File file : files) {
+                    deleteDirectory(file);
+                }
+            }
+        }
+        directory.delete();
     }
 }

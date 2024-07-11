@@ -22,11 +22,10 @@
 <pre id="output"></pre>
 
 <script>
-    // URL 매개변수에서 assignmentId와 language 값을 가져옵니다.
-    const assignmentId = /*[[${assignmentId}]]*/ null;
-    const language = /*[[${language}]]*/ 'python';
+    const urlParams = new URLSearchParams(window.location.search);
+    const assignmentId = urlParams.get('assignmentId');
+    const language = urlParams.get('language');
 
-    // 언어 선택 값을 설정합니다.
     document.getElementById('language').value = language;
 
     require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.30.1/min/vs' }});
@@ -44,9 +43,18 @@
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ assignmentId: assignmentId, code: code, language: language })
         })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    return response.text().then(text => { throw new Error(text) });
+                }
+                return response.json();
+            })
             .then(data => {
                 document.getElementById('output').innerText = data.output;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('output').innerText = error.message;
             });
     }
 </script>

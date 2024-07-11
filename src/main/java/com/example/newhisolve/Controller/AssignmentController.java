@@ -58,6 +58,13 @@ public class AssignmentController {
         assignment.setTestCases(testCases);
 
         assignmentService.createAssignment(assignment, courseId);
+
+        // Log saved assignment and test cases for debugging
+        System.out.println("Saved Assignment: " + assignment.getId());
+        for (TestCase testCase : assignment.getTestCases()) {
+            System.out.println("Test Case - Input: " + testCase.getInput() + ", Expected Output: " + testCase.getExpectedOutput());
+        }
+
         return "redirect:/course/" + courseId;
     }
 
