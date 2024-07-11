@@ -10,10 +10,13 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import static org.springframework.security.config.Customizer.withDefaults;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
+    @Autowired
     private final UserServiceImpl userServiceImpl;
     private final PasswordEncoder passwordEncoder;
 
@@ -27,7 +30,7 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
-                                .requestMatchers("/register", "/login").permitAll()
+                                .requestMatchers("/register", "/login", "/api/compile").permitAll() // 여러 경로에 대한 접근 허용
                                 .anyRequest().authenticated()
                 )
                 .formLogin(formLogin ->
@@ -40,7 +43,8 @@ public class SecurityConfig {
                         logout
                                 .logoutSuccessUrl("/login")
                                 .permitAll()
-                );
+                )
+                .csrf(csrf -> csrf.disable()); // CSRF 비활성화
 
         return http.build();
     }

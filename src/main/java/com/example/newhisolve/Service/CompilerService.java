@@ -12,35 +12,33 @@ import java.util.List;
 public class CompilerService {
 
     public String compileAndRun(Long assignmentId, String code, String language) {
-        // assignmentId를 사용하여 해당 과제의 테스트 케이스를 불러옵니다.
         List<TestCase> testCases = getTestCasesForAssignment(assignmentId);
 
         try {
-            // 임시 파일 생성 및 저장
             String fileName = "TempCode";
             String fileExtension = getFileExtension(language);
             String filePath = fileName + fileExtension;
 
-            // 코드 파일로 저장
             saveCodeToFile(filePath, code);
 
-            // Docker 명령어 실행
-            String dockerImage = getDockerImage(language);
-            String command = String.format("docker run --rm -v $(pwd):/app %s %s", dockerImage, filePath);
+            String compileCommand = getCompileCommand(language, filePath);
+            String runCommand = getRunCommand(language, fileName);
 
-            // 결과 변수
             StringBuilder results = new StringBuilder();
 
             for (TestCase testCase : testCases) {
-                Process process = Runtime.getRuntime().exec(command);
+                if (!compileCommand.isEmpty()) {
+                    Process compileProcess = Runtime.getRuntime().exec(new String[]{"sh", "-c", compileCommand});
+                    compileProcess.waitFor();
+                }
 
-                // 입력 값 전달
-                process.getOutputStream().write(testCase.getInput().getBytes());
-                process.getOutputStream().flush();
-                process.getOutputStream().close();
+                Process runProcess = Runtime.getRuntime().exec(new String[]{"sh", "-c", runCommand});
 
-                // 실행 결과 읽기
-                BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+                runProcess.getOutputStream().write(testCase.getInput().getBytes());
+                runProcess.getOutputStream().flush();
+                runProcess.getOutputStream().close();
+
+                BufferedReader reader = new BufferedReader(new InputStreamReader(runProcess.getInputStream()));
                 StringBuilder output = new StringBuilder();
                 String line;
                 while ((line = reader.readLine()) != null) {
@@ -48,7 +46,6 @@ public class CompilerService {
                 }
                 reader.close();
 
-                // 결과 비교
                 if (output.toString().trim().equals(testCase.getExpectedOutput().trim())) {
                     results.append("Pass\n");
                 } else {
@@ -73,14 +70,25 @@ public class CompilerService {
         switch (language) {
             case "python": return ".py";
             case "java": return ".java";
+            case "c": return ".c";
             default: throw new IllegalArgumentException("Unsupported language: " + language);
         }
     }
 
-    private String getDockerImage(String language) {
+    private String getCompileCommand(String language, String filePath) {
         switch (language) {
-            case "python": return "python:3.8-slim";
-            case "java": return "openjdk:11-slim";
+            case "python": return "";
+            case "java": return String.format("docker run --rm -v $(pwd):/app mycompiler-java sh -c \"javac %s\"", filePath);
+            case "c": return String.format("docker run --rm -v $(pwd):/app mycompiler-c sh -c \"gcc -o %s %s\"", filePath.replace(".c", ""), filePath);
+            default: throw new IllegalArgumentException("Unsupported language: " + language);
+        }
+    }
+
+    private String getRunCommand(String language, String fileName) {
+        switch (language) {
+            case "python": return String.format("docker run --rm -v $(pwd):/app mycompiler-python python %s.py", fileName);
+            case "java": return String.format("docker run --rm -v $(pwd):/app mycompiler-java java %s", fileName);
+            case "c": return String.format("docker run --rm -v $(pwd):/app mycompiler-c ./%s", fileName);
             default: throw new IllegalArgumentException("Unsupported language: " + language);
         }
     }
@@ -89,6 +97,6 @@ public class CompilerService {
         // assignmentId를 사용하여 데이터베이스에서 해당 과제의 테스트 케이스를 가져옵니다.
         // 이 부분은 실제 데이터베이스 조회 로직으로 구현해야 합니다.
         // 여기에 임시로 더미 데이터를 반환하도록 하겠습니다.
-        return List.of(new TestCase("input1", "expectedOutput1"), new TestCase("input2", "expectedOutput2"));
+        return List.of(new TestCase(), new TestCase());
     }
 }

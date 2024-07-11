@@ -1,17 +1,20 @@
 package com.example.newhisolve.Controller;
 
 import com.example.newhisolve.Model.Assignment;
+import com.example.newhisolve.Model.Course;
+import com.example.newhisolve.Model.TestCase;
 import com.example.newhisolve.Model.User;
 import com.example.newhisolve.Service.AssignmentService;
 import com.example.newhisolve.Service.CourseService;
 import com.example.newhisolve.Service.UserService;
-import com.example.newhisolve.Model.Course;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 public class AssignmentController {
@@ -38,11 +41,22 @@ public class AssignmentController {
     }
 
     @PostMapping("/assignment/create")
-    public String createAssignment(@ModelAttribute Assignment assignment, @RequestParam Long courseId, Principal principal) {
+    public String createAssignment(@ModelAttribute Assignment assignment, @RequestParam Long courseId, @RequestParam List<String> inputs, @RequestParam List<String> outputs, Principal principal) {
         User user = userService.findByUsername(principal.getName());
         if (!user.getRole().equals("PROFESSOR")) {
             return "redirect:/dashboard";
         }
+
+        // Add test cases to the assignment
+        List<TestCase> testCases = new ArrayList<>();
+        for (int i = 0; i < inputs.size(); i++) {
+            TestCase testCase = new TestCase();
+            testCase.setInput(inputs.get(i));
+            testCase.setExpectedOutput(outputs.get(i));
+            testCases.add(testCase);
+        }
+        assignment.setTestCases(testCases);
+
         assignmentService.createAssignment(assignment, courseId);
         return "redirect:/course/" + courseId;
     }
