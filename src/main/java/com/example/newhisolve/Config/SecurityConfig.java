@@ -10,8 +10,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
-import static org.springframework.security.config.Customizer.withDefaults;
-
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -30,7 +28,7 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
-                                .requestMatchers("/register", "/login", "/api/compile").permitAll() // 여러 경로에 대한 접근 허용
+                                .requestMatchers("/welcome", "/register", "/login", "/api/compile", "/img/**", "/css/**", "/js/**").permitAll() // 정적 리소스에 대한 접근 허용
                                 .anyRequest().authenticated()
                 )
                 .formLogin(formLogin ->

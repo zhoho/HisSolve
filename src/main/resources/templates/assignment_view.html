@@ -2,38 +2,126 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <title th:text="${assignment.title}">Assignment Details</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body, html {
+      height: 100%;
+      margin: 0;
+      font-family: 'Source Code Pro', monospace;
+      background: #1B1E31;
+      color: #D8DEE9;
+      display: flex;
+      flex-direction: column;
+    }
+    .navbar {
+      background-color: #1B1E31;
+    }
+    footer {
+      background-color: #4C566A;
+      color: #D8DEE9;
+      margin-top: auto; /* Push footer to the bottom */
+      width: 100%;
+    }
+    .navbar-brand, .navbar-nav .nav-link, .footer-text {
+      color: #D8DEE9 !important;
+    }
+    .container {
+      flex-grow: 1;
+      padding-top: 60px;
+      padding-bottom: 60px;
+    }
+    .form-control {
+      background-color: #2E3440;
+      border: none;
+      color: #D8DEE9;
+    }
+    .form-control::placeholder {
+      color: #D8DEE9;
+    }
+    .btn-primary {
+      background-color: #4C566A;
+      border: none;
+    }
+    .btn-primary:hover {
+      background-color: #ffcc00;
+    }
+    .navbar-light .navbar-nav .nav-link:hover {
+      color: #ffcc00 !important;
+    }
+    .navbar-light .navbar-toggler-icon {
+      filter: invert(1);
+    }
+  </style>
 </head>
 <body>
-<h1 th:text="${assignment.title}">Assignment Title</h1>
-<p th:text="${assignment.description}">Assignment Description</p>
+<!-- Navigation Bar -->
+<nav class="navbar navbar-expand-lg navbar-light">
+  <a class="navbar-brand" href="#">MyApp</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="/welcome">Home</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/about">About</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/contact">Contact</a>
+      </li>
+    </ul>
+  </div>
+</nav>
 
-<div th:if="${user.role == 'STUDENT'}">
-  <h2>Submit Your Solution</h2>
-  <form id="submitForm">
-    <input type="hidden" id="assignmentId" th:value="${assignment.id}" />
-    <div>
-      <label for="language">Language:</label>
-      <select id="language" name="language">
-        <option value="python">Python</option>
-        <option value="java">Java</option>
-        <!-- 필요한 다른 언어 추가 -->
-      </select>
-    </div>
-    <div>
-      <button type="button" onclick="openEditor()">Submit</button>
-    </div>
-  </form>
+<!-- Main Content -->
+<div class="container">
+  <h1 class="my-4" th:text="${assignment.title}">Assignment Title</h1>
+  <p th:text="${assignment.description}">Assignment Description</p>
+
+  <div th:if="${user.role == 'STUDENT'}">
+    <h2>Submit Your Solution</h2>
+    <form id="submitForm" class="bg-dark p-4 rounded">
+      <input type="hidden" id="assignmentId" th:value="${assignment.id}" />
+      <div class="form-group">
+        <label for="language">Language:</label>
+        <select id="language" name="language" class="form-control">
+          <option value="python">Python</option>
+          <option value="java">Java</option>
+          <!-- 필요한 다른 언어 추가 -->
+        </select>
+      </div>
+      <div class="text-center">
+        <button type="button" class="btn btn-primary" onclick="openEditor()">Submit</button>
+      </div>
+    </form>
+  </div>
+
+  <div th:if="${user.role == 'PROFESSOR'}">
+    <h2>Submissions</h2>
+    <ul class="list-group">
+      <li class="list-group-item bg-dark text-white" th:each="submission : ${submissions}">
+        <p th:text="${submission.student.username} + ': ' + ${submission.result}"></p>
+      </li>
+    </ul>
+  </div>
 </div>
 
-<div th:if="${user.role == 'PROFESSOR'}">
-  <h2>Submissions</h2>
-  <ul>
-    <li th:each="submission : ${submissions}">
-      <p th:text="${submission.student.username} + ': ' + ${submission.result}"></p>
-    </li>
-  </ul>
-</div>
+<!-- Footer -->
+<footer class="text-center text-lg-start">
+  <div class="text-center p-3 footer-text">
+    © 2023 MyApp, Inc.
+  </div>
+</footer>
 
+<!-- Bootstrap JS and dependencies -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script>
   function openEditor() {
     const assignmentId = document.getElementById('assignmentId').value;

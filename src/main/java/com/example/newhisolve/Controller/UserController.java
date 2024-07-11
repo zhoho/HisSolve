@@ -30,4 +30,9 @@ public class UserController {
     public String showLoginForm() {
         return "login";
     }
+
+    @GetMapping("/welcome")
+    public String welcome() {
+        return "welcome";
+    }
 }

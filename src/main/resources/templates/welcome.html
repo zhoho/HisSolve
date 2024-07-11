@@ -1,12 +1,30 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Assignment Details</title>
+    <title>Hisolve</title>
     <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Custom CSS for animation -->
     <style>
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .animated-text span {
+            display: inline-block;
+            opacity: 0;
+            animation: fadeIn 2s forwards;
+        }
+        .animated-text span:nth-child(1) { animation-delay: 0.2s; }
+        .animated-text span:nth-child(2) { animation-delay: 0.4s; }
+        .animated-text span:nth-child(3) { animation-delay: 0.6s; }
+        .animated-text span:nth-child(4) { animation-delay: 0.8s; }
+        .animated-text span:nth-child(5) { animation-delay: 1.0s; }
+        .animated-text span:nth-child(6) { animation-delay: 1.2s; }
+        .animated-text span:nth-child(7) { animation-delay: 1.4s; }
+
         body, html {
             height: 100%;
             margin: 0;
@@ -16,37 +34,33 @@
             display: flex;
             flex-direction: column;
         }
-        .navbar {
+        .navbar{
             background-color: #1B1E31;
         }
         footer {
             background-color: #4C566A;
-            color: #D8DEE9;
-            margin-top: auto; /* Push footer to the bottom */
-            width: 100%;
         }
         .navbar-brand, .navbar-nav .nav-link, .footer-text {
             color: #D8DEE9 !important;
         }
-        .container {
+        .content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
             flex-grow: 1;
+            background-image: url('/img/background.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+        .container {
             padding-top: 60px;
             padding-bottom: 60px;
         }
-        .form-control {
-            background-color: #2E3440;
-            border: none;
-            color: #D8DEE9;
+        .animated-text {
+            margin-top: 8px;
         }
-        .form-control::placeholder {
-            color: #D8DEE9;
-        }
-        .btn-primary {
-            background-color: #4C566A;
-            border: none;
-        }
-        .btn-primary:hover {
-            background-color: #ffcc00;
+        .animated-text h1 {
+            font-size: 5rem;
         }
         .navbar-light .navbar-nav .nav-link:hover {
             color: #ffcc00 !important;
@@ -54,6 +68,7 @@
         .navbar-light .navbar-toggler-icon {
             filter: invert(1);
         }
+
     </style>
 </head>
 <body>
@@ -66,45 +81,21 @@
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-                <a class="nav-link" href="/welcome">Home</a>
+                <a class="nav-link" href="login.html">Login</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/about">About</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/contact">Contact</a>
+                <a class="nav-link" href="register.html">Sign Up</a>
             </li>
         </ul>
     </div>
 </nav>
 
 <!-- Main Content -->
-<div class="container">
-    <h1 class="my-4">Assignment: <span th:text="${assignment.title}"></span></h1>
-    <div>
-        <p th:text="${assignment.description}"></p>
-    </div>
-    <div th:if="${user.role == 'STUDENT'}">
-        <h2>Submit Assignment</h2>
-        <form th:action="@{/assignment/submit}" method="post" class="bg-dark p-4 rounded">
-            <div class="form-group">
-                <label for="code">Code: </label>
-                <textarea name="code" id="code" class="form-control" placeholder="Enter your code"></textarea>
-            </div>
-            <input type="hidden" name="assignmentId" th:value="${assignment.id}" />
-            <div class="text-center">
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </div>
-        </form>
-    </div>
-    <div th:if="${user.role == 'PROFESSOR'}">
-        <h2>Submissions</h2>
-        <ul class="list-group">
-            <li class="list-group-item bg-dark text-white" th:each="submission : ${submissions}">
-                <span th:text="${submission.student.username}"></span>:
-                <span th:text="${submission.result}"></span>
-            </li>
-        </ul>
+<div class="content">
+    <div class="animated-text">
+        <h1>
+            <span>H</span><span>i</span><span>s</span><span>o</span><span>l</span><span>v</span><span>e</span>
+        </h1>
     </div>
 </div>
 

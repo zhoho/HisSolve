@@ -2,21 +2,110 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Create Course</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: 'Source Code Pro', monospace;
+            background: #1B1E31;
+            color: #D8DEE9;
+            display: flex;
+            flex-direction: column;
+        }
+        .navbar {
+            background-color: #1B1E31;
+        }
+        footer {
+            background-color: #4C566A;
+            color: #D8DEE9;
+            margin-top: auto; /* Push footer to the bottom */
+            width: 100%;
+        }
+        .navbar-brand, .navbar-nav .nav-link, .footer-text {
+            color: #D8DEE9 !important;
+        }
+        .container {
+            flex-grow: 1;
+            padding-top: 60px;
+            padding-bottom: 60px;
+        }
+        .form-control {
+            background-color: #2E3440;
+            border: none;
+            color: #D8DEE9;
+        }
+        .form-control::placeholder {
+            color: #D8DEE9;
+        }
+        .btn-primary {
+            background-color: #4C566A;
+            border: none;
+        }
+        .btn-primary:hover {
+            background-color: #ffcc00;
+        }
+        .navbar-light .navbar-nav .nav-link:hover {
+            color: #ffcc00 !important;
+        }
+        .navbar-light .navbar-toggler-icon {
+            filter: invert(1);
+        }
+    </style>
 </head>
 <body>
-<h1>Create a New Course</h1>
-<form action="#" th:action="@{/course/create}" th:object="${course}" method="post">
-    <div>
-        <label for="name">Course Name:</label>
-        <input type="text" id="name" th:field="*{name}" />
+<!-- Navigation Bar -->
+<nav class="navbar navbar-expand-lg navbar-light">
+    <a class="navbar-brand" href="#">MyApp</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="/welcome">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/about">About</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/contact">Contact</a>
+            </li>
+        </ul>
     </div>
-    <div>
-        <label for="code">Course Code:</label>
-        <input type="text" id="code" th:field="*{code}" />
+</nav>
+
+<!-- Main Content -->
+<div class="container">
+    <h1 class="my-4 text-center">Create a New Course</h1>
+    <form th:action="@{/course/create}" th:object="${course}" method="post" class="bg-dark p-4 rounded">
+        <div class="form-group">
+            <label for="name">Course Name:</label>
+            <input type="text" id="name" th:field="*{name}" class="form-control" placeholder="Enter course name" />
+        </div>
+        <div class="form-group">
+            <label for="code">Course Code:</label>
+            <input type="text" id="code" th:field="*{code}" class="form-control" placeholder="Enter course code" />
+        </div>
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary">Create Course</button>
+        </div>
+    </form>
+</div>
+
+<!-- Footer -->
+<footer class="text-center text-lg-start">
+    <div class="text-center p-3 footer-text">
+        © 2023 MyApp, Inc.
     </div>
-    <div>
-        <button type="submit">Create Course</button>
-    </div>
-</form>
+</footer>
+
+<!-- Bootstrap JS and dependencies -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
