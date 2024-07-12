@@ -8,6 +8,7 @@ import com.example.newhisolve.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,6 +31,9 @@ public class AssignmentServiceImpl implements AssignmentService {
     public Assignment createAssignment(Assignment assignment, Long courseId) {
         Course course = courseRepository.findById(courseId).orElseThrow(() -> new RuntimeException("Course not found"));
         assignment.setCourse(course);
+        assignment.setCreateDate(LocalDateTime.now());
+        assignment.getDueDate();
+        assignmentRepository.save(assignment);
         return assignmentRepository.save(assignment);
     }
     @Override
