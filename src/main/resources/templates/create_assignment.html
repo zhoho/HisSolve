@@ -91,6 +91,10 @@
       <label for="description">Description:</label>
       <textarea id="description" th:field="*{description}" class="form-control" placeholder="Enter description"></textarea>
     </div>
+    <div class="form-group">
+      <label for="dueDate">Due Date:</label>
+      <input type="datetime-local" id="dueDate" th:field="*{dueDate}" class="form-control" placeholder="Enter due date" />
+    </div>
     <div id="testCases" class="bg-secondary p-3 rounded">
       <h2 class="my-4">Test Cases</h2>
       <div class="form-group">
