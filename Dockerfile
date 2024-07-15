@@ -1,23 +1,19 @@
-# Base image for Python
-FROM python:3.8-slim AS python
-
-# Base image for Java
-FROM openjdk:11-slim AS java
-
-# Base image for C
-FROM gcc:latest AS c
+# Use an official OpenJDK runtime as a parent image
+FROM openjdk:17-jdk-slim
 
 # Set the working directory
 WORKDIR /app
 
-# Copy the current directory contents into the container
-COPY . /app
+# Install Docker CLI
+RUN apt-get update && apt-get install -y \
+    docker.io \
+    && rm -rf /var/lib/apt/lists/*
 
-# Command to run the Python file (can be overridden)
-CMD ["python", "TempCode.py"]
+# Copy the current directory contents into the container at /app
+COPY build/libs/NewHisolve-0.0.1-SNAPSHOT.jar /app/app.jar
 
-# Command to compile and run Java file (can be overridden)
-CMD ["sh", "-c", "javac TempCode.java && java TempCode"]
+# Make port 8080 available to the world outside this container
+EXPOSE 8080
 
-# Command to compile and run C file (can be overridden)
-CMD ["sh", "-c", "gcc -o TempCode TempCode.c && ./TempCode"]
+# Run the jar file
+ENTRYPOINT ["java", "-jar", "app.jar"]

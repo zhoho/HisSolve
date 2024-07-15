@@ -30,4 +30,16 @@ public class CompilerController {
         String output = compilerService.compileAndRun(assignmentId, request.getCode(), request.getLanguage(), testCases);
         return Map.of("output", output);
     }
+
+    @PostMapping("/run")
+    public Map<String, String> runCode(@RequestBody CompileRequest request) {
+        String output = compilerService.runCode(request.getCode(), request.getLanguage());
+        return Map.of("output", output);
+    }
+
+    @PostMapping("/runWithInput")
+    public Map<String, String> runCodeWithInput(@RequestBody CompileRequest request, @RequestParam String input) {
+        String output = compilerService.runCodeWithInput(request.getCode(), request.getLanguage(), input);
+        return Map.of("output", output);
+    }
 }

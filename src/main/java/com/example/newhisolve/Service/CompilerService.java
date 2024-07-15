@@ -83,6 +83,62 @@ public class CompilerService {
         }
     }
 
+    public String runCode(String code, String language) {
+        return runCodeWithInput(code, language, null);
+    }
+
+    public String runCodeWithInput(String code, String language, String input) {
+        try {
+            // 임시 디렉토리 생성
+            File tempDir = new File("tempDir");
+            if (!tempDir.exists()) {
+                tempDir.mkdir();
+            }
+
+            // 임시 파일 생성 및 저장
+            String fileName = "TempCode";
+            String fileExtension = getFileExtension(language);
+            String filePath = tempDir.getAbsolutePath() + "/" + fileName + fileExtension;
+
+            // 코드 파일로 저장
+            saveCodeToFile(filePath, code);
+
+            // Docker 명령어 실행
+            String dockerImage = getDockerImage(language);
+            String command = getDockerCommand(language, fileName + fileExtension, tempDir.getAbsolutePath());
+
+            ProcessBuilder processBuilder = new ProcessBuilder("sh", "-c", command);
+            processBuilder.redirectErrorStream(true);
+            Process process = processBuilder.start();
+
+            if (input != null && !input.isEmpty()) {
+                try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(process.getOutputStream()))) {
+                    writer.write(input);
+                    writer.newLine();
+                    writer.flush();
+                }
+            }
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            StringBuilder output = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                output.append(line).append("\n");
+            }
+            reader.close();
+
+            process.waitFor();
+
+            // 임시 디렉토리 삭제
+            deleteDirectory(tempDir);
+
+            return output.toString().trim();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Error: " + e.getMessage();
+        }
+    }
+
     private void saveCodeToFile(String filePath, String code) throws Exception {
         try (FileWriter writer = new FileWriter(filePath)) {
             writer.write(code);

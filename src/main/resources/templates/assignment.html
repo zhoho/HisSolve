@@ -80,10 +80,7 @@
 
 <!-- Main Content -->
 <div class="container">
-    <h1 class="my-4">Assignment: <span th:text="${assignment.title}"></span></h1>
-    <div>
-        <p th:text="${assignment.description}"></p>
-    </div>
+\
     <div th:if="${user.role == 'STUDENT'}">
         <h2>Submit Assignment</h2>
         <form th:action="@{/assignment/submit}" method="post" class="bg-dark p-4 rounded">
