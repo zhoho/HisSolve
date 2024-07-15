@@ -34,6 +34,7 @@ public class CompilerService {
             StringBuilder results = new StringBuilder();
 
             for (TestCase testCase : testCases) {
+                int testCount = 1;
                 System.out.println("Executing command: " + command);
 
                 ProcessBuilder processBuilder = new ProcessBuilder("sh", "-c", command);
@@ -58,18 +59,21 @@ public class CompilerService {
 
                 process.waitFor();
 
+                String actucalInput = testCase.getInput();
                 String actualOutput = output.toString().trim();
                 String expectedOutput = testCase.getExpectedOutput().trim();
+
 
                 // 디버깅 출력 추가
                 System.out.println("Test Case - Input: " + testCase.getInput());
                 System.out.println("Expected Output: " + expectedOutput);
                 System.out.println("Actual Output: " + actualOutput);
 
+
                 if (actualOutput.equals(expectedOutput)) {
-                    results.append("Pass\n");
+                    results.append("테스트 "+testCount+" - 통과\n입력값 〉 " + actucalInput + "\n기댓값 〉 " + expectedOutput + "\n실행 결과 〉 " + "실행한 결괏값 " + actualOutput + "이 기댓값 " + expectedOutput + "과 일치합니다!\n" );
                 } else {
-                    results.append("Fail\n");
+                    results.append("테스트 "+testCount+" - 실패\n입력값 〉 " + actucalInput + "\n기댓값 〉 " + expectedOutput + "\n실행 결과 〉 " + "실행한 결괏값 " + actualOutput + "이 기댓값 " + expectedOutput + "과 다릅니다!\n" );
                 }
             }
 
