@@ -34,7 +34,8 @@ public class CompilerService {
             StringBuilder results = new StringBuilder();
 
             for (TestCase testCase : testCases) {
-                int testCount = 1;
+                int testCount = 0;
+                testCount ++; //test case count up
                 System.out.println("Executing command: " + command);
 
                 ProcessBuilder processBuilder = new ProcessBuilder("sh", "-c", command);
@@ -77,7 +78,6 @@ public class CompilerService {
                 }
             }
 
-            // 임시 디렉토리 삭제
             deleteDirectory(tempDir);
 
             return results.toString();

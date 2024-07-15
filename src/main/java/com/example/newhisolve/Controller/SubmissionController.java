@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @RestController
@@ -45,7 +46,7 @@ public class SubmissionController {
         submission.setAssignment(assignment);
         submission.setCode(submissionRequest.getCode());
         submission.setLanguage(submissionRequest.getLanguage());
-        submission.setSubmittedAt(new Date());
+        submission.setSubmittedAt(LocalDateTime.now());
         submission.setResult("Pass");
         submission.setStudent(student);
 

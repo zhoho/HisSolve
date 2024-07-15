@@ -3,6 +3,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -28,7 +29,7 @@ public class Submission {
     private String code;
 
     private String result;
-    private Date submittedAt;
+    private LocalDateTime submittedAt;
 
     private String language; // 추가된 필드
 
