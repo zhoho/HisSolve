@@ -38,8 +38,11 @@ public class CompilerController {
     }
 
     @PostMapping("/runWithInput")
-    public Map<String, String> runCodeWithInput(@RequestBody CompileRequest request, @RequestParam String input) {
-        String output = compilerService.runCodeWithInput(request.getCode(), request.getLanguage(), input);
+    public Map<String, String> runCodeWithInput(@RequestBody Map<String, Object> request) {
+        String code = (String) request.get("code");
+        String language = (String) request.get("language");
+        List<String> inputs = (List<String>) request.get("inputs");
+        String output = compilerService.runCodeWithInput(code, language, inputs);
         return Map.of("output", output);
     }
 }

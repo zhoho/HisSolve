@@ -87,7 +87,7 @@ public class CompilerService {
         return runCodeWithInput(code, language, null);
     }
 
-    public String runCodeWithInput(String code, String language, String input) {
+    public String runCodeWithInput(String code, String language, List<String> inputs) {
         try {
             // 임시 디렉토리 생성
             File tempDir = new File("tempDir");
@@ -111,10 +111,12 @@ public class CompilerService {
             processBuilder.redirectErrorStream(true);
             Process process = processBuilder.start();
 
-            if (input != null && !input.isEmpty()) {
+            if (inputs != null && !inputs.isEmpty()) {
                 try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(process.getOutputStream()))) {
-                    writer.write(input);
-                    writer.newLine();
+                    for (String input : inputs) {
+                        writer.write(input);
+                        writer.newLine();
+                    }
                     writer.flush();
                 }
             }
