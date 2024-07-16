@@ -44,6 +44,8 @@
         .btn-primary {
             background-color: #4C566A;
             border: none;
+            font-size: 1.25rem;
+            padding: 0.75rem 1.25rem;
         }
         .btn-primary:hover {
             background-color: #ffcc00;
@@ -53,6 +55,29 @@
         }
         .navbar-light .navbar-toggler-icon {
             filter: invert(1);
+        }
+        .list-group-item {
+            background-color: #2E3440;
+            border: none;
+            color: #D8DEE9;
+            margin-bottom: 1rem;
+            padding: 1.5rem;
+            font-size: 1.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: background-color 0.3s ease;
+        }
+        .list-group-item:hover {
+            background-color: #3B4252;
+        }
+        .list-group-item a {
+            color: #D8DEE9;
+            text-decoration: none;
+            font-weight: 700;
+        }
+        .list-group-item a:hover {
+            color: #ffcc00;
         }
     </style>
 </head>
@@ -82,14 +107,14 @@
 <div class="container">
     <h1 class="my-4">Welcome, <span th:text="${user.username}"></span>!</h1>
     <div class="mb-4">
-        <a class="btn btn-primary" th:if="${user.role == 'PROFESSOR'}" th:href="@{/course/create}">Create Class</a>
-        <a class="btn btn-primary" th:if="${user.role == 'STUDENT'}" th:href="@{/course/join}">Join Class</a>
+        <a class="btn btn-primary btn-lg" th:if="${user.role == 'PROFESSOR'}" th:href="@{/course/create}">Create Class</a>
+        <a class="btn btn-primary btn-lg" th:if="${user.role == 'STUDENT'}" th:href="@{/course/join}">Join Class</a>
     </div>
     <div>
         <h2>Your Classes</h2>
         <ul class="list-group">
-            <li class="list-group-item bg-dark text-white" th:each="course : ${courses}">
-                <a th:href="@{/course/{id}(id=${course.id})}" th:text="${course.name}" class="text-white"></a>
+            <li class="list-group-item" th:each="course : ${courses}">
+                <a th:href="@{/course/{id}(id=${course.id})}" th:text="${course.name}"></a>
             </li>
         </ul>
     </div>

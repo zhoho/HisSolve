@@ -34,25 +34,74 @@
       padding-bottom: 60px;
     }
     .form-control {
-      background-color: #2E3440;
-      border: none;
+      background-color: #3B4252;
       color: #D8DEE9;
+      border-radius: 0.5rem;
+      padding: 0.75rem 1rem;
+      border: none;
     }
     .form-control::placeholder {
       color: #D8DEE9;
     }
     .btn-primary {
-      background-color: #4C566A;
+      background-color: #88C0D0;
       border: none;
+      font-size: 1.25rem;
+      padding: 0.75rem 1.25rem;
+      border-radius: 0.5rem;
     }
     .btn-primary:hover {
-      background-color: #ffcc00;
+      background-color: #81A1C1;
     }
     .navbar-light .navbar-nav .nav-link:hover {
-      color: #ffcc00 !important;
+      color: #88C0D0 !important;
     }
     .navbar-light .navbar-toggler-icon {
       filter: invert(1);
+    }
+    .form-group label {
+      font-weight: 700;
+      color: #88C0D0;
+    }
+    .bg-secondary {
+      background-color: #434C5E !important;
+    }
+    .bg-dark {
+      background-color: #2E3440 !important;
+    }
+    .rounded {
+      border-radius: 0.5rem !important;
+    }
+    .card-custom {
+      background-color: #2E3440;
+      color: #D8DEE9;
+      margin-bottom: 1rem;
+      border-radius: 0.5rem;
+    }
+    .card-custom .card-header {
+      background-color: #3B4252;
+      color: #88C0D0;
+      border-radius: 0.5rem 0.5rem 0 0;
+      padding: 1rem;
+      font-size: 1.25rem;
+    }
+    .card-custom .card-body {
+      padding: 1.5rem;
+    }
+    .test-case {
+      background-color: #3B4252;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    .test-case .form-group label {
+      color: #88C0D0;
+    }
+    .test-case .input-section, .test-case .output-section {
+      background-color: #434C5E;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      margin-bottom: 1rem;
     }
   </style>
 </head>
@@ -81,29 +130,38 @@
 <!-- Main Content -->
 <div class="container">
   <h1 class="my-4 text-center">Create Assignment</h1>
-  <form th:action="@{/assignment/create}" th:object="${assignment}" method="post" class="bg-dark p-4 rounded">
+  <form th:action="@{/assignment/create}" th:object="${assignment}" method="post" class="p-4 rounded">
     <input type="hidden" th:name="courseId" th:value="${course.id}" />
-    <div class="form-group">
-      <label for="title">Title:</label>
-      <input type="text" id="title" th:field="*{title}" class="form-control" placeholder="Enter title" />
-    </div>
-    <div class="form-group">
-      <label for="description">Description:</label>
-      <textarea id="description" th:field="*{description}" class="form-control" placeholder="Enter description"></textarea>
-    </div>
-    <div class="form-group">
-      <label for="dueDate">Due Date:</label>
-      <input type="datetime-local" id="dueDate" th:field="*{dueDate}" class="form-control" placeholder="Enter due date" />
-    </div>
-    <div id="testCases" class="bg-secondary p-3 rounded">
-      <h2 class="my-4">Test Cases</h2>
-      <div class="form-group">
-        <label for="input0">Input:</label>
-        <textarea name="inputs" id="input0" class="form-control" placeholder="Enter input"></textarea>
+    <div class="card card-custom mb-4">
+      <div class="card-header">Assignment Details</div>
+      <div class="card-body">
+        <div class="form-group">
+          <label for="title">Title:</label>
+          <input type="text" id="title" th:field="*{title}" class="form-control" placeholder="Enter title" />
+        </div>
+        <div class="form-group">
+          <label for="description">Description:</label>
+          <textarea id="description" th:field="*{description}" class="form-control" placeholder="Enter description"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="dueDate">Due Date:</label>
+          <input type="datetime-local" id="dueDate" th:field="*{dueDate}" class="form-control" placeholder="Enter due date" />
+        </div>
       </div>
-      <div class="form-group">
-        <label for="output0">Expected Output:</label>
-        <textarea name="outputs" id="output0" class="form-control" placeholder="Enter expected output"></textarea>
+    </div>
+    <div class="card card-custom mb-4">
+      <div class="card-header">Test Cases</div>
+      <div class="card-body" id="testCases">
+        <div class="test-case">
+          <div class="form-group input-section">
+            <label for="input0">Input:</label>
+            <textarea name="inputs" id="input0" class="form-control" placeholder="Enter input"></textarea>
+          </div>
+          <div class="form-group output-section">
+            <label for="output0">Expected Output:</label>
+            <textarea name="outputs" id="output0" class="form-control" placeholder="Enter expected output"></textarea>
+          </div>
+        </div>
       </div>
     </div>
     <button type="button" class="btn btn-secondary my-3" onclick="addTestCase()">Add Test Case</button>
@@ -130,8 +188,11 @@
   function addTestCase() {
     const testCasesDiv = document.getElementById('testCases');
 
+    const testCaseDiv = document.createElement('div');
+    testCaseDiv.className = 'test-case mt-3 p-3 rounded';
+
     const inputDiv = document.createElement('div');
-    inputDiv.className = 'form-group';
+    inputDiv.className = 'form-group input-section';
     const inputLabel = document.createElement('label');
     inputLabel.innerText = 'Input:';
     const inputTextarea = document.createElement('textarea');
@@ -143,7 +204,7 @@
     inputDiv.appendChild(inputTextarea);
 
     const outputDiv = document.createElement('div');
-    outputDiv.className = 'form-group';
+    outputDiv.className = 'form-group output-section';
     const outputLabel = document.createElement('label');
     outputLabel.innerText = 'Expected Output:';
     const outputTextarea = document.createElement('textarea');
@@ -154,8 +215,10 @@
     outputDiv.appendChild(outputLabel);
     outputDiv.appendChild(outputTextarea);
 
-    testCasesDiv.appendChild(inputDiv);
-    testCasesDiv.appendChild(outputDiv);
+    testCaseDiv.appendChild(inputDiv);
+    testCaseDiv.appendChild(outputDiv);
+
+    testCasesDiv.appendChild(testCaseDiv);
 
     testCaseIndex++;
   }

@@ -44,6 +44,8 @@
     .btn-primary {
       background-color: #4C566A;
       border: none;
+      font-size: 1.25rem;
+      padding: 0.75rem 1.25rem;
     }
     .btn-primary:hover {
       background-color: #ffcc00;
@@ -53,6 +55,29 @@
     }
     .navbar-light .navbar-toggler-icon {
       filter: invert(1);
+    }
+    .list-group-item {
+      background-color: #2E3440;
+      border: none;
+      color: #D8DEE9;
+      margin-bottom: 1rem;
+      padding: 1.5rem;
+      font-size: 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: background-color 0.3s ease;
+    }
+    .list-group-item:hover {
+      background-color: #3B4252;
+    }
+    .list-group-item a {
+      color: #D8DEE9;
+      text-decoration: none;
+      font-weight: 700;
+    }
+    .list-group-item a:hover {
+      color: #ffcc00;
     }
   </style>
 </head>
@@ -83,12 +108,12 @@
   <h1 class="my-4 text-center" th:text="${course.name}">Course Name</h1>
   <h2 class="my-4">Assignments</h2>
   <ul class="list-group mb-4">
-    <li class="list-group-item bg-dark text-white" th:each="assignment : ${assignments}">
+    <li class="list-group-item" th:each="assignment : ${assignments}">
       <a th:href="@{/assignment/{id}(id=${assignment.id})}" th:text="${assignment.title}" class="text-white"></a>
     </li>
   </ul>
   <div class="text-center">
-    <a th:href="@{/assignment/create(courseId=${course.id})}" class="btn btn-primary">Create Assignment</a>
+    <a th:href="@{/assignment/create(courseId=${course.id})}" class="btn btn-primary btn-lg">Create Assignment</a>
   </div>
 </div>
 
