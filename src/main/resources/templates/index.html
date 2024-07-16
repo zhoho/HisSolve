@@ -3,13 +3,85 @@
 <head>
     <title>Online Compiler</title>
     <style>
-        #editor { height: 1250px; }
-        #console, #problem-statement { height: 1250px; background-color: black; color: white; padding: 10px; overflow-y: auto; display: none; }
-        #output { color: white; }
-        #input-line { background-color: #1e1e1e; color: white; border: none; width: 100%; }
-        .btn-container { margin-bottom: 10px; }
-        #testcase-results { height: 200px; background-color: #2e2e2e; color: white; padding: 10px; overflow-y: auto; }
-        #testcase-output {color: white;}
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: Arial, sans-serif;
+            background-color: #EBECED; /* 전체 배경색 설정 */
+        }
+        .container-fluid {
+            display: flex;
+            height: 100%;
+        }
+        .left-panel, .middle-panel, .right-panel {
+            padding: 10px;
+            box-sizing: border-box;
+        }
+        .left-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background-color: #EBECED;
+        }
+        .middle-panel {
+            flex: 3;
+            display: flex;
+            flex-direction: column;
+            background-color: white;
+            margin-top: 50px; /* 상단 여백 추가 */
+        }
+        .right-panel {
+            flex: 3;
+            display: flex;
+            flex-direction: column;
+            background-color: white;
+            margin-top: 50px; /* 상단 여백 추가 */
+        }
+        .btn-container {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #90ee90;
+            z-index: 10; /* 버튼을 가장 위로 */
+        }
+        .btn-side {
+            display: flex;
+            flex-direction: column;
+            margin-top: 50px;
+        }
+        .btn-side button {
+            margin-bottom: 10px;
+            width: 100px;
+        }
+        #editor, #console, #problem-statement {
+            flex-grow: 1;
+            background-color: white;
+            color: black;
+            padding: 10px;
+            overflow-y: auto;
+            display: none;
+        }
+        #editor {
+            display: block; /* 기본적으로 에디터가 보이도록 설정 */
+        }
+        #output {
+            color: black;
+        }
+        #input-line {
+            background-color: white;
+            color: black;
+            border: none;
+            width: 100%;
+        }
+        .section-buttons {
+            display: flex;
+            justify-content: space-between;
+        }
+        .section-buttons button {
+            flex: 1;
+        }
     </style>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
@@ -17,30 +89,35 @@
 </head>
 <body>
 <div class="container-fluid">
-    <div class="row no-gutters">
-        <div class="col-md-6 d-flex flex-column">
-            <div class="btn-container">
-                <button class="btn btn-primary btn-compile" onclick="compileCode()">TEST CASE 실행</button>
-                <button class="btn btn-success btn-run" onclick="runCode()">Run</button>
-                <button class="btn btn-danger btn-submit" onclick="submitCode()">Submit</button>
-                <button class="btn btn-info" onclick="showProblemStatement()">Show Problem</button>
-                <button class="btn btn-secondary" onclick="showConsole()">Show Console</button>
-            </div>
-            <div id="editor" class="flex-grow-1"></div>
+    <div class="left-panel">
+        <h2>Assignment10</h2>
+        <div class="btn-side">
+            <button class="btn btn-primary" onclick="compileCode()">TestCase</button>
+            <button class="btn btn-danger" onclick="submitCode()">Submit</button>
         </div>
-        <div class="col-md-6 d-flex flex-column">
-            <div id="problem-statement" class="flex-grow-1">
-                <h1 class="my-4"><span th:text="${assignment.title}"></span></h1>
-                <div id="description" th:attr="data-description=${assignment.description}"></div>
-            </div>
-            <div id="console" class="flex-grow-1">
-                <pre id="output"></pre>
-                <input type="text" id="input-line" onkeypress="handleKeyPress(event)">
-            </div>
-            <div id="testcase-results">
-                <h5>Test Case Results:</h5>
-                <pre id="testcase-output"></pre>
-            </div>
+    </div>
+    <div class="middle-panel">
+        <div class="btn-container">
+            <button class="btn btn-success btn-run" onclick="runCode()">Run</button>
+        </div>
+        <div id="editor"></div>
+    </div>
+    <div class="right-panel">
+        <div class="section-buttons">
+            <button class="btn btn-secondary" onclick="showConsole()">Console</button>
+            <button class="btn btn-info" onclick="showProblemStatement()">Problem</button>
+        </div>
+        <div id="console" class="flex-grow-1">
+            <pre id="output"></pre>
+            <input type="text" id="input-line" onkeypress="handleKeyPress(event)">
+        </div>
+        <div id="problem-statement" class="flex-grow-1">
+            <h1 class="my-4"><span th:text="${assignment.title}"></span></h1>
+            <div id="description" th:attr="data-description=${assignment.description}"></div>
+        </div>
+        <div id="testcase-results">
+            <h5>Test Case Results:</h5>
+            <pre id="testcase-output"></pre>
         </div>
     </div>
 </div>
