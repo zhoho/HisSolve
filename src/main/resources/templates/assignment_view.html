@@ -54,6 +54,12 @@
     .navbar-light .navbar-toggler-icon {
       filter: invert(1);
     }
+    .assignment-description {
+      white-space: pre-wrap; /* Preserve whitespace and line breaks */
+    }
+    .hidden {
+      display: none;
+    }
   </style>
 </head>
 <body>
@@ -81,7 +87,7 @@
 <!-- Main Content -->
 <div class="container">
   <h1 class="my-4" th:text="${assignment.title}">Assignment Title</h1>
-  <p th:text="${assignment.description}">Assignment Description</p>
+  <div class="assignment-description bg-dark p-4 rounded" th:attr="data-description=${assignment.description}"></div>
 
   <div th:if="${user.role == 'STUDENT'}">
     <h2>Submit Your Solution</h2>
@@ -102,8 +108,11 @@
   </div>
 
   <div th:if="${user.role == 'PROFESSOR'}">
-    <h2>Submissions</h2>
-    <ul class="list-group">
+    <h2>Assignment Submissions</h2>
+    <div class="text-center mb-3">
+      <button type="button" class="btn btn-primary" onclick="window.location.href='/submissions?assignmentId=' + assignmentId">제출자 보기</button>
+    </div>
+    <ul id="submission-list" class="list-group hidden">
       <li class="list-group-item bg-dark text-white" th:each="submission : ${submissions}">
         <p th:text="${submission.student.username} + ': ' + ${submission.result}"></p>
       </li>
@@ -122,12 +131,31 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<!-- Marked.js -->
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const descriptions = document.querySelectorAll('.assignment-description');
+    descriptions.forEach(description => {
+      const markdown = description.getAttribute('data-description');
+      description.innerHTML = marked.parse(markdown);
+    });
+  });
+
   function openEditor() {
     const assignmentId = document.getElementById('assignmentId').value;
     const language = document.getElementById('language').value;
     const url = `/index?assignmentId=${assignmentId}&language=${language}`;
     window.location.href = url;
+  }
+
+  function toggleSubmissions() {
+    const submissionList = document.getElementById('submission-list');
+    if (submissionList.classList.contains('hidden')) {
+      submissionList.classList.remove('hidden');
+    } else {
+      submissionList.classList.add('hidden');
+    }
   }
 </script>
 </body>

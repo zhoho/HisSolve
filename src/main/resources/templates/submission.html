@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Assignment Details</title>
+    <title>Submission List</title>
     <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <!-- Google Fonts -->
@@ -22,7 +22,7 @@
         footer {
             background-color: #4C566A;
             color: #D8DEE9;
-            margin-top: auto; /* Push footer to the bottom */
+            margin-top: auto;
             width: 100%;
         }
         .navbar-brand, .navbar-nav .nav-link, .footer-text {
@@ -33,20 +33,13 @@
             padding-top: 60px;
             padding-bottom: 60px;
         }
-        .form-control {
+        .list-group-item {
             background-color: #2E3440;
             border: none;
             color: #D8DEE9;
         }
-        .form-control::placeholder {
-            color: #D8DEE9;
-        }
-        .btn-primary {
+        .list-group-item:hover {
             background-color: #4C566A;
-            border: none;
-        }
-        .btn-primary:hover {
-            background-color: #ffcc00;
         }
         .navbar-light .navbar-nav .nav-link:hover {
             color: #ffcc00 !important;
@@ -80,29 +73,19 @@
 
 <!-- Main Content -->
 <div class="container">
-\
-    <div th:if="${user.role == 'STUDENT'}">
-        <h2>Submit Assignment</h2>
-        <form th:action="@{/assignment/submit}" method="post" class="bg-dark p-4 rounded">
-            <div class="form-group">
-                <label for="code">Code: </label>
-                <textarea name="code" id="code" class="form-control" placeholder="Enter your code"></textarea>
+    <h1 class="my-4">Submission List</h1>
+    <ul class="list-group">
+        <li class="list-group-item" th:each="submission : ${submissions}">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h5 th:text="${submission.student.username}"></h5>
+                    <p th:text="'Result: ' + ${submission.result}"></p>
+                    <p th:text="'Submitted at: ' + ${submission.submittedAt}"></p>
+                </div>
+                <button class="btn btn-primary" th:onclick="'window.location.href=\'/submission/' + ${submission.id} + '/details\''">View Details</button>
             </div>
-            <input type="hidden" name="assignmentId" th:value="${assignment.id}" />
-            <div class="text-center">
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </div>
-        </form>
-    </div>
-    <div th:if="${user.role == 'PROFESSOR'}">
-        <h2>Submissions</h2>
-        <ul class="list-group">
-            <li class="list-group-item bg-dark text-white" th:each="submission : ${submissions}">
-                <span th:text="${submission.student.username}"></span>:
-                <span th:text="${submission.result}"></span>
-            </li>
-        </ul>
-    </div>
+        </li>
+    </ul>
 </div>
 
 <!-- Footer -->
