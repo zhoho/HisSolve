@@ -6,6 +6,8 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Prism.js CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/themes/prism-tomorrow.min.css">
     <style>
         body, html {
             height: 100%;
@@ -54,11 +56,55 @@
         .navbar-light .navbar-toggler-icon {
             filter: invert(1);
         }
-        .assignment-description {
-            white-space: pre-wrap;
+        .card-custom {
+            background-color: #2E3440;
+            color: #D8DEE9;
+            margin-bottom: 1rem;
+            border-radius: 0.5rem;
+            border: none;
         }
-        .hidden {
-            display: none;
+        .card-custom .card-header {
+            background-color: #3B4252;
+            color: #88C0D0;
+            border-radius: 0.5rem 0.5rem 0 0;
+            padding: 1rem;
+            font-size: 1.25rem;
+        }
+        .card-custom .card-body {
+            padding: 1.5rem;
+        }
+        .card-custom .list-group-item {
+            background-color: #3B4252;
+            border: none;
+            cursor: pointer;
+        }
+        .card-custom .list-group-item:hover {
+            background-color: #434C5E;
+        }
+        .modal-content {
+            background-color: #2E3440;
+            color: #D8DEE9;
+        }
+        pre code {
+            background-color: #1B1E31;
+            color: #D8DEE9;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            overflow-x: auto;
+            font-size: 1.1rem;
+        }
+        .modal-dialog-centered {
+            display: flex;
+            align-items: center;
+            min-height: calc(100% - 1rem);
+        }
+        .modal-dialog {
+            max-width: 80%;
+            margin: 1.75rem auto;
+        }
+        .modal-body {
+            max-height: 80vh;
+            overflow-y: auto;
         }
     </style>
 </head>
@@ -86,22 +132,47 @@
 
 <!-- Main Content -->
 <div class="container">
-    <h1 class="my-4">Assignment Submissions</h1>
+    <h1 class="my-4 text-center">Assignment Submissions</h1>
     <div th:if="${submissions != null}">
-        <ul>
-            <li th:each="submission : ${submissions}">
-                <p>ID: <span th:text="${submission.id}"></span></p>
-                <p>Assignment ID: <span th:text="${submission.assignment.id}"></span></p>
-                <p>Student: <span th:text="${submission.student.username}"></span></p>
-                <p>Code: <span th:text="${submission.code}"></span></p>
-                <p>Result: <span th:text="${submission.result}"></span></p>
-                <p>Submitted At: <span th:text="${submission.submittedAt}"></span></p>
-                <p>Language: <span th:text="${submission.language}"></span></p>
-            </li>
-        </ul>
+        <div class="card card-custom">
+            <div class="card-header">Submissions</div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item d-flex justify-content-between align-items-center" th:each="submission : ${submissions}" th:data-id="${submission.id}" th:data-code="${submission.code}" th:data-student="${submission.student.username}" th:data-result="${submission.result}" th:data-submittedat="${submission.submittedAt}" onclick="showDetails(this)">
+                    <span>
+                        <strong th:text="${submission.student.username}">Student Name</strong>
+                    </span>
+                    <span th:text="${submission.result}">Result</span>
+                    <span th:text="${submission.submittedAt}">Submitted At</span>
+                </li>
+            </ul>
+        </div>
     </div>
     <div th:if="${submissions == null}">
         <p>No submissions found.</p>
+    </div>
+</div>
+
+<!-- Details Modal -->
+<div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="detailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="detailsModalLabel">Submission Details</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p><strong>Student:</strong> <span id="studentName"></span></p>
+                <p><strong>Result:</strong> <span id="result"></span></p>
+                <p><strong>Submitted At:</strong> <span id="submittedAt"></span></p>
+                <p><strong>Code:</strong></p>
+                <pre><code id="code" class="language-javascript"></code></pre>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -116,5 +187,26 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<!-- Prism.js JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/components/prism-javascript.min.js"></script>
+<script>
+    function showDetails(element) {
+        const student = element.getAttribute('data-student');
+        const result = element.getAttribute('data-result');
+        const submittedAt = element.getAttribute('data-submittedat');
+        const code = element.getAttribute('data-code');
+
+        document.getElementById('studentName').innerText = student;
+        document.getElementById('result').innerText = result;
+        document.getElementById('submittedAt').innerText = submittedAt;
+        document.getElementById('code').textContent = code;
+
+        // Apply syntax highlighting
+        Prism.highlightAll();
+
+        $('#detailsModal').modal('show');
+    }
+</script>
 </body>
 </html>
