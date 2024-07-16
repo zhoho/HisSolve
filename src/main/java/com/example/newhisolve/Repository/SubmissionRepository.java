@@ -2,10 +2,10 @@ package com.example.newhisolve.Repository;
 
 import com.example.newhisolve.Model.Assignment;
 import com.example.newhisolve.Model.Submission;
+import com.example.newhisolve.Model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
-
 public interface SubmissionRepository extends JpaRepository<Submission, Long> {
-    List<Submission> findByAssignment(Assignment assignment);
+    Submission findByStudentAndAssignment(User student, Assignment assignment);
+    void deleteByStudentAndAssignment(User student, Assignment assignment);
 }

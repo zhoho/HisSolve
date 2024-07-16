@@ -5,7 +5,25 @@ public class SubmissionRequest {
     private String code;
     private String language;
 
-    // Getters and setters
+    private int totalTestCases; // 추가된 필드
+    private int passedTestCases; // 추가된 필드
+
+    public int getTotalTestCases() {
+        return totalTestCases;
+    }
+
+    public void setTotalTestCases(int totalTestCases) {
+        this.totalTestCases = totalTestCases;
+    }
+
+    public int getPassedTestCases() {
+        return passedTestCases;
+    }
+
+    public void setPassedTestCases(int passedTestCases) {
+        this.passedTestCases = passedTestCases;
+    }
+
     public Long getAssignmentId() {
         return assignmentId;
     }

@@ -32,9 +32,8 @@ public class CompilerService {
 
             // 결과 변수
             StringBuilder results = new StringBuilder();
-
+            int testCount = 0;
             for (TestCase testCase : testCases) {
-                int testCount = 0;
                 testCount ++; //test case count up
                 System.out.println("Executing command: " + command);
 

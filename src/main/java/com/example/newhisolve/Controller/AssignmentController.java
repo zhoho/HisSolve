@@ -79,14 +79,4 @@ public class AssignmentController {
         }
         return "assignment_view";
     }
-
-    @PostMapping("/assignment/submit")
-    public String submitAssignment(@RequestParam Long assignmentId, @RequestParam String code, @RequestParam String language, Principal principal) {
-        User user = userService.findByUsername(principal.getName());
-        if (!user.getRole().equals("STUDENT")) {
-            return "redirect:/dashboard";
-        }
-        assignmentService.submitAssignment(assignmentId, code, language, principal.getName());
-        return "redirect:/assignment/" + assignmentId;
-    }
 }

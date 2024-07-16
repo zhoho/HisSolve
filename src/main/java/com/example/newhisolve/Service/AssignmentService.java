@@ -14,5 +14,4 @@ public interface AssignmentService {
     List<TestCase> getTestCasesForAssignment(Long assignmentId);
 
     Assignment getAssignmentById(Long assignmentId);
-    void submitAssignment(Long assignmentId, String code, String language, String username);
 }

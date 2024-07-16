@@ -1,55 +1,61 @@
 package com.example.newhisolve.Controller;
 
-import com.example.newhisolve.Model.Assignment;
-import com.example.newhisolve.Model.Submission;
-import com.example.newhisolve.Model.User;
-import com.example.newhisolve.Repository.SubmissionRepository;
+import com.example.newhisolve.Model.*;
 import com.example.newhisolve.Request.SubmissionRequest;
-import com.example.newhisolve.Service.AssignmentServiceImpl;
-import com.example.newhisolve.Service.UserServiceImpl;
+import com.example.newhisolve.Service.AssignmentService;
+import com.example.newhisolve.Service.SubmissionService;
+import com.example.newhisolve.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
-import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 public class SubmissionController {
 
     @Autowired
-    private AssignmentServiceImpl assignmentService;
+    private SubmissionService submissionService;
 
     @Autowired
-    private UserServiceImpl userService;
+    private AssignmentService assignmentService;
 
     @Autowired
-    private SubmissionRepository submissionRepository;
+    private UserService userService;
 
     @PostMapping("/api/submit")
-    public Submission submitCode(@RequestBody SubmissionRequest submissionRequest) {
-        Assignment assignment = assignmentService.getAssignmentById(submissionRequest.getAssignmentId());
-        // 사용자 세션 check
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User student;
-        if (principal instanceof UserDetails) {
-            String username = ((UserDetails) principal).getUsername();
-            student = userService.findByUsername(username);  // 사용자명을 통해 학생 정보 가져오기
-        } else {
-            throw new RuntimeException("User not authenticated");
+    public ResponseEntity<?> submitCode(@RequestBody SubmissionRequest submissionRequest) {
+        try {
+            Assignment assignment = assignmentService.getAssignmentById(submissionRequest.getAssignmentId());
+
+            // 사용자 세션 check
+            Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            User student;
+            if (principal instanceof UserDetails) {
+                String username = ((UserDetails) principal).getUsername();
+                student = userService.findByUsername(username);
+            } else {
+                throw new RuntimeException("User not authenticated");
+            }
+
+            // 제출 데이터 저장
+            Submission savedSubmission = submissionService.saveSubmission(assignment, student, submissionRequest.getCode(), submissionRequest.getLanguage(), submissionRequest.getTotalTestCases(), submissionRequest.getPassedTestCases());
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("submissionId", savedSubmission.getId());
+            response.put("message", "Submission successful!");
+
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Map<String, Object> errorResponse = new HashMap<>();
+            errorResponse.put("error", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
         }
-
-        Submission submission = new Submission();
-        submission.setAssignment(assignment);
-        submission.setCode(submissionRequest.getCode());
-        submission.setLanguage(submissionRequest.getLanguage());
-        submission.setSubmittedAt(LocalDateTime.now());
-        submission.setResult("Pass");
-        submission.setStudent(student);
-
-        return submissionRepository.save(submission);
     }
 }
