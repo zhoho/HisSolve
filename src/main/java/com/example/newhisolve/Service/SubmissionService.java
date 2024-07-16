@@ -23,7 +23,7 @@ public class SubmissionService {
 
     @Transactional
     public Submission saveSubmission(Assignment assignment, User student, String code, String language, int totalTestCases, int passedTestCases) {
-        Submission existingSubmission = (Submission) submissionRepository.findByStudentAndAssignment(student, assignment);
+        List<Submission> existingSubmission = submissionRepository.findByStudentAndAssignment(student, assignment);
         if (existingSubmission != null) {
             submissionRepository.deleteByStudentAndAssignment(student, assignment);
         }

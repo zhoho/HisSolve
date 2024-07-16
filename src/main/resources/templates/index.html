@@ -82,6 +82,13 @@
         .section-buttons button {
             flex: 1;
         }
+        #testcase-results {
+            margin-top: 10px;
+            background-color: #f8f9fa;
+            padding: 10px;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+        }
     </style>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
@@ -90,10 +97,9 @@
 <body>
 <div class="container-fluid">
     <div class="left-panel">
-        <h2>Assignment10</h2>
         <div class="btn-side">
             <button class="btn btn-primary" onclick="compileCode()">TestCase</button>
-            <button class="btn btn-danger" onclick="submitCode()">Submit</button>
+            <button id="submit-btn" class="btn btn-danger" onclick="submitCode()" disabled>Submit</button>
         </div>
     </div>
     <div class="middle-panel">
@@ -154,8 +160,7 @@
                 return response.json();
             })
             .then(data => {
-                document.getElementById('output').innerText = data.output;
-                document.getElementById('test-case-output').innerText = data.output;
+                document.getElementById('testcase-output').innerText = data.output;
 
                 // 테스트 케이스 결과 계산
                 const results = data.output.split('\n');
@@ -166,7 +171,7 @@
             })
             .catch(error => {
                 console.error('Error:', error);
-                document.getElementById('output').innerText = error.message;
+                document.getElementById('testcase-output').innerText = error.message;
             });
     }
 
