@@ -34,25 +34,56 @@
             padding-bottom: 60px;
         }
         .form-control {
-            background-color: #2E3440;
-            border: none;
+            background-color: #3B4252;
             color: #D8DEE9;
+            border-radius: 0.5rem;
+            padding: 0.75rem 1rem;
+            border: none;
         }
         .form-control::placeholder {
             color: #D8DEE9;
         }
         .btn-primary {
-            background-color: #4C566A;
+            background-color: #88C0D0;
             border: none;
+            font-size: 1.25rem;
+            padding: 0.75rem 1.25rem;
+            border-radius: 0.5rem;
         }
         .btn-primary:hover {
-            background-color: #ffcc00;
+            background-color: #81A1C1;
         }
         .navbar-light .navbar-nav .nav-link:hover {
-            color: #ffcc00 !important;
+            color: #88C0D0 !important;
         }
         .navbar-light .navbar-toggler-icon {
             filter: invert(1);
+        }
+        .form-group label {
+            font-weight: 700;
+            color: #88C0D0;
+        }
+        .bg-dark {
+            background-color: #2E3440 !important;
+        }
+        .rounded {
+            border-radius: 0.5rem !important;
+        }
+        .card-custom {
+            background-color: #2E3440;
+            color: #D8DEE9;
+            margin-bottom: 1rem;
+            border-radius: 0.5rem;
+        }
+        .card-custom .card-header {
+            background-color: #3B4252;
+            color: #88C0D0;
+            border-radius: 0.5rem 0.5rem 0 0;
+            padding: 1rem;
+            font-size: 1.25rem;
+        }
+        .card-custom .card-body {
+            padding: 1.5rem;
         }
     </style>
 </head>
@@ -81,14 +112,19 @@
 <!-- Main Content -->
 <div class="container">
     <h1 class="my-4 text-center">Create a New Course</h1>
-    <form th:action="@{/course/create}" th:object="${course}" method="post" class="bg-dark p-4 rounded">
-        <div class="form-group">
-            <label for="name">Course Name:</label>
-            <input type="text" id="name" th:field="*{name}" class="form-control" placeholder="Enter course name" />
-        </div>
-        <div class="form-group">
-            <label for="code">Course Code:</label>
-            <input type="text" id="code" th:field="*{code}" class="form-control" placeholder="Enter course code" />
+    <form th:action="@{/course/create}" th:object="${course}" method="post" class="p-4 rounded">
+        <div class="card card-custom mb-4">
+            <div class="card-header">Course Details</div>
+            <div class="card-body">
+                <div class="form-group">
+                    <label for="name">Course Name:</label>
+                    <input type="text" id="name" th:field="*{name}" class="form-control" placeholder="Enter course name" />
+                </div>
+                <div class="form-group">
+                    <label for="code">Course Code:</label>
+                    <input type="text" id="code" th:field="*{code}" class="form-control" placeholder="Enter course code" />
+                </div>
+            </div>
         </div>
         <div class="text-center">
             <button type="submit" class="btn btn-primary">Create Course</button>
