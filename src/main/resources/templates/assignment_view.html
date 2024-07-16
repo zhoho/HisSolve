@@ -110,13 +110,10 @@
   <div th:if="${user.role == 'PROFESSOR'}">
     <h2>Assignment Submissions</h2>
     <div class="text-center mb-3">
-      <button type="button" class="btn btn-primary" onclick="window.location.href='/submissions?assignmentId=' + assignmentId">제출자 보기</button>
+      <form action="#" th:action="@{/submission_view/{assignmentId}(assignmentId=${assignment.id})}" method="get">
+        <button type="submit" class="btn btn-primary">제출자 보기</button>
+      </form>
     </div>
-    <ul id="submission-list" class="list-group hidden">
-      <li class="list-group-item bg-dark text-white" th:each="submission : ${submissions}">
-        <p th:text="${submission.student.username} + ': ' + ${submission.result}"></p>
-      </li>
-    </ul>
   </div>
 </div>
 
@@ -128,6 +125,10 @@
 </footer>
 
 <!-- Bootstrap JS and dependencies -->
+<script>
+  const urlParams = new URLSearchParams(window.location.search);
+  const assignmentId = urlParams.get('assignmentId');
+</script>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

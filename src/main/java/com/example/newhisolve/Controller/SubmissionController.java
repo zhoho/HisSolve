@@ -10,10 +10,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
+import java.security.Principal;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -27,6 +29,7 @@ public class SubmissionController {
 
     @Autowired
     private UserService userService;
+
 
     @PostMapping("/api/submit")
     public ResponseEntity<?> submitCode(@RequestBody SubmissionRequest submissionRequest) {

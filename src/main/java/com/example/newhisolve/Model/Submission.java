@@ -33,5 +33,18 @@ public class Submission {
 
     private String language; // 추가된 필드
 
+    @Override
+    public String toString() {
+        return "Submission{" +
+                "id=" + id +
+                ", assignment=" + (assignment != null ? assignment.getId() : "null") +
+                ", student=" + (student != null ? student.getUsername() : "null") +
+                ", code='" + code + '\'' +
+                ", result='" + result + '\'' +
+                ", submittedAt=" + submittedAt +
+                ", language='" + language + '\'' +
+                '}';
+    }
+
     // Getters and Setters
 }
