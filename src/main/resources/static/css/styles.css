@@ -1,0 +1,85 @@
+/* 공통 스타일 */
+body, html {
+    height: 100%;
+    margin: 0;
+    font-family: 'Source Code Pro', monospace;
+    background: #1B1E31;
+    color: #D8DEE9;
+    display: flex;
+    flex-direction: column;
+}
+
+/* 네비게이션 바 스타일 */
+.navbar {
+    background-color: #1B1E31;
+}
+.navbar-brand, .navbar-nav .nav-link, .footer-text {
+    color: #D8DEE9 !important;
+}
+.navbar-light .navbar-nav .nav-link:hover {
+    color: #ffcc00 !important;
+}
+.navbar-light .navbar-toggler-icon {
+    filter: invert(1);
+}
+
+/* 푸터 스타일 */
+footer {
+    background-color: #4C566A;
+    color: #D8DEE9;
+    margin-top: auto; /* Push footer to the bottom */
+    width: 100%;
+}
+
+/* 컨테이너 스타일 */
+.container {
+    flex-grow: 1;
+    padding-top: 60px;
+    padding-bottom: 60px;
+}
+
+/* 폼 스타일 */
+.form-control {
+    background-color: #2E3440;
+    border: none;
+    color: #D8DEE9;
+}
+.form-control::placeholder {
+    color: #D8DEE9;
+}
+
+/* 버튼 스타일 */
+.btn-primary {
+    background-color: #4C566A;
+    border: none;
+    font-size: 1.25rem;
+    padding: 0.75rem 1.25rem;
+}
+.btn-primary:hover {
+    background-color: #ffcc00;
+}
+
+/* 리스트 스타일 */
+.list-group-item {
+    background-color: #2E3440;
+    border: none;
+    color: #D8DEE9;
+    margin-bottom: 1rem;
+    padding: 1.5rem;
+    font-size: 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: background-color 0.3s ease;
+}
+.list-group-item:hover {
+    background-color: #3B4252;
+}
+.list-group-item a {
+    color: #D8DEE9;
+    text-decoration: none;
+    font-weight: 700;
+}
+.list-group-item a:hover {
+    color: #ffcc00;
+}
