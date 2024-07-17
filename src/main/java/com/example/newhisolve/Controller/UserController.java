@@ -25,11 +25,11 @@ public class UserController {
         userService.register(user);
         return "redirect:/login";
     }
-
-    @GetMapping("/login")
-    public String showLoginForm() {
-        return "login";
-    }
+//
+//    @GetMapping("/login")
+//    public String showLoginForm() {
+//        return "login";
+//    }
 
     @GetMapping("/welcome")
     public String welcome() {

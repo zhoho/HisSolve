@@ -36,10 +36,28 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
+    public User findByUniqueId(String uniqueId) {
+        return userRepository.findByUniqueId(uniqueId).orElse(null);
+    }
+
+
+    //이거는 일단 사용 안함
+    @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
-                Collections.singleton(new SimpleGrantedAuthority("ROLE_" + user.getRole())));
+                .orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다: " + username));
+        return org.springframework.security.core.userdetails.User.withUsername(user.getUsername())
+                .password(user.getPassword())
+                .authorities(Collections.singletonList(new SimpleGrantedAuthority(user.getRole())))
+                .build();
+    }
+
+    public UserDetails loadUserByuniqueId(String uniqueId) throws UsernameNotFoundException {
+        User user = userRepository.findByUniqueId(uniqueId)
+                .orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다: " + uniqueId));
+        return org.springframework.security.core.userdetails.User.withUsername(user.getUsername())
+                .password(user.getPassword())
+                .authorities(Collections.singletonList(new SimpleGrantedAuthority(user.getRole())))
+                .build();
     }
 }

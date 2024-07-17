@@ -1,14 +1,17 @@
 package com.example.newhisolve.Config;
 
 import com.example.newhisolve.Service.UserServiceImpl;
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.context.request.RequestContextListener;
 
 @Configuration
 @EnableWebSecurity
@@ -16,6 +19,7 @@ public class SecurityConfig {
 
     @Autowired
     private final UserServiceImpl userServiceImpl;
+    @Autowired
     private final PasswordEncoder passwordEncoder;
 
     public SecurityConfig(UserServiceImpl userServiceImpl, PasswordEncoder passwordEncoder) {
@@ -28,21 +32,21 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
-                                .requestMatchers("/", "/register", "/login", "/api/compile", "/img/**", "/css/**", "/js/**").permitAll() // 정적 리소스에 대한 접근 허용
+                                .requestMatchers("/", "/register", "/login", "/auth/**", "/api/compile", "/img/**", "/css/**", "/js/**").permitAll()
                                 .anyRequest().authenticated()
-                )
-                .formLogin(formLogin ->
-                        formLogin
-                                .loginPage("/login")
-                                .defaultSuccessUrl("/dashboard", true)
-                                .permitAll()
                 )
                 .logout(logout ->
                         logout
-                                .logoutSuccessUrl("/login")
+                                .logoutUrl("/logout")
+                                .logoutSuccessUrl("/welcome")
                                 .permitAll()
                 )
-                .csrf(csrf -> csrf.disable()); // CSRF 비활성화
+                .csrf(csrf -> csrf.disable())
+                .formLogin(formLogin ->
+                        formLogin
+                                .loginPage("/custom-login")
+                                .permitAll()
+                );
 
         return http.build();
     }
@@ -50,5 +54,16 @@ public class SecurityConfig {
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userServiceImpl).passwordEncoder(passwordEncoder);
+    }
+
+    @Bean
+    public RequestContextListener requestContextListener() {
+        return new RequestContextListener();
+    }
+
+    // SecurityContextHolder 전략 설정
+    @PostConstruct
+    public void configureSecurityContextHolder() {
+        SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
     }
 }
