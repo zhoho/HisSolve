@@ -49,13 +49,29 @@ public class AssignmentController {
 
         // Add test cases to the assignment
         List<TestCase> testCases = new ArrayList<>();
+        StringBuilder descriptionWithTestCases = new StringBuilder(assignment.getDescription()).append("\n\n --- \n");
+
         for (int i = 0; i < inputs.size(); i++) {
             TestCase testCase = new TestCase();
             testCase.setInput(inputs.get(i));
             testCase.setExpectedOutput(outputs.get(i));
             testCases.add(testCase);
+
+            descriptionWithTestCases.append("\n#### Test Case ").append(i + 1).append(":\n");
+            descriptionWithTestCases.append("<div style=\"display: flex;\">\n");
+            descriptionWithTestCases.append("  <div style=\"flex: 1; padding: 10px; border: 1px solid #ccc; margin-right: 10px;\">\n");
+            descriptionWithTestCases.append("    <strong>Input:</strong>\n");
+            descriptionWithTestCases.append("    <pre>").append(inputs.get(i)).append("</pre>\n");
+            descriptionWithTestCases.append("  </div>\n");
+            descriptionWithTestCases.append("  <div style=\"flex: 1; padding: 10px; border: 1px solid #ccc;\">\n");
+            descriptionWithTestCases.append("    <strong>Expected Output:</strong>\n");
+            descriptionWithTestCases.append("    <pre>").append(outputs.get(i)).append("</pre>\n");
+            descriptionWithTestCases.append("  </div>\n");
+            descriptionWithTestCases.append("</div>\n");
         }
+
         assignment.setTestCases(testCases);
+        assignment.setDescription(descriptionWithTestCases.toString());
 
         assignmentService.createAssignment(assignment, courseId);
 
@@ -82,7 +98,6 @@ public class AssignmentController {
         model.addAttribute("assignment", assignment);
         model.addAttribute("user", user);
         model.addAttribute("submissions", assignmentService.findSubmissionsByAssignment(assignment));
-        System.out.println("이왜");
         return "assignment_view";
     }
 }

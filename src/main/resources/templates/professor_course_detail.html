@@ -6,122 +6,26 @@
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;700&display=swap" rel="stylesheet">
-  <style>
-    body, html {
-      height: 100%;
-      margin: 0;
-      font-family: 'Source Code Pro', monospace;
-      background: #1B1E31;
-      color: #D8DEE9;
-      display: flex;
-      flex-direction: column;
-    }
-    .navbar {
-      background-color: #1B1E31;
-    }
-    footer {
-      background-color: #4C566A;
-      color: #D8DEE9;
-      margin-top: auto; /* Push footer to the bottom */
-      width: 100%;
-    }
-    .navbar-brand, .navbar-nav .nav-link, .footer-text {
-      color: #D8DEE9 !important;
-    }
-    .container {
-      flex-grow: 1;
-      padding-top: 60px;
-      padding-bottom: 60px;
-    }
-    .form-control {
-      background-color: #2E3440;
-      border: none;
-      color: #D8DEE9;
-    }
-    .form-control::placeholder {
-      color: #D8DEE9;
-    }
-    .btn-primary {
-      background-color: #4C566A;
-      border: none;
-      font-size: 1.25rem;
-      padding: 0.75rem 1.25rem;
-    }
-    .btn-primary:hover {
-      background-color: #ffcc00;
-    }
-    .navbar-light .navbar-nav .nav-link:hover {
-      color: #ffcc00 !important;
-    }
-    .navbar-light .navbar-toggler-icon {
-      filter: invert(1);
-    }
-    .list-group-item {
-      background-color: #2E3440;
-      border: none;
-      color: #D8DEE9;
-      margin-bottom: 1rem;
-      padding: 1.5rem;
-      font-size: 1.25rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      transition: background-color 0.3s ease;
-    }
-    .list-group-item:hover {
-      background-color: #3B4252;
-    }
-    .list-group-item a {
-      color: #D8DEE9;
-      text-decoration: none;
-      font-weight: 700;
-    }
-    .list-group-item a:hover {
-      color: #ffcc00;
-    }
-  </style>
+  <link th:href="@{/css/styles.css}" rel="stylesheet">
 </head>
 <body>
-<!-- Navigation Bar -->
-<nav class="navbar navbar-expand-lg navbar-light">
-  <a class="navbar-brand" href="#">MyApp</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse" id="navbarNav">
-    <ul class="navbar-nav ml-auto">
-      <li class="nav-item">
-        <a class="nav-link" href="/welcome">Home</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/about">About</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/contact">Contact</a>
-      </li>
-    </ul>
-  </div>
-</nav>
+<div th:replace="~{fragments :: nav}"></div>
 
 <div class="container">
   <h1 class="my-4 text-center" th:text="${course.name}">Course Name</h1>
   <h2 class="my-4">과제목록</h2>
   <ul class="list-group mb-4">
     <li class="list-group-item" th:each="assignment : ${assignments}">
-      <a th:href="@{/professor_assignment/{id}(id=${assignment.id})}" th:text="${assignment.title}" class="text-white"></a>
+      <a th:href="@{/professor_assignment/{id}(id=${assignment.id})}" th:text="${assignment.title+ ' (Due: ' + assignment.getDueDate() + ')'}" class="text-white"></a>
     </li>
   </ul>
 </div>
 
-<footer class="text-center text-lg-start">
-  <div class="text-center p-3 footer-text">
-    © 2023 MyApp, Inc.
-  </div>
-</footer>
+<div class="text-center">
+  <a th:href="@{/assignment/create(courseId=${course.id})}" class="btn btn-primary btn-lg">Create Assignment</a>
+</div>
 
-<!-- Bootstrap JS and dependencies -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<div th:replace="~{fragments :: footer}"></div>
+<div th:replace="~{fragments :: scripts}"></div>
 </body>
 </html>

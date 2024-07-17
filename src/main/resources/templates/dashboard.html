@@ -7,10 +7,7 @@
     <link th:href="@{/css/styles.css}" rel="stylesheet">
 </head>
 <body>
-<!-- Navigation Bar -->
 <div th:replace="~{fragments :: nav}"></div>
-
-<!-- Main Content -->
 <div class="container">
     <h1 class="my-4">Welcome, <span th:text="${user.username}"></span>!</h1>
     <div class="mb-4">
