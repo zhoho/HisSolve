@@ -32,8 +32,15 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
-                                .requestMatchers("/", "/register", "/login", "/auth/**", "/api/compile", "/img/**", "/css/**", "/js/**").permitAll()
+                                .requestMatchers("/","/register","signup", "/professorLogin", "/login", "/auth/**", "/api/compile", "/img/**", "/css/**", "/js/**").permitAll()
                                 .anyRequest().authenticated()
+                )
+                .formLogin(formLogin ->
+                        formLogin
+                                .loginPage("/professorLogin")  // 커스텀 로그인 페이지 설정
+                                .loginProcessingUrl("/login")  // Spring Security의 기본 로그인 처리 URL 설정
+                                .defaultSuccessUrl("/dashboard")  // 로그인 성공 시 이동할 페이지
+                                .permitAll()
                 )
                 .logout(logout ->
                         logout
@@ -41,12 +48,7 @@ public class SecurityConfig {
                                 .logoutSuccessUrl("/welcome")
                                 .permitAll()
                 )
-                .csrf(csrf -> csrf.disable())
-                .formLogin(formLogin ->
-                        formLogin
-                                .loginPage("/custom-login")
-                                .permitAll()
-                );
+                .csrf(csrf -> csrf.disable());
 
         return http.build();
     }
@@ -61,7 +63,6 @@ public class SecurityConfig {
         return new RequestContextListener();
     }
 
-    // SecurityContextHolder 전략 설정
     @PostConstruct
     public void configureSecurityContextHolder() {
         SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
