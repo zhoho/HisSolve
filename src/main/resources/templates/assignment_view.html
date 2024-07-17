@@ -2,17 +2,13 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <title th:text="${assignment.title}">Assignment Details</title>
-  <!-- Bootstrap CSS -->
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;700&display=swap" rel="stylesheet">
   <link th:href="@{/css/styles.css}" rel="stylesheet">
 </head>
 <body>
-<!-- Navigation Bar -->
 <div th:replace="~{fragments :: nav}"></div>
 
-<!-- Main Content -->
 <div class="container">
   <h1 class="my-4" th:text="${assignment.title}">Assignment Title</h1>
   <div class="assignment-description bg-dark p-4 rounded" th:attr="data-description=${assignment.description}"></div>
@@ -36,22 +32,6 @@
       description.innerHTML = marked.parse(markdown);
     });
   });
-
-  function openEditor() {
-    const assignmentId = document.getElementById('assignmentId').value;
-    const language = document.getElementById('language').value;
-    const url = `/index?assignmentId=${assignmentId}&language=${language}`;
-    window.location.href = url;
-  }
-
-  function toggleSubmissions() {
-    const submissionList = document.getElementById('submission-list');
-    if (submissionList.classList.contains('hidden')) {
-      submissionList.classList.remove('hidden');
-    } else {
-      submissionList.classList.add('hidden');
-    }
-  }
 </script>
 <div th:replace="~{fragments :: footer}"></div>
 <div th:replace="~{fragments :: scripts}"></div>
