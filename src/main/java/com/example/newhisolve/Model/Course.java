@@ -10,9 +10,9 @@ public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String name;
     private String code;
+    private String language;
 
     @ManyToOne
     @JoinColumn(name = "professor_id")
@@ -66,5 +66,13 @@ public class Course {
 
     public void setStudents(List<User> students) {
         this.students = students;
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
     }
 }

@@ -20,8 +20,11 @@
     <div>
         <h2>Your Classes</h2>
         <ul class="list-group">
-            <li class="list-group-item" th:each="course : ${courses}">
+            <li class="list-group-item" th:if="${user.role == 'STUDENT'}" th:each="course : ${courses}">
                 <a th:href="@{/course/{id}(id=${course.id})}" th:text="${course.name}"></a>
+            </li>
+            <li class="list-group-item" th:if="${user.role == 'PROFESSOR'}" th:each="course : ${courses}">
+                <a th:href="@{/professor_course/{id}(id=${course.id})}" th:text="${course.name}"></a>
             </li>
         </ul>
     </div>

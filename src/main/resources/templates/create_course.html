@@ -109,7 +109,6 @@
     </div>
 </nav>
 
-<!-- Main Content -->
 <div class="container">
     <h1 class="my-4 text-center">Create a New Course</h1>
     <form th:action="@{/course/create}" th:object="${course}" method="post" class="p-4 rounded">
@@ -121,8 +120,12 @@
                     <input type="text" id="name" th:field="*{name}" class="form-control" placeholder="Enter course name" />
                 </div>
                 <div class="form-group">
-                    <label for="code">Course Code:</label>
-                    <input type="text" id="code" th:field="*{code}" class="form-control" placeholder="Enter course code" />
+                    <label for="language">Language:</label>
+                    <select id="language" th:field="*{language}" class="form-control">
+                        <option value="c">C</option>
+                        <option value="python">Python</option>
+                        <option value="java">Java</option>
+                    </select>
                 </div>
             </div>
         </div>
@@ -143,5 +146,27 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    document.getElementById('name').addEventListener('input', function() {
+        var courseName = this.value;
+        var language = document.getElementById('language').value;
+        var courseCode = generateCourseCode(courseName, language);
+        document.getElementById('code').value = courseCode;
+    });
+
+    document.getElementById('language').addEventListener('change', function() {
+        var courseName = document.getElementById('name').value;
+        var language = this.value;
+        var courseCode = generateCourseCode(courseName, language);
+        document.getElementById('code').value = courseCode;
+    });
+
+    function generateCourseCode(courseName, language) {
+        var prefix = language.substring(0, 3).toUpperCase();
+        var namePart = courseName.replace(/\s+/g, '').substring(0, 5).toUpperCase();
+        var randomPart = Math.floor(1000 + Math.random() * 9000);
+        return prefix + namePart + randomPart;
+    }
+</script>
 </body>
 </html>

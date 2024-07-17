@@ -1,7 +1,9 @@
 package com.example.newhisolve.Controller;
 
 import com.example.newhisolve.Model.Course;
+import com.example.newhisolve.Model.User;
 import com.example.newhisolve.Service.CourseService;
+import com.example.newhisolve.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -44,5 +46,13 @@ public class CourseController {
         model.addAttribute("course", courseEntity);
         model.addAttribute("assignments", courseService.findAssignmentsByCourse(courseEntity));
         return "course_detail";
+    }
+
+    @GetMapping("/professor_course/{id}")
+    public String viewProfessorCourse(@PathVariable Long id, Model model) {
+        Course courseEntity = courseService.findById(id);
+        model.addAttribute("course", courseEntity);
+        model.addAttribute("assignments", courseService.findAssignmentsByCourse(courseEntity));
+        return "professor_course_detail";
     }
 }

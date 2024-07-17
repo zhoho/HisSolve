@@ -69,14 +69,20 @@ public class AssignmentController {
     }
 
     @GetMapping("/assignment/{id}")
+    public String SolveAssignment(@PathVariable Long id, Principal principal) {
+        Assignment assignment = assignmentService.findById(id);
+        Course course = assignment.getCourse();
+        return "redirect:/index?assignmentId=" + id + "&language=" + course.getLanguage();
+    }
+
+    @GetMapping("/professor_assignment/{id}")
     public String viewAssignment(@PathVariable Long id, Model model, Principal principal) {
         Assignment assignment = assignmentService.findById(id);
         User user = userService.findByUsername(principal.getName());
         model.addAttribute("assignment", assignment);
         model.addAttribute("user", user);
-        if (user.getRole().equals("PROFESSOR")) {
-            model.addAttribute("submissions", assignmentService.findSubmissionsByAssignment(assignment));
-        }
+        model.addAttribute("submissions", assignmentService.findSubmissionsByAssignment(assignment));
+        System.out.println("이왜");
         return "assignment_view";
     }
 }

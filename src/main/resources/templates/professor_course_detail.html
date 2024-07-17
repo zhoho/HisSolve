@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title th:text="${course.name}">Course Details</title>
+  <title th:text="${course.name}">Professor Course Details</title>
   <!-- Bootstrap CSS -->
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
   <!-- Google Fonts -->
@@ -105,15 +105,14 @@
 
 <div class="container">
   <h1 class="my-4 text-center" th:text="${course.name}">Course Name</h1>
-  <h2 class="my-4">Assignments</h2>
+  <h2 class="my-4">과제목록</h2>
   <ul class="list-group mb-4">
     <li class="list-group-item" th:each="assignment : ${assignments}">
-      <a th:href="@{/assignment/{id}(id=${assignment.id})}" th:text="${assignment.title+ ' (Due: ' + assignment.getDueDate() + ')'}" class="text-white"></a>
+      <a th:href="@{/professor_assignment/{id}(id=${assignment.id})}" th:text="${assignment.title}" class="text-white"></a>
     </li>
   </ul>
 </div>
 
-<!-- Footer -->
 <footer class="text-center text-lg-start">
   <div class="text-center p-3 footer-text">
     © 2023 MyApp, Inc.

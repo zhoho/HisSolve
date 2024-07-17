@@ -27,6 +27,4 @@ public class Assignment {
     @ManyToOne
     @JoinColumn(name = "course_id")
     private Course course;
-
-    private String language; // 추가된 필드
 }
