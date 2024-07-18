@@ -84,7 +84,7 @@ public class AssignmentController {
             System.out.println("Test Case - Input: " + testCase.getInput() + ", Expected Output: " + testCase.getExpectedOutput());
         }
 
-        return "redirect:/course/" + courseId;
+        return "redirect:/professor_course/" + courseId;
     }
 
     @GetMapping("/assignment/{id}")
