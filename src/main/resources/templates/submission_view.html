@@ -77,10 +77,10 @@
 <div th:replace="~{fragments :: nav}"></div>
 
 <div class="container">
-    <h1 class="my-4 text-center">과제 제출목록</h1>
+    <h1 class="my-4 text-center">과제 제출 목록</h1>
     <div th:if="${submissions != null}">
         <div class="card card-custom">
-            <div class="card-header">Submissions</div>
+            <div class="card-header">제출자</div>
             <ul class="list-group list-group-flush">
                 <li class="list-group-item d-flex justify-content-between align-items-center" th:each="submission : ${submissions}" th:data-id="${submission.id}" th:data-code="${submission.code}" th:data-student="${submission.student.username}" th:data-result="${submission.result}" th:data-submittedat="${submission.submittedAt}" th:data-passcount="${submission.pass_count}" th:data-totalcount="${submission.total_count}" onclick="showDetails(this)">
           <span>

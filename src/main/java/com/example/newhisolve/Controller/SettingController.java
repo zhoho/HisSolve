@@ -50,4 +50,12 @@ public class SettingController {
         courseService.updateCourse(course);
         return "redirect:/settings";
     }
+
+    @PostMapping("deleteCourseName")
+    @PreAuthorize("hasRole('PROFESSOR')")
+    public String deleteCourseName(@RequestParam Long courseId) {
+        Course course = courseService.findById(courseId);
+        courseService.deleteCourse(course);
+        return "redirect:/settings";
+    }
 }

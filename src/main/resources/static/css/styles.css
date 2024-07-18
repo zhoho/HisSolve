@@ -3,21 +3,22 @@ body, html {
     height: 100%;
     margin: 0;
     font-family: 'Source Code Pro', monospace;
-    background: #1B1E31;
-    color: #D8DEE9;
+    background: #edf2f4; /* 배경색 */
+    color: #2b2d42; /* 기본 텍스트 색상 */
     display: flex;
     flex-direction: column;
 }
 
 /* 네비게이션 바 스타일 */
-.navbar {
-    background-color: #1B1E31;
+.navbar, footer {
+    background-color: #2b2d42; /* 네비게이션 바 및 푸터 배경색 */
 }
 .navbar-brand, .navbar-nav .nav-link, .footer-text {
-    color: #D8DEE9 !important;
+    color: #edf2f4 !important; /* 네비게이션 바 및 푸터 텍스트 색상 */
+    font-size: 1.14rem; /* 네비게이션 바 텍스트 크기 증가 */
 }
 .navbar-light .navbar-nav .nav-link:hover {
-    color: #ffcc00 !important;
+    color: #ef233c !important; /* 네비게이션 바 링크 호버 색상 */
 }
 .navbar-light .navbar-toggler-icon {
     filter: invert(1);
@@ -25,10 +26,10 @@ body, html {
 
 /* 푸터 스타일 */
 footer {
-    background-color: #4C566A;
-    color: #D8DEE9;
+    color: #edf2f4;
     margin-top: auto; /* Push footer to the bottom */
     width: 100%;
+    font-size: 1.2rem; /* 푸터 텍스트 크기 증가 */
 }
 
 /* 컨테이너 스타일 */
@@ -36,50 +37,85 @@ footer {
     flex-grow: 1;
     padding-top: 60px;
     padding-bottom: 60px;
+    font-size: 1.1rem; /* 텍스트 크기 조금 증가 */
 }
 
 /* 폼 스타일 */
 .form-control {
-    background-color: #2E3440;
-    border: none;
-    color: #D8DEE9;
+    background-color: #edf2f4; /* 폼 배경색 */
+    color: #2b2d42; /* 폼 텍스트 색상 */
+    border-radius: 0.5rem; /* 폼 요소 경계선 둥글게 */
+    font-size: 1.1rem; /* 폼 텍스트 크기 증가 */
+    border-color: #2b2d42;
 }
 .form-control::placeholder {
-    color: #D8DEE9;
+    color: #2b2d42; /* 폼 플레이스홀더 색상 */
 }
 
 /* 버튼 스타일 */
 .btn-primary {
-    background-color: #4C566A;
+    background-color: #2b2d42; /* 버튼 배경색 */
     border: none;
+    color: #edf2f4; /* 버튼 텍스트 색상 */
     font-size: 1.25rem;
     padding: 0.75rem 1.25rem;
+    border-radius: 0.5rem; /* 버튼 경계선 둥글게 */
 }
 .btn-primary:hover {
-    background-color: #ffcc00;
+    background-color: #8d99ae; /* 버튼 호버 배경색 */
+}
+.btn-danger {
+    background-color: #ef233c; /* 삭제 버튼 배경색 */
+    border: none;
+    color: #edf2f4; /* 삭제 버튼 텍스트 색상 */
+    font-size: 1.25rem;
+    padding: 0.75rem 1.25rem;
+    border-radius: 0.5rem; /* 삭제 버튼 경계선 둥글게 */
+}
+.btn-secondary {
+    background-color: #2b2d42; /* 수정 버튼 배경색 */
+    border: none;
+    color: #edf2f4; /* 수정 버튼 텍스트 색상 */
+    font-size: 1.25rem;
+    padding: 0.75rem 1.25rem;
+    border-radius: 0.5rem; /* 수정 버튼 경계선 둥글게 */
+}
+
+.btn-third {
+    background-color: #2b2d42; /* 수정 버튼 배경색 */
+    border: none;
+    color: #edf2f4; /* 수정 버튼 텍스트 색상 */
+    font-size: 1.1rem;
+    padding: 0.75rem 1.25rem;
+    border-radius: 0.5rem; /* 수정 버튼 경계선 둥글게 */
 }
 
 /* 리스트 스타일 */
 .list-group-item {
-    background-color: #2E3440;
+    background-color: #2b2d42; /* 리스트 항목 배경색 */
+    color: #edf2f4; /* 리스트 항목 텍스트 색상 */
     border: none;
-    color: #D8DEE9;
     margin-bottom: 1rem;
-    padding: 1.5rem;
-    font-size: 1.25rem;
+    padding: 1.75rem; /* 리스트 항목 패딩 증가 */
+    font-size: 1.35rem; /* 리스트 텍스트 크기 증가 */
     display: flex;
     align-items: center;
     justify-content: space-between;
     transition: background-color 0.3s ease;
+    border-radius: 0.5rem; /* 리스트 항목 경계선 둥글게 */
+}
+.list-group-item:not(:last-child) {
+    border-bottom: 1px solid #2b2d42; /* 리스트 항목 사이의 경계선 */
 }
 .list-group-item:hover {
-    background-color: #3B4252;
+    background-color: #2b2d42; /* 리스트 항목 호버 배경색 */
+    color: #edf2f4; /* 리스트 항목 호버 텍스트 색상 */
 }
 .list-group-item a {
-    color: #D8DEE9;
+    color: #edf2f4; /* 리스트 항목 링크 색상 */
     text-decoration: none;
     font-weight: 700;
 }
 .list-group-item a:hover {
-    color: #ffcc00;
+    color: #edf2f4; /* 리스트 항목 링크 호버 색상 */
 }

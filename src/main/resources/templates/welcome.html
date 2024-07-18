@@ -2,11 +2,8 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Hisolve</title>
-    <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;700&display=swap" rel="stylesheet">
-    <!-- Custom CSS for animation -->
     <style>
         @keyframes fadeIn {
             from { opacity: 0; }
@@ -16,6 +13,7 @@
             display: inline-block;
             opacity: 0;
             animation: fadeIn 2s forwards;
+            animation-iteration-count: infinite; /* 무한 반복 설정 */
         }
         .animated-text span:nth-child(1) { animation-delay: 0.2s; }
         .animated-text span:nth-child(2) { animation-delay: 0.4s; }
@@ -29,17 +27,34 @@
             height: 100%;
             margin: 0;
             font-family: 'Source Code Pro', monospace;
-            background: #1B1E31;
-            color: #D8DEE9;
+            background: #edf2f4;
+            color: #2b2d42;
             display: flex;
             flex-direction: column;
         }
-        .navbar{
-            background-color: #1B1E31;
+        /* 네비게이션 바 스타일 */
+        .navbar, footer {
+            background-color: #2b2d42; /* 네비게이션 바 및 푸터 배경색 */
         }
+        .navbar-brand, .navbar-nav .nav-link, .footer-text {
+            color: #edf2f4 !important; /* 네비게이션 바 및 푸터 텍스트 색상 */
+            font-size: 1.14rem; /* 네비게이션 바 텍스트 크기 증가 */
+        }
+        .navbar-light .navbar-nav .nav-link:hover {
+            color: #ef233c !important; /* 네비게이션 바 링크 호버 색상 */
+        }
+        .navbar-light .navbar-toggler-icon {
+            filter: invert(1);
+        }
+
+        /* 푸터 스타일 */
         footer {
-            background-color: #4C566A;
+            color: #edf2f4;
+            margin-top: auto; /* Push footer to the bottom */
+            width: 100%;
+            font-size: 1.2rem; /* 푸터 텍스트 크기 증가 */
         }
+
         .navbar-brand, .navbar-nav .nav-link, .footer-text {
             color: #D8DEE9 !important;
         }
@@ -48,7 +63,7 @@
             justify-content: center;
             align-items: center;
             flex-grow: 1;
-            background-image: url('/img/background.jpg');
+            /*background-image: url('/img/background.jpg');*/
             background-size: cover;
             background-position: center;
         }
@@ -60,7 +75,7 @@
             margin-top: 8px;
         }
         .animated-text h1 {
-            font-size: 5rem;
+            font-size: 7rem;
         }
         .navbar-light .navbar-nav .nav-link:hover {
             color: #ffcc00 !important;
@@ -73,7 +88,7 @@
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-light">
-    <a class="navbar-brand" href="#">MyApp</a>
+    <a class="navbar-brand" href="#">Hisolve</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>

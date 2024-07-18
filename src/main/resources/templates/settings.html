@@ -5,46 +5,150 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;700&display=swap" rel="stylesheet">
     <link th:href="@{/css/styles.css}" rel="stylesheet">
+    <style>
+        .list-group-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #edf2f4; /* 리스트 항목 배경색 */
+            color: #2b2d42; /* 리스트 항목 텍스트 색상 */
+            border-color: #2b2d42;
+            margin-bottom: 1rem;
+            padding: 1.5rem;
+            font-size: 1.25rem; /* 리스트 텍스트 크기 증가 */
+            border-radius: 0.5rem; /* 리스트 항목 경계선 둥글게 */
+        }
+        .btn-group {
+            display: flex;
+            align-items: center;
+        }
+        .btn-third {
+            margin-left: 1rem;
+            background-color: #8d99ae; /* 커스텀 버튼 색상 */
+            color: #edf2f4;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+        }
+        .btn-third:hover {
+            background-color: #2b2d42;
+            color: #edf2f4;
+        }
+    </style>
 </head>
 <body>
 <div th:replace="~{fragments :: nav}"></div>
 
 <div class="container">
     <h1 class="my-4 text-center">Settings</h1>
-    <form th:action="@{/updateProfile}" th:object="${user}" method="post" class="p-4 rounded">
-        <div class="card card-custom mb-4">
-            <div class="card-header">Profile Details</div>
-            <div class="card-body">
-                <div class="form-group">
-                    <label for="email">Email:</label>
-                    <input type="email" id="email" th:field="*{email}" class="form-control" placeholder="Enter email" />
-                </div>
-                <div class="form-group">
-                    <label for="department">Department:</label>
-                    <input type="text" id="department" th:field="*{department}" class="form-control" placeholder="Enter department" />
-                </div>
-                <div class="text-center">
-                    <button type="submit" class="btn btn-primary">Update Profile</button>
-                </div>
+    <form th:action="@{/updateProfile}" th:object="${user}" method="post" class="p-4 rounded card card-custom">
+        <div class="card-header">프로필 상세 정보</div>
+        <div class="card-body">
+            <div class="form-group">
+                <label for="email">이메일:</label>
+                <input type="email" id="email" th:field="*{email}" class="form-control" placeholder="Enter email" />
+            </div>
+            <div class="form-group">
+                <label for="department">소속 학부:</label>
+                <input type="text" id="department" th:field="*{department}" class="form-control" placeholder="Enter department" />
+            </div>
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary">수정 하기</button>
             </div>
         </div>
     </form>
-    <h2 class="my-4">Your Courses</h2>
+    <h2 class="my-4">강의 목록</h2>
     <ul class="list-group mb-4">
         <li class="list-group-item" th:each="course : ${courses}">
             <div>
                 <span th:text="${course.name}"></span> <small>(Code: <span th:text="${course.code}"></span>)</small>
-                <form th:action="@{/professor/updateCourseName}" method="post" class="d-inline">
-                    <input type="hidden" name="courseId" th:value="${course.id}" />
-                    <input type="text" name="newName" placeholder="Enter new name" class="form-control d-inline-block w-auto" />
-                    <button type="submit" class="btn btn-primary btn-sm">Update</button>
-                </form>
+            </div>
+            <div class="btn-group">
+                <button type="button" class="btn btn-third" onclick="copyToClipboard(this)" th:data-code="${course.code}">코드 복사</button>
+                <button type="button" class="btn btn-third" data-toggle="modal" th:data-target="'#updateCourseModal-' + ${course.id}">수정</button>
+                <button type="button" class="btn btn-third" data-toggle="modal" th:data-target="'#deleteCourseModal-' + ${course.id}">삭제</button>
             </div>
         </li>
     </ul>
 </div>
 
+<!-- 업데이트  -->
+<div th:each="course : ${courses}">
+    <div class="modal fade" th:id="'updateCourseModal-' + ${course.id}" tabindex="-1" role="dialog" aria-labelledby="updateCourseModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="updateCourseModalLabel">과목 이름 수정</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form th:action="@{/updateCourseName}" method="post">
+                    <div class="modal-body">
+                        <input type="hidden" name="courseId" th:value="${course.id}" />
+                        <div class="form-group">
+                            <label for="newName">새로운 과목 제목:</label>
+                            <input type="text" id="newName" name="newName" class="form-control" placeholder="Enter new course name" />
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+                        <button type="submit" class="btn btn-primary">변경</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 삭제  -->
+<div th:each="course : ${courses}">
+    <div class="modal fade" th:id="'deleteCourseModal-' + ${course.id}" tabindex="-1" role="dialog" aria-labelledby="deleteCourseModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteCourseModalLabel">과목 삭제</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form th:action="@{/deleteCourseName}" method="post">
+                    <div class="modal-body">
+                        <input type="hidden" name="courseId" th:value="${course.id}" />
+                        <div class="form-group">
+                            <label for="newName">과목을 정말 삭제 하시겠습니까?</label>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+                        <button type="submit" class="btn btn-primary">삭제</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div th:replace="~{fragments :: footer}"></div>
 <div th:replace="~{fragments :: scripts}"></div>
+
+<script>
+    function copyToClipboard(button) {
+        const code = button.getAttribute('data-code');
+        const el = document.createElement('textarea');
+        el.value = code;
+        document.body.appendChild(el);
+        el.select();
+        document.execCommand('copy');
+        document.body.removeChild(el);
+        alert('Copied to clipboard: ' + code);
+    }
+</script>
+
+<!-- Include jQuery and Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
 </body>
 </html>

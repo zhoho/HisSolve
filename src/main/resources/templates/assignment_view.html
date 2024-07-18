@@ -5,29 +5,67 @@
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;700&display=swap" rel="stylesheet">
   <link th:href="@{/css/styles.css}" rel="stylesheet">
+  <style>
+    .assignment-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .assignment-description {
+      background-color: #2b2d42;
+      color: #edf2f4;
+      padding: 1.5rem;
+      border-radius: 0.5rem;
+      font-size: 1.1rem; /* 텍스트 크기 축소 */
+    }
+    .assignment-description pre,
+    .assignment-description code {
+      color: #edf2f4; /* 코드 블록 텍스트 색상 변경 */
+      background-color: inherit; /* 배경색 상속 */
+      border: none;
+      padding: 0;
+      margin: 0;
+      font-size: inherit; /* 텍스트 크기 상속 */
+    }
+    .test-case > div {
+      flex: 1;
+      padding: 10px;
+      border: 1px solid #2b2d42;
+      margin-right: 10px;
+      background-color: #8d99ae;
+    }
+    .test-case > div:last-child {
+      margin-right: 0;
+    }
+    .button-group {
+      display: flex;
+      gap: 10px;
+    }
+    .button-group form {
+      margin: 0;
+    }
+  </style>
 </head>
 <body>
 <div th:replace="~{fragments :: nav}"></div>
 
 <div class="container">
-  <h1 class="my-4" th:text="${assignment.title}">Assignment Title</h1>
-  <div class="assignment-description bg-dark p-4 rounded" th:attr="data-description=${assignment.description}"></div>
-
-    <div class="text-center mb-3">
+  <div class="assignment-header">
+    <h1 class="my-4" th:text="${assignment.title}">Assignment Title</h1>
+    <div class="button-group">
       <form action="#" th:action="@{/submission_view/{assignmentId}(assignmentId=${assignment.id})}" method="get">
         <button type="submit" class="btn btn-primary">제출자 보기</button>
       </form>
-
+      <form th:action="@{/assignment/edit/{id}(id=${assignment.id})}" method="get">
+        <button type="submit" class="btn btn-secondary">과제 수정</button>
+      </form>
       <form th:action="@{/assignment/delete/{id}(id=${assignment.id})}" method="post">
         <button type="submit" class="btn btn-danger">과제 삭제</button>
       </form>
-
-      <form th:action="@{/assignment/edit/{id}(id=${assignment.id})}" method="get">
-        <button type="submit" class="btn btn-danger">과제 수정</button>
-      </form>
-
     </div>
   </div>
+  <div class="assignment-description" th:attr="data-description=${assignment.description}"></div>
+
 <script>
   const urlParams = new URLSearchParams(window.location.search);
   const assignmentId = urlParams.get('assignmentId');
@@ -42,6 +80,7 @@
     });
   });
 </script>
+</div>
 <div th:replace="~{fragments :: footer}"></div>
 <div th:replace="~{fragments :: scripts}"></div>
 </body>

@@ -55,4 +55,6 @@ public class CourseController {
         model.addAttribute("assignments", courseService.findAssignmentsByCourse(courseEntity));
         return "professor_course_detail";
     }
+
+
 }

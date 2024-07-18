@@ -67,4 +67,9 @@ public class CourseServiceImpl implements CourseService {
     public List<Course> findCoursesByProfessor(User professor) {
         return courseRepository.findByProfessor(professor);
     }
+
+    @Override
+    public void deleteCourse(Course course) {
+        courseRepository.delete(course);
+    }
 }

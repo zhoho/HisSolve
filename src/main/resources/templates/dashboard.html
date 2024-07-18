@@ -15,7 +15,7 @@
         <a class="btn btn-primary btn-lg" th:if="${user.role == 'STUDENT'}" th:href="@{/course/join}">Join Class</a>
     </div>
     <div>
-        <h2>Your Classes</h2>
+        <h2>개설 강좌 목록</h2>
         <ul class="list-group">
             <li class="list-group-item" th:if="${user.role == 'STUDENT'}" th:each="course : ${courses}">
                 <a th:href="@{/course/{id}(id=${course.id})}" th:text="${course.name}"></a>

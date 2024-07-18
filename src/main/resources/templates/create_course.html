@@ -2,82 +2,26 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Create Course</title>
-    <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;700&display=swap" rel="stylesheet">
+    <link th:href="@{/css/styles.css}" rel="stylesheet">
     <style>
-        body, html {
-            height: 100%;
-            margin: 0;
-            font-family: 'Source Code Pro', monospace;
-            background: #1B1E31;
-            color: #D8DEE9;
-            display: flex;
-            flex-direction: column;
-        }
-        .navbar {
-            background-color: #1B1E31;
-        }
-        footer {
-            background-color: #4C566A;
-            color: #D8DEE9;
-            margin-top: auto; /* Push footer to the bottom */
-            width: 100%;
-        }
-        .navbar-brand, .navbar-nav .nav-link, .footer-text {
-            color: #D8DEE9 !important;
-        }
-        .container {
-            flex-grow: 1;
-            padding-top: 60px;
-            padding-bottom: 60px;
-        }
-        .form-control {
-            background-color: #3B4252;
-            color: #D8DEE9;
-            border-radius: 0.5rem;
-            padding: 0.75rem 1rem;
-            border: none;
-        }
-        .form-control::placeholder {
-            color: #D8DEE9;
-        }
-        .btn-primary {
-            background-color: #88C0D0;
-            border: none;
-            font-size: 1.25rem;
-            padding: 0.75rem 1.25rem;
-            border-radius: 0.5rem;
-        }
-        .btn-primary:hover {
-            background-color: #81A1C1;
-        }
-        .navbar-light .navbar-nav .nav-link:hover {
-            color: #88C0D0 !important;
-        }
-        .navbar-light .navbar-toggler-icon {
-            filter: invert(1);
-        }
         .form-group label {
             font-weight: 700;
-            color: #88C0D0;
-        }
-        .bg-dark {
-            background-color: #2E3440 !important;
+            color: #edf2f4;
         }
         .rounded {
             border-radius: 0.5rem !important;
         }
         .card-custom {
             background-color: #2E3440;
-            color: #D8DEE9;
+            color: #edf2f4;
             margin-bottom: 1rem;
             border-radius: 0.5rem;
         }
         .card-custom .card-header {
             background-color: #3B4252;
-            color: #88C0D0;
+            color: #edf2f4;
             border-radius: 0.5rem 0.5rem 0 0;
             padding: 1rem;
             font-size: 1.25rem;
@@ -93,17 +37,17 @@
 
 
 <div class="container">
-    <h1 class="my-4 text-center">Create a New Course</h1>
+    <h1 class="my-4 text-center">수업 생성 하기</h1>
     <form th:action="@{/course/create}" th:object="${course}" method="post" class="p-4 rounded">
         <div class="card card-custom mb-4">
-            <div class="card-header">Course Details</div>
+            <div class="card-header">수업 상세 정보</div>
             <div class="card-body">
                 <div class="form-group">
-                    <label for="name">Course Name:</label>
+                    <label for="name">수업명:</label>
                     <input type="text" id="name" th:field="*{name}" class="form-control" placeholder="Enter course name" />
                 </div>
                 <div class="form-group">
-                    <label for="language">Language:</label>
+                    <label for="language">사용 언어(C, Java, Python):</label>
                     <select id="language" th:field="*{language}" class="form-control">
                         <option value="c">C</option>
                         <option value="python">Python</option>
@@ -113,7 +57,7 @@
             </div>
         </div>
         <div class="text-center">
-            <button type="submit" class="btn btn-primary">Create Course</button>
+            <button type="submit" class="btn btn-primary">수업 생성 하기</button>
         </div>
     </form>
 </div>

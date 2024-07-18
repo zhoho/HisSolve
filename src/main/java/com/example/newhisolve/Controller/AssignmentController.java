@@ -136,17 +136,17 @@ public class AssignmentController {
 
     @PostMapping("/assignment/update")
     @PreAuthorize("hasRole('PROFESSOR')")
-    public String updateAssignment(@ModelAttribute Assignment assignment, @RequestParam Long courseId, Principal principal, @RequestParam List<String> inputs, @RequestParam List<String> outputs) {
+    public String updateAssignment(@ModelAttribute Assignment assignment, @RequestParam Long courseId, Principal principal) {
         User user = userService.findByUsername(principal.getName());
         if (user.getRole().equals("PROFESSOR")) {
-            List<TestCase> testCases = new ArrayList<>();
-            for (int i = 0; i < inputs.size(); i++) {
-                TestCase testCase = new TestCase();
-                testCase.setInput(inputs.get(i));
-                testCase.setExpectedOutput(outputs.get(i));
-                testCases.add(testCase);
-            }
-            assignment.setTestCases(testCases);
+//            List<TestCase> testCases = new ArrayList<>();
+//            for (int i = 0; i < inputs.size(); i++) {
+//                TestCase testCase = new TestCase();
+//                testCase.setInput(inputs.get(i));
+//                testCase.setExpectedOutput(outputs.get(i));
+//                testCases.add(testCase);
+//            }
+//            assignment.setTestCases(testCases);
             assignmentService.updateAssignment(assignment, courseId);
         }
         return "redirect:/professor_course/" + courseId;
