@@ -75,11 +75,11 @@
             display: block; /* 기본적으로 에디터가 보이도록 설정 */
         }
         #output {
-            color: black;
+            color: white;
         }
         #input-line {
-            background-color: white;
-            color: black;
+            background-color: black;
+            color: white;
             border: none;
             width: 100%;
         }
@@ -114,7 +114,7 @@
         <div class="btn-container">
             <button class="btn btn-success btn-run" onclick="runCode()">Run</button>
         </div>
-        <div id="editor"></div>
+        <div id="editor" data-basecode="#include &lt;stdio.h&gt;\n\nint main() {\n    printf(&quot;Hello, World!&quot;);\n    return 0;\n}"></div>
     </div>
     <div class="right-panel">
         <div class="section-buttons">
@@ -143,8 +143,18 @@
 
     require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.30.1/min/vs' }});
     require(['vs/editor/editor.main'], function() {
-        window.editor = monaco.editor.create(document.getElementById('editor'), {
-            value: '',
+        const editorElement = document.getElementById('editor');
+        let baseCode = editorElement.getAttribute('data-basecode') || ''; // 기본 코드 읽기
+
+        // 인코딩된 문자를 실제 문자로 변환하고 줄바꿈을 <br>로 대체
+        baseCode = baseCode
+            .replace(/&lt;/g, '<')
+            .replace(/&gt;/g, '>')
+            .replace(/&quot;/g, '"')
+            .replace(/\\n/g, '\n');
+
+        window.editor = monaco.editor.create(editorElement, {
+            value: baseCode,
             language: language,
             fontSize: 18  // 글자 크기를 18px로 설정
         });
