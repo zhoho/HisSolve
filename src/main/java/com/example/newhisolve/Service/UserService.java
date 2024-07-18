@@ -12,7 +12,7 @@ public interface UserService {
     User register(User user);
     User findByUsername(String username);
     UserDetails loadUserByuniqueId(String uniqueId) throws UsernameNotFoundException;
-
+    void updateUser(User user);
     User findByUniqueId(String uniqueId);
 
 }

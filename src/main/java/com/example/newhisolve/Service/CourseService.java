@@ -12,4 +12,9 @@ public interface CourseService {
     Course findById(Long id);
     List<Course> findByUser(User user);
     List<Assignment> findAssignmentsByCourse(Course course);
-}
+    void updateCourse(Course course);
+    List<Course> findCoursesByProfessor(User professor);
+
+
+
+    }

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Settings</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;700&display=swap" rel="stylesheet">
+    <link th:href="@{/css/styles.css}" rel="stylesheet">
+</head>
+<body>
+<div th:replace="~{fragments :: nav}"></div>
+
+<div class="container">
+    <h1 class="my-4 text-center">Settings</h1>
+    <form th:action="@{/updateProfile}" th:object="${user}" method="post" class="p-4 rounded">
+        <div class="card card-custom mb-4">
+            <div class="card-header">Profile Details</div>
+            <div class="card-body">
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" th:field="*{email}" class="form-control" placeholder="Enter email" />
+                </div>
+                <div class="form-group">
+                    <label for="department">Department:</label>
+                    <input type="text" id="department" th:field="*{department}" class="form-control" placeholder="Enter department" />
+                </div>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary">Update Profile</button>
+                </div>
+            </div>
+        </div>
+    </form>
+    <h2 class="my-4">Your Courses</h2>
+    <ul class="list-group mb-4">
+        <li class="list-group-item" th:each="course : ${courses}">
+            <div>
+                <span th:text="${course.name}"></span> <small>(Code: <span th:text="${course.code}"></span>)</small>
+                <form th:action="@{/professor/updateCourseName}" method="post" class="d-inline">
+                    <input type="hidden" name="courseId" th:value="${course.id}" />
+                    <input type="text" name="newName" placeholder="Enter new name" class="form-control d-inline-block w-auto" />
+                    <button type="submit" class="btn btn-primary btn-sm">Update</button>
+                </form>
+            </div>
+        </li>
+    </ul>
+</div>
+
+<div th:replace="~{fragments :: footer}"></div>
+<div th:replace="~{fragments :: scripts}"></div>
+</body>
+</html>

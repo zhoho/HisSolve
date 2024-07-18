@@ -58,4 +58,13 @@ public class CourseServiceImpl implements CourseService {
     public List<Assignment> findAssignmentsByCourse(Course course) {
         return assignmentRepository.findByCourse(course);
     }
+
+    @Override
+    public void updateCourse(Course course) {
+        courseRepository.save(course);
+    }
+    @Override
+    public List<Course> findCoursesByProfessor(User professor) {
+        return courseRepository.findByProfessor(professor);
+    }
 }

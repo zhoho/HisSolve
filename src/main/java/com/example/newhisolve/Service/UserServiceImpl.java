@@ -61,4 +61,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 .authorities(Collections.singletonList(new SimpleGrantedAuthority(user.getRole())))
                 .build();
     }
+
+    @Override
+    public void updateUser(User user) {
+        userRepository.save(user);
+    }
 }

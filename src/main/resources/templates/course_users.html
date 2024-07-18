@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Course Users</title>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;700&display=swap" rel="stylesheet">
+  <link th:href="@{/css/styles.css}" rel="stylesheet">
+</head>
+<body>
+<div th:replace="~{fragments :: nav}"></div>
+
+<div class="container">
+  <h1 class="my-4" th:text="'Users in ' + ${course.name}">Course Users</h1>
+  <ul class="list-group">
+    <li class="list-group-item bg-dark" th:each="user : ${users}">
+      <span th:text="${user.username}"></span> (<span th:text="${user.email}"></span>)
+    </li>
+  </ul>
+  <div class="text-center mt-4">
+    <a th:href="@{/professor/settings}" class="btn btn-primary">Back to Settings</a>
+  </div>
+</div>
+
+<div th:replace="~{fragments :: footer}"></div>
+<div th:replace="~{fragments :: scripts}"></div>
+</body>
+</html>
