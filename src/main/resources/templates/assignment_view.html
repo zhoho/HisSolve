@@ -17,6 +17,15 @@
       <form action="#" th:action="@{/submission_view/{assignmentId}(assignmentId=${assignment.id})}" method="get">
         <button type="submit" class="btn btn-primary">제출자 보기</button>
       </form>
+
+      <form th:action="@{/assignment/delete/{id}(id=${assignment.id})}" method="post">
+        <button type="submit" class="btn btn-danger">과제 삭제</button>
+      </form>
+
+      <form th:action="@{/assignment/edit/{id}(id=${assignment.id})}" method="get">
+        <button type="submit" class="btn btn-danger">과제 수정</button>
+      </form>
+
     </div>
   </div>
 <script>

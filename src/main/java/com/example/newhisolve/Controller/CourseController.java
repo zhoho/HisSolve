@@ -19,7 +19,7 @@ public class CourseController {
 
     @GetMapping("/course/create")
     public String showCreateCourseForm(Model model) {
-        model.addAttribute("course", new Course());  // Course 객체를 모델에 추가
+        model.addAttribute("course", new Course());
         return "create_course";
     }
 

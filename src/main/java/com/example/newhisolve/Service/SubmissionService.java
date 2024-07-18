@@ -45,4 +45,8 @@ public class SubmissionService {
         submissions.forEach(submission -> logger.info(submission.toString()));
         return submissions;
     }
+    @Transactional
+    public void deleteSubmissionsByAssignmentId(Long assignmentId) {
+        submissionRepository.deleteByAssignmentId(assignmentId);
+    }
 }

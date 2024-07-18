@@ -5,6 +5,7 @@ import com.example.newhisolve.Repository.AssignmentRepository;
 import com.example.newhisolve.Repository.CourseRepository;
 import com.example.newhisolve.Repository.SubmissionRepository;
 import com.example.newhisolve.Repository.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -65,7 +66,25 @@ public class AssignmentServiceImpl implements AssignmentService {
         if (assignment.isPresent()) {
             return assignment.get();
         } else {
-            throw new RuntimeException("Assignment를 찾을 수 없습니다~: " + assignmentId);
+            throw new RuntimeException("Assignment를 찾을 수 없습니다: " + assignmentId);
         }
+    }
+
+
+    @Transactional
+    @Override
+    public void deleteAssignmentById(Long id) {
+        assignmentRepository.deleteById(id);
+    }
+
+    @Override
+    public void updateAssignment(Assignment assignment, Long courseId) {
+        Assignment existingAssignment = assignmentRepository.findById(assignment.getId()).orElseThrow();
+        existingAssignment.setTitle(assignment.getTitle());
+        existingAssignment.setDueDate(assignment.getDueDate());
+        existingAssignment.setDescription(assignment.getDescription());
+        existingAssignment.setTestCases(assignment.getTestCases());
+
+        assignmentRepository.save(existingAssignment);
     }
 }

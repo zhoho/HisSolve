@@ -21,7 +21,7 @@ public class HisnetLoginService {
     @Value("${hisnet.access-key}")
     private String accessKey;
 
-    public User callHisnetLoginApi(String token) { // 인자를 String으로 변경
+    public User callHisnetLoginApi(String token) {
         Map<String, Object> requestBody = new HashMap<>();
         requestBody.put("token", token);
         requestBody.put("accessKey", accessKey);
@@ -55,13 +55,13 @@ public class HisnetLoginService {
             }
 
             return User.builder()
-                    .username(name) // Use uniqueId as username
+                    .username(name)
                     .uniqueId(uniqueId)
                     .email(email)
                     .department(department)
                     .role("STUDENT")
-                    .password("12345") // 이 부분은 실제로는 빈 값 또는 해싱된 값이어야 합니다.
-                    .hisnetToken(token) // 토큰도 저장
+                    .password("12345")
+                    .hisnetToken(token)
                     .build();
         } catch (HttpStatusCodeException e) {
             Map<String, Object> result = new HashMap<>();

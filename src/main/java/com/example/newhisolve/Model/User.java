@@ -24,8 +24,6 @@ public class User {
 
 
     private String uniqueId;
-    // private String uniqueId; // 필요에 따라 추가
-
     @OneToMany(mappedBy = "professor")
     private List<Course> courses;
 
