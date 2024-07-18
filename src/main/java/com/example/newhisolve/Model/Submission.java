@@ -29,9 +29,14 @@ public class Submission {
     private String code;
 
     private String result;
+
+    private String pass_count;
+    
+    private String total_count;
+
     private LocalDateTime submittedAt;
 
-    private String language; // 추가된 필드
+    private String language;
 
     @Override
     public String toString() {
@@ -45,6 +50,4 @@ public class Submission {
                 ", language='" + language + '\'' +
                 '}';
     }
-
-    // Getters and Setters
 }

@@ -27,14 +27,18 @@ public class SubmissionService {
         if (existingSubmission != null) {
             submissionRepository.deleteByStudentAndAssignment(student, assignment);
         }
-
-        // 새로운 제출 데이터 저장
+        String result = "성공";
+        if(totalTestCases != passedTestCases) {
+            result = "실패";
+        }
         Submission submission = new Submission();
         submission.setAssignment(assignment);
         submission.setCode(code);
         submission.setLanguage(language);
         submission.setSubmittedAt(LocalDateTime.now());
-        submission.setResult(passedTestCases + "/" + totalTestCases);
+        submission.setTotal_count(String.valueOf(totalTestCases));
+        submission.setPass_count(String.valueOf(passedTestCases));
+        submission.setResult(result);
         submission.setStudent(student);
 
         return submissionRepository.save(submission);

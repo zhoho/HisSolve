@@ -77,15 +77,15 @@
 <div th:replace="~{fragments :: nav}"></div>
 
 <div class="container">
-    <h1 class="my-4 text-center">Assignment Submissions</h1>
+    <h1 class="my-4 text-center">과제 제출목록</h1>
     <div th:if="${submissions != null}">
         <div class="card card-custom">
             <div class="card-header">Submissions</div>
             <ul class="list-group list-group-flush">
-                <li class="list-group-item d-flex justify-content-between align-items-center" th:each="submission : ${submissions}" th:data-id="${submission.id}" th:data-code="${submission.code}" th:data-student="${submission.student.username}" th:data-result="${submission.result}" th:data-submittedat="${submission.submittedAt}" onclick="showDetails(this)">
-                    <span>
-                        <strong th:text="${submission.student.username}">Student Name</strong>
-                    </span>
+                <li class="list-group-item d-flex justify-content-between align-items-center" th:each="submission : ${submissions}" th:data-id="${submission.id}" th:data-code="${submission.code}" th:data-student="${submission.student.username}" th:data-result="${submission.result}" th:data-submittedat="${submission.submittedAt}" th:data-passcount="${submission.pass_count}" th:data-totalcount="${submission.total_count}" onclick="showDetails(this)">
+          <span>
+            <strong th:text="${submission.student.username}">Student Name</strong>
+          </span>
                     <span th:text="${submission.result}">Result</span>
                     <span th:text="${submission.submittedAt}">Submitted At</span>
                 </li>
@@ -102,16 +102,17 @@
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="detailsModalLabel">Submission Details</h5>
+                <h5 class="modal-title" id="detailsModalLabel">제출 정보</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <p><strong>Student:</strong> <span id="studentName"></span></p>
-                <p><strong>Result:</strong> <span id="result"></span></p>
-                <p><strong>Submitted At:</strong> <span id="submittedAt"></span></p>
-                <p><strong>Code:</strong></p>
+                <p><strong>이름:</strong> <span id="studentName"></span></p>
+                <p><strong>결과:</strong> <span id="result"></span></p>
+                <p><strong>테스트 결과:</strong> <span id="testCase"></span></p>
+                <p><strong>제출일:</strong> <span id="submittedAt"></span></p>
+                <p><strong>제출 코드</strong></p>
                 <pre><code id="code" class="language-javascript"></code></pre>
             </div>
             <div class="modal-footer">
@@ -123,6 +124,10 @@
 
 <div th:replace="~{fragments :: footer}"></div>
 <div th:replace="~{fragments :: scripts}"></div>
+<!-- Include jQuery and Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/prism.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/components/prism-javascript.min.js"></script>
 <script>
@@ -131,11 +136,14 @@
         const result = element.getAttribute('data-result');
         const submittedAt = element.getAttribute('data-submittedat');
         const code = element.getAttribute('data-code');
+        const passCount = element.getAttribute('data-passcount');
+        const totalCount = element.getAttribute('data-totalcount');
 
         document.getElementById('studentName').innerText = student;
         document.getElementById('result').innerText = result;
         document.getElementById('submittedAt').innerText = submittedAt;
         document.getElementById('code').textContent = code;
+        document.getElementById('testCase').textContent = passCount + "/" + totalCount;
 
         // Apply syntax highlighting
         Prism.highlightAll();
