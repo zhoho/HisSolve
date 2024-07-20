@@ -2,10 +2,14 @@ package com.example.newhisolve.Model;
 
 import jakarta.persistence.*;
 import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
 @Entity
+@Getter
+@Setter
 @Table(name = "user")
 public class User {
 
@@ -58,87 +62,4 @@ public class User {
         this.setDepartment(user.getDepartment());
         this.setUniqueId(user.getUniqueId());
     }
-
-    // Getters and Setters
-
-    public String getUniqueId() {
-        return uniqueId;
-    }
-
-    public void setUniqueId(String uniqueId) {
-        this.uniqueId = uniqueId;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
-
-    public String getHisnetToken() {
-        return hisnetToken;
-    }
-
-    public void setHisnetToken(String hisnetToken) {
-        this.hisnetToken = hisnetToken;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getDepartment() {
-        return department;
-    }
-
-    public void setDepartment(String department) {
-        this.department = department;
-    }
-
-    public List<Course> getCourses() {
-        return courses;
-    }
-
-    public void setCourses(List<Course> courses) {
-        this.courses = courses;
-    }
-
-    public List<Course> getEnrolledCourses() {
-        return enrolledCourses;
-    }
-
-    public void setEnrolledCourses(List<Course> enrolledCourses) {
-        this.enrolledCourses = enrolledCourses;
-    }
-
 }
