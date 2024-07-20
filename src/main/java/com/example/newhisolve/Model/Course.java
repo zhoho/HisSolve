@@ -13,6 +13,7 @@ public class Course {
     private String name;
     private String code;
     private String language;
+    private String description;
 
     @ManyToOne
     @JoinColumn(name = "professor_id")
@@ -74,5 +75,11 @@ public class Course {
 
     public void setLanguage(String language) {
         this.language = language;
+    }
+    public String getDescription() {
+        return description;
+    }
+    public void setDescription(String course_description) {
+        this.description = course_description;
     }
 }

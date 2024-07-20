@@ -2,9 +2,7 @@ package com.example.newhisolve.Model;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Entity
 @Getter
@@ -35,6 +33,7 @@ public class Submission {
     private String total_count;
 
     private LocalDateTime submittedAt;
+    private LocalDateTime lastSavedDate;
 
     private String language;
 

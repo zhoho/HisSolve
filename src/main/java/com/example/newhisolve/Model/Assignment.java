@@ -20,6 +20,8 @@ public class Assignment {
     private String description;
     private LocalDateTime createDate;
     private LocalDateTime dueDate;
+    private LocalDateTime lastModifiedDate;
+    private String testcaseCount;
 
     @ElementCollection
     private List<TestCase> testCases;
