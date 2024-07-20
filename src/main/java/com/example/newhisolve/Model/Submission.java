@@ -22,6 +22,7 @@ public class Submission {
     @JoinColumn(name = "student_id")
     private User student;
 
+
     @Lob
     @Column(columnDefinition = "LONGTEXT")
     private String code;

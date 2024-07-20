@@ -12,6 +12,6 @@ public interface SubmissionRepository extends JpaRepository<Submission, Long> {
     List<Submission> findByStudentAndAssignment(User student, Assignment assignment);
     void deleteByStudentAndAssignment(User student, Assignment assignment);
     List<Submission> findByAssignmentId(Long AssignmentId);
-
     void deleteByAssignmentId(Long assignmentId);
+    Optional<Submission> findByAssignmentAndStudent(Assignment assignment, User student);
 }

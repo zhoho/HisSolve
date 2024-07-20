@@ -14,6 +14,6 @@ public interface UserService {
     UserDetails loadUserByuniqueId(String uniqueId) throws UsernameNotFoundException;
     void updateUser(User user);
     User findByUniqueId(String uniqueId);
-
+    User getCurrentUser();
 }
 

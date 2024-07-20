@@ -102,19 +102,23 @@
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.30.1/min/vs/loader.js"></script>
 </head>
-<body>
+<body th:attr="data-student-id=${student.id}">
 <div class="container-fluid">
-    <div class="left-panel">
-        <div class="btn-side">
-            <button class="btn btn-primary" onclick="compileCode()">TestCase</button>
-            <button id="submit-btn" class="btn btn-danger" onclick="submitCode()" disabled>Submit</button>
-        </div>
-    </div>
+<!--    <div class="left-panel">-->
+<!--        <div class="btn-side">-->
+<!--            <button class="btn btn-primary" onclick="compileCode()">TestCase</button>-->
+<!--            <button id="submit-btn" class="btn btn-danger" onclick="submitCode()" disabled>Submit</button>-->
+<!--        </div>-->
+<!--    </div>-->
     <div class="middle-panel">
         <div class="btn-container">
             <button class="btn btn-success btn-run" onclick="runCode()">Run</button>
+            <button class="btn btn-primary" onclick="saveCode()">Save</button>
+            <button class="btn btn-primary" onclick="compileCode()">TestCase</button>
+            <button id="submit-btn" class="btn btn-danger" onclick="submitCode()" disabled>Submit</button>
         </div>
         <div id="editor" data-basecode="#include &lt;stdio.h&gt;\n\nint main() {\n    printf(&quot;Hello, World!&quot;);\n    return 0;\n}"></div>
+        <div id="saved-time"></div>
     </div>
     <div class="right-panel">
         <div class="section-buttons">
@@ -140,13 +144,13 @@
     const urlParams = new URLSearchParams(window.location.search);
     const assignmentId = urlParams.get('assignmentId');
     const language = urlParams.get('language');
+    const studentId = document.body.getAttribute('data-student-id');
 
     require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.30.1/min/vs' }});
     require(['vs/editor/editor.main'], function() {
         const editorElement = document.getElementById('editor');
-        let baseCode = editorElement.getAttribute('data-basecode') || ''; // 기본 코드 읽기
+        let baseCode = editorElement.getAttribute('data-basecode') || '';
 
-        // 인코딩된 문자를 실제 문자로 변환하고 줄바꿈을 <br>로 대체
         baseCode = baseCode
             .replace(/&lt;/g, '<')
             .replace(/&gt;/g, '>')
@@ -156,8 +160,11 @@
         window.editor = monaco.editor.create(editorElement, {
             value: baseCode,
             language: language,
-            fontSize: 18  // 글자 크기를 18px로 설정
+            fontSize: 18
         });
+
+        // Fetch and load the saved code when the editor is ready
+        getSavedCode();
     });
 
     let inputs = [];
@@ -218,6 +225,49 @@
             });
     }
 
+    function saveCode() {
+        const code = editor.getValue();
+        fetch('/api/saveCode', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ assignmentId: assignmentId, studentId: studentId, code: code, language: language })
+        })
+            .then(response => {
+                if (!response.ok) {
+                    return response.text().then(text => { throw new Error(text) });
+                }
+                return response.json();
+            })
+            .then(data => {
+                alert('코드가 저장되었습니다!');
+                document.getElementById('saved-time').innerText = `Last saved at: ${new Date(data.lastSavedDate).toLocaleString()}`;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('코드 저장에 실패했습니다!\n' + error.message);
+            });
+    }
+
+    function getSavedCode() {
+        const editor = window.editor;
+        fetch(`/api/getSavedCode?assignmentId=${assignmentId}&studentId=${studentId}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data && data.code) {
+                    editor.setValue(data.code);
+                } else {
+                    editor.setValue(baseCode); // Use base code if no saved code is available
+                }
+                if (data && data.lastSavedDate) {
+                    document.getElementById('saved-time').innerText = `Last saved at: ${new Date(data.lastSavedDate).toLocaleString()}`;
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                editor.setValue(baseCode); // Use base code in case of error
+            });
+    }
+
     function handleKeyPress(event) {
         if (event.key === 'Enter') {
             const inputLine = document.getElementById('input-line');
@@ -274,4 +324,4 @@
     });
 </script>
 </body>
-</html>
+</html></html>
