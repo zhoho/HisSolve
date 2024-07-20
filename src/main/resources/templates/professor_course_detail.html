@@ -17,7 +17,7 @@
   <div class="mb-4">
     <a th:href="@{/assignment/create(courseId=${course.id})}" class="btn btn-primary btn-lg">과제 생성</a>
   </div>
-  <h2>개설 강좌 목록</h2>
+  <h2>참여 중인 강의</h2>
   <ul class="list-group mb-4">
     <li class="list-group-item" th:each="assignment : ${assignments}">
       <a th:href="@{/professor_assignment/{id}(id=${assignment.id})}" th:text="${assignment.title+ ' (Due: ' + assignment.getDueDate() + ')'}" class="text-white"></a>
