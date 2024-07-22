@@ -7,21 +7,122 @@
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;700&display=swap" rel="stylesheet">
   <link th:href="@{/css/styles.css}" rel="stylesheet">
+  <style>
+    body {
+      background-color: #edf2f4;
+    }
+    .course-banner {
+      background: linear-gradient(to right, #37517e, #000000);
+      color: white;
+      padding: 30px; /* 배너 높이를 적절하게 조정 */
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      margin-top: -10px; /* 상단바와의 간격을 줄이기 위해 마진을 조정 */
+    }
+    .course-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+    }
+    .course-header h1, .course-header .course-code {
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+    .course-description {
+      margin-top: 10px;
+    }
+    .back-button {
+      background-color: #47b2e4;
+      border: 0;
+      color: #fff;
+      transition: 0.4s;
+      border-radius: 50px;
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+      margin: 20px 0;
+    }
+    .back-button:hover {
+      background-color: #138496;
+      text-decoration: none;
+      color: white;
+    }
+    .assignment-container {
+      background-color: #f3f5fa;
+      border: 1px solid #dfdfff;
+      padding: 20px;
+      margin-top: 20px;
+      border-radius: 10px; /* 테두리 둥글게 */
+    }
+    .assignment-container h2 {
+      margin-bottom: 30px; /* 원하는 간격으로 설정 */
+    }
+    .assignment-card {
+      background-color: white;
+      border: none;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+    .assignment-card h5 {
+      color: #37517e;
+      font-weight: bold;
+    }
+    .assignment-card p {
+      margin-bottom: 0;
+    }
+    .due-date {
+      color: red;
+    }
+    .due-date.complete {
+      color: green;
+    }
+  </style>
 </head>
 <body>
 <!-- Navigation Bar -->
 <div th:replace="~{fragments :: nav}"></div>
 
-<div class="container">
-  <h1 class="my-4 text-center" th:text="${course.name}">Course Name</h1>
-  <h2 class="my-4">Assignments</h2>
-  <ul class="list-group mb-4">
-    <li class="list-group-item" th:each="assignment : ${assignments}">
-      <a th:href="@{/assignment/{id}(id=${assignment.id})}" th:text="${assignment.title+ ' (Due: ' + assignment.getDueDate() + ')'}" class="text-white"></a>
-    </li>
-  </ul>
+<div class="container mt-1"> <!-- 상단바와의 간격을 줄이기 위해 mt-2에서 mt-1로 수정 -->
+  <div class="course-banner">
+    <div class="course-header">
+      <h1 th:text="${course.name}"></h1>
+      <div class="course-code">
+        <p>Class code: <span th:text="${course.code}"></span></p>
+      </div>
+    </div>
+    <div class="course-description">
+      <p th:text="${course.description}"></p>
+    </div>
+  </div>
+  <a href="/dashboard" class="btn back-button"><i class="bi bi-arrow-left"></i> Back to dashboard</a>
+  <div class="assignment-container">
+    <h2>Assignments</h2>
+    <div class="row">
+      <div class="col-lg-6 col-sm-12 my-3" th:each="assignment : ${assignments}">
+        <div class="card assignment-card">
+          <div class="card-body">
+            <div class="card-image">
+              <i class="fas fa-file-code card-icon"></i>
+            </div>
+            <div class="card-content">
+              <h5 class="card-title">
+                <a th:href="@{/assignment/{id}(id=${assignment.id})}" class="text-primary" th:text="${assignment.title}" style="color: #37517e;"></a>
+              </h5>
+              <p class="card-text" th:text="'Due: ' + ${assignment.dueDate}"></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
+
+<!-- Footer -->
 <div th:replace="~{fragments :: footer}"></div>
+
+<!-- Bootstrap JS and dependencies -->
 <div th:replace="~{fragments :: scripts}"></div>
 </body>
 </html>
