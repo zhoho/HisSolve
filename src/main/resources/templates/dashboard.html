@@ -105,7 +105,7 @@
 <div class="container-fluid user-info">
     <div class="row">
         <div class="col-md-8">
-            <p class="welcome-text">Welcome, <span th:text="${user.username} + ' 학부생'"></span>!</p>
+            <p class="welcome-text">Welcome, <span th:text="${user.username}"></span> <span th:if="${user.role == 'STUDENT'}">학부생</span>!</p>
             <p class="email-text" th:text="${user.email}"></p>
         </div>
         <div class="col-md-4 edit-btn">
@@ -123,6 +123,7 @@
                 <input class="form-control mr-2" type="text" placeholder="Enter class code" name="code" required>
                 <button class="btn btn-primary" type="submit">Join</button>
             </form>
+            <a class="btn btn-primary" th:if="${user.role == 'PROFESSOR'}" th:href="@{/course/create}">Create New Class</a>
         </div>
     </div>
     <div class="row">
