@@ -48,6 +48,8 @@ public class CourseController {
         return "course_detail";
     }
 
+
+
     @GetMapping("/professor_course/{id}")
     public String viewProfessorCourse(@PathVariable Long id, Model model) {
         Course courseEntity = courseService.findById(id);
