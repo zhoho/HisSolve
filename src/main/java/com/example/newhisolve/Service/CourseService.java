@@ -15,4 +15,5 @@ public interface CourseService {
     void updateCourse(Course course);
     List<Course> findCoursesByProfessor(User professor);
     void deleteCourse(Course course);
+    void removeStudentFromCourse(Long courseId, Long studentId);
 }

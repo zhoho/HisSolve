@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -28,7 +29,7 @@ public class CourseServiceImpl implements CourseService {
     public Course createCourse(Course course, String professorUsername) {
         User professor = userRepository.findByUsername(professorUsername).orElseThrow(() -> new RuntimeException("Professor not found"));
         course.setProfessor(professor);
-        course.setCode(UUID.randomUUID().toString());
+        course.setCode(UUID.randomUUID().toString().substring(0, 5));
         return courseRepository.save(course);
     }
 
@@ -71,5 +72,21 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public void deleteCourse(Course course) {
         courseRepository.delete(course);
+    }
+
+    @Override
+    public void removeStudentFromCourse(Long courseId, Long studentId) {
+        Optional<Course> courseOptional = courseRepository.findById(courseId);
+        Optional<User> studentOptional = userRepository.findById(studentId);
+
+        if (courseOptional.isPresent() && studentOptional.isPresent()) {
+            Course course = courseOptional.get();
+            User student = studentOptional.get();
+
+            course.getStudents().remove(student);
+            courseRepository.save(course);
+        } else {
+            throw new IllegalArgumentException("Course or Student not found");
+        }
     }
 }

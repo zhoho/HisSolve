@@ -3,8 +3,8 @@ package com.example.newhisolve.Controller;
 import com.example.newhisolve.Model.Course;
 import com.example.newhisolve.Model.User;
 import com.example.newhisolve.Service.CourseService;
-import com.example.newhisolve.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -54,9 +54,14 @@ public class CourseController {
     public String viewProfessorCourse(@PathVariable Long id, Model model) {
         Course courseEntity = courseService.findById(id);
         model.addAttribute("course", courseEntity);
+        model.addAttribute("students", courseEntity.getStudents());
         model.addAttribute("assignments", courseService.findAssignmentsByCourse(courseEntity));
         return "professor_course_detail";
     }
 
-
+    @PostMapping("/course/removeStudent")
+    public String removeStudent(@RequestParam Long courseId, @RequestParam Long studentId) {
+        courseService.removeStudentFromCourse(courseId, studentId);
+        return "redirect:/professor_course/" + courseId;
+    }
 }

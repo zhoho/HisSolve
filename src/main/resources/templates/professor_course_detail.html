@@ -149,10 +149,10 @@
         <tbody>
         <tr th:each="student, iterStat : ${students}">
           <td th:text="${iterStat.count}"></td>
-          <td th:text="${student.name}"></td>
+          <td th:text="${student.username}"></td>
           <td th:text="${student.email}"></td>
           <td>
-            <button class="btn btn-danger" th:onclick="'removeStudent(' + ${student.id} + ')'">Remove</button>
+            <button type="button" class="btn btn-third" data-toggle="modal" th:data-target="'#deleteUserModal-' + ${student.id}">삭제</button>
           </td>
         </tr>
         </tbody>
@@ -191,10 +191,41 @@
   </div>
 </div>
 
+<div th:each="student : ${students}">
+  <div class="modal fade" th:id="'deleteUserModal-' + ${student.id}" tabindex="-1" role="dialog" aria-labelledby="deleteCourseModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="deleteUserModalLabel">학생 삭제</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form th:action="@{/course/removeStudent}" method="post">
+          <div class="modal-body">
+            <input type="hidden" name="courseId" th:value="${course.id}" />
+            <input type="hidden" name="studentId" th:value="${student.id}" />
+            <div class="form-group">
+              <label>학생을 정말 삭제 하시겠습니까?</label>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+            <button type="submit" class="btn btn-primary">삭제</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- Footer -->
 <div th:replace="~{fragments :: footer}"></div>
 
 <!-- Bootstrap JS and dependencies -->
 <div th:replace="~{fragments :: scripts}"></div>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
