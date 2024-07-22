@@ -37,9 +37,9 @@ public class SecurityConfig {
                 )
                 .formLogin(formLogin ->
                         formLogin
-                                .loginPage("/professorLogin")  // 커스텀 로그인 페이지 설정
-                                .loginProcessingUrl("/login")  // Spring Security의 기본 로그인 처리 URL 설정
-                                .defaultSuccessUrl("/dashboard")  // 로그인 성공 시 이동할 페이지
+                                .loginPage("/professorLogin")
+                                .loginProcessingUrl("/login")
+                                .defaultSuccessUrl("/dashboard")
                                 .permitAll()
                 )
                 .logout(logout ->

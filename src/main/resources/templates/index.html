@@ -8,7 +8,7 @@
             padding: 0;
             height: 100%;
             font-family: Arial, sans-serif;
-            background-color: #EBECED; /* 전체 배경색 설정 */
+            background-color: #EBECED;
         }
         .container-fluid {
             display: flex;
@@ -29,14 +29,14 @@
             display: flex;
             flex-direction: column;
             background-color: white;
-            margin-top: 50px; /* 상단 여백 추가 */
+            margin-top: 50px;
         }
         .right-panel {
             flex: 3;
             display: flex;
             flex-direction: column;
             background-color: white;
-            margin-top: 50px; /* 상단 여백 추가 */
+            margin-top: 50px;
         }
         .btn-container {
             position: absolute;
@@ -44,7 +44,7 @@
             left: 50%;
             transform: translateX(-50%);
             background-color: #90ee90;
-            z-index: 10; /* 버튼을 가장 위로 */
+            z-index: 10;
         }
         .btn-side {
             display: flex;
@@ -72,7 +72,7 @@
             display: none;
         }
         #editor {
-            display: block; /* 기본적으로 에디터가 보이도록 설정 */
+            display: block;
         }
         #output {
             color: white;
@@ -104,12 +104,6 @@
 </head>
 <body th:attr="data-student-id=${student.id}">
 <div class="container-fluid">
-<!--    <div class="left-panel">-->
-<!--        <div class="btn-side">-->
-<!--            <button class="btn btn-primary" onclick="compileCode()">TestCase</button>-->
-<!--            <button id="submit-btn" class="btn btn-danger" onclick="submitCode()" disabled>Submit</button>-->
-<!--        </div>-->
-<!--    </div>-->
     <div class="middle-panel">
         <div class="btn-container">
             <button class="btn btn-success btn-run" onclick="runCode()">Run</button>
@@ -117,7 +111,7 @@
             <button class="btn btn-primary" onclick="compileCode()">TestCase</button>
             <button id="submit-btn" class="btn btn-danger" onclick="submitCode()" disabled>Submit</button>
         </div>
-        <div id="editor" data-basecode="#include &lt;stdio.h&gt;\n\nint main() {\n    printf(&quot;Hello, World!&quot;);\n    return 0;\n}"></div>
+        <div id="editor"></div>
         <div id="saved-time"></div>
     </div>
     <div class="right-panel">
@@ -145,127 +139,101 @@
     const assignmentId = urlParams.get('assignmentId');
     const language = urlParams.get('language');
     const studentId = document.body.getAttribute('data-student-id');
+    const baseCode = `#include <stdio.h>\n\nint main() {\n    printf("Hello, World!");\n    return 0;\n}`;
 
     require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.30.1/min/vs' }});
-    require(['vs/editor/editor.main'], function() {
+    require(['vs/editor/editor.main'], async function() {
         const editorElement = document.getElementById('editor');
-        let baseCode = editorElement.getAttribute('data-basecode') || '';
-
-        baseCode = baseCode
-            .replace(/&lt;/g, '<')
-            .replace(/&gt;/g, '>')
-            .replace(/&quot;/g, '"')
-            .replace(/\\n/g, '\n');
+        const savedCode = await getSavedCode();
 
         window.editor = monaco.editor.create(editorElement, {
-            value: baseCode,
+            value: savedCode,
             language: language,
             fontSize: 18
         });
-
-        // Fetch and load the saved code when the editor is ready
-        getSavedCode();
     });
 
     let inputs = [];
     let totalTestCases = 0;
     let passedTestCases = 0;
 
-    function compileCode() {
-        const code = editor.getValue();
-        fetch('/api/compile', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ assignmentId: assignmentId, code: code, language: language })
-        })
-            .then(response => {
-                if (!response.ok) {
-                    return response.text().then(text => { throw new Error(text) });
-                }
-                return response.json();
-            })
-            .then(data => {
-                document.getElementById('testcase-output').innerText = data.output;
-
-                // 테스트 케이스 결과 계산
-                const results = data.output.split('\n');
-                totalTestCases = results.filter(result => result.startsWith('테스트')).length;
-                passedTestCases = results.filter(result => result.includes('통과')).length;
-
-                document.getElementById('submit-btn').disabled = false; // Enable the submit button
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                document.getElementById('testcase-output').innerText = error.message;
+    async function compileCode() {
+        const code = window.editor.getValue();
+        try {
+            const response = await fetch('/api/compile', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ assignmentId: assignmentId, code: code, language: language })
             });
+            if (!response.ok) {
+                const text = await response.text();
+                throw new Error(text);
+            }
+            const data = await response.json();
+            document.getElementById('testcase-output').innerText = data.output;
+
+            const results = data.output.split('\n');
+            totalTestCases = results.filter(result => result.startsWith('테스트')).length;
+            passedTestCases = results.filter(result => result.includes('통과')).length;
+
+            document.getElementById('submit-btn').disabled = false;
+        } catch (error) {
+            console.error('Error:', error);
+            document.getElementById('testcase-output').innerText = error.message;
+        }
     }
 
-    function runCode() {
-        const code = editor.getValue();
-        fetch('/api/runWithInput', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ code: code, language: language, inputs: inputs })
-        })
-            .then(response => {
-                if (!response.ok) {
-                    return response.text().then(text => { throw new Error(text) });
-                }
-                return response.json();
-            })
-            .then(data => {
-                const outputElement = document.getElementById('output');
-                outputElement.innerText = data.output;
-                console.log(data.output); // Debugging purpose
-                inputs = []; // Clear inputs after running the code
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                document.getElementById('output').innerText = error.message;
+    async function runCode() {
+        const code = window.editor.getValue();
+        try {
+            const response = await fetch('/api/runWithInput', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ code: code, language: language, inputs: inputs })
             });
+            if (!response.ok) {
+                const text = await response.text();
+                throw new Error(text);
+            }
+            const data = await response.json();
+            document.getElementById('output').innerText = data.output;
+            inputs = [];
+        } catch (error) {
+            console.error('Error:', error);
+            document.getElementById('output').innerText = error.message;
+        }
     }
 
-    function saveCode() {
-        const code = editor.getValue();
-        fetch('/api/saveCode', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ assignmentId: assignmentId, studentId: studentId, code: code, language: language })
-        })
-            .then(response => {
-                if (!response.ok) {
-                    return response.text().then(text => { throw new Error(text) });
-                }
-                return response.json();
-            })
-            .then(data => {
-                alert('코드가 저장되었습니다!');
-                document.getElementById('saved-time').innerText = `Last saved at: ${new Date(data.lastSavedDate).toLocaleString()}`;
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('코드 저장에 실패했습니다!\n' + error.message);
+    async function saveCode() {
+        const code = window.editor.getValue();
+        try {
+            const response = await fetch('/api/saveCode', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ assignmentId: assignmentId, studentId: studentId, code: code, language: language })
             });
+            if (!response.ok) {
+                const text = await response.text();
+                throw new Error(text);
+            }
+            const data = await response.json();
+            alert('코드가 저장되었습니다!');
+            document.getElementById('saved-time').innerText = `Last saved at: ${new Date(data.lastSavedDate).toLocaleString()}`;
+        } catch (error) {
+            console.error('Error:', error);
+            alert('코드 저장에 실패했습니다!\n' + error.message);
+        }
     }
 
-    function getSavedCode() {
-        const editor = window.editor;
-        fetch(`/api/getSavedCode?assignmentId=${assignmentId}&studentId=${studentId}`)
-            .then(response => response.json())
-            .then(data => {
-                if (data && data.code) {
-                    editor.setValue(data.code);
-                } else {
-                    editor.setValue(baseCode); // Use base code if no saved code is available
-                }
-                if (data && data.lastSavedDate) {
-                    document.getElementById('saved-time').innerText = `Last saved at: ${new Date(data.lastSavedDate).toLocaleString()}`;
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                editor.setValue(baseCode); // Use base code in case of error
-            });
+    async function getSavedCode() {
+        try {
+            const response = await fetch(`/api/getSavedCode?assignmentId=${assignmentId}&studentId=${studentId}`);
+            const text = await response.text();
+            return text || baseCode;
+        } catch (error) {
+            console.error('Error:', error);
+            return baseCode;
+        }
     }
 
     function handleKeyPress(event) {
@@ -279,32 +247,30 @@
         }
     }
 
-    function submitCode() {
-        const code = editor.getValue();
-        fetch('/api/submit', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                assignmentId: assignmentId,
-                code: code,
-                language: language,
-                totalTestCases: totalTestCases,
-                passedTestCases: passedTestCases
-            })
-        })
-            .then(response => {
-                if (!response.ok) {
-                    return response.text().then(text => { throw new Error(text) });
-                }
-                return response.json();
-            })
-            .then(data => {
-                alert('제출 성공!');
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('제출 실패!\n' + error.message);
+    async function submitCode() {
+        const code = window.editor.getValue();
+        try {
+            const response = await fetch('/api/submit', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    assignmentId: assignmentId,
+                    code: code,
+                    language: language,
+                    totalTestCases: totalTestCases,
+                    passedTestCases: passedTestCases
+                })
             });
+            if (!response.ok) {
+                const text = await response.text();
+                throw new Error(text);
+            }
+            const data = await response.json();
+            alert('제출 성공!');
+        } catch (error) {
+            console.error('Error:', error);
+            alert('제출 실패!\n' + error.message);
+        }
     }
 
     function showProblemStatement() {
@@ -320,8 +286,8 @@
     document.addEventListener('DOMContentLoaded', () => {
         const markdownDescription = document.getElementById('description').getAttribute('data-description');
         document.getElementById('description').innerHTML = marked.parse(markdownDescription);
-        showProblemStatement(); // Show problem statement by default
+        showProblemStatement();
     });
 </script>
 </body>
-</html></html>
+</html>
