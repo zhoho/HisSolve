@@ -10,24 +10,38 @@ body, html {
 }
 
 /* 네비게이션 바 스타일 */
-.navbar, footer {
-    background-color: #2b2d42; /* 네비게이션 바 및 푸터 배경색 */
+.navbar {
+    background-color: #37517e; /* 네비게이션 바 배경색 */
+    height: 100px; /* 네비게이션 바 높이 조정 */
 }
-.navbar-brand, .navbar-nav .nav-link, .footer-text {
-    color: #edf2f4 !important; /* 네비게이션 바 및 푸터 텍스트 색상 */
-    font-size: 1.14rem; /* 네비게이션 바 텍스트 크기 증가 */
+
+.navbar-brand {
+    color: #edf2f4 !important; /* 로고 텍스트 색상 */
+    font-size: 1.5rem; /* 로고 텍스트 크기 증가 */
+    font-weight: bold; /* 로고 텍스트 볼드체 */
+    line-height: 100px; /* 로고 텍스트가 네비게이션 바 중앙에 오도록 수직 정렬 */
 }
+
+.navbar-nav .nav-link {
+    color: #edf2f4 !important; /* 네비게이션 바 텍스트 색상 */
+    font-size: 1.3rem; /* 네비게이션 바 텍스트 크기 증가 */
+    line-height: 100px; /* 텍스트가 네비게이션 바 중앙에 오도록 수직 정렬 */
+    margin: 0 15px; /* 메뉴 항목들 사이의 간격 추가 */
+}
+
 .navbar-light .navbar-nav .nav-link:hover {
-    color: #ef233c !important; /* 네비게이션 바 링크 호버 색상 */
+    color: #8d99ae !important; /* 네비게이션 바 링크 호버 색상 */
 }
+
 .navbar-light .navbar-toggler-icon {
     filter: invert(1);
 }
 
 /* 푸터 스타일 */
 footer {
+    background-color: #37517e; /* 푸터 배경색 */
     color: #edf2f4;
-    margin-top: auto; /* Push footer to the bottom */
+    margin-top: auto; /* 푸터를 하단에 배치 */
     width: 100%;
     font-size: 1.2rem; /* 푸터 텍스트 크기 증가 */
 }
@@ -72,7 +86,7 @@ footer {
     padding: 0.75rem 1.25rem;
     border-radius: 0.5rem; /* 삭제 버튼 경계선 둥글게 */
 }
-.btn-secondary {
+.btn-secondary, .btn-third {
     background-color: #2b2d42; /* 수정 버튼 배경색 */
     border: none;
     color: #edf2f4; /* 수정 버튼 텍스트 색상 */
@@ -80,14 +94,8 @@ footer {
     padding: 0.75rem 1.25rem;
     border-radius: 0.5rem; /* 수정 버튼 경계선 둥글게 */
 }
-
 .btn-third {
-    background-color: #2b2d42; /* 수정 버튼 배경색 */
-    border: none;
-    color: #edf2f4; /* 수정 버튼 텍스트 색상 */
-    font-size: 1.1rem;
-    padding: 0.75rem 1.25rem;
-    border-radius: 0.5rem; /* 수정 버튼 경계선 둥글게 */
+    font-size: 1.1rem; /* 버튼 텍스트 크기 조금 감소 */
 }
 
 /* 리스트 스타일 */
