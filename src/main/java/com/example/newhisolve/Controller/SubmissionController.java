@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -20,41 +21,56 @@ public class SubmissionController {
     private SubmissionService submissionService;
 
     @PostMapping("/saveCode")
-    public ResponseEntity<SubmissionDTO> saveCode(@RequestBody SubmissionDTO submissionDTO) {
-        Submission submission = submissionService.saveCode(submissionDTO);
+    public ResponseEntity<?> saveCode(@RequestBody SubmissionDTO submissionDTO) {
+        try {
+            Submission savedSubmission = submissionService.saveCode(submissionDTO);
 
-        SubmissionDTO savedSubmissionDTO = new SubmissionDTO(
-                submission.getAssignment().getId(),
-                submission.getStudent().getId(),
-                submission.getCode(),
-                submission.getLanguage(),
-                submission.getLastSavedDate(),
-                submissionDTO.getTotalCount(),
-                submissionDTO.getPassCount()
-        );
+            Map<String, Object> response = new HashMap<>();
+            response.put("lastSavedDate", savedSubmission.getLastSavedDate());
+            response.put("message", "Code saved successfully!");
 
-        return ResponseEntity.ok(savedSubmissionDTO);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Map<String, Object> errorResponse = new HashMap<>();
+            errorResponse.put("error", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+        }
     }
 
+
+
+//    @GetMapping("/getSavedCode")
+//    @ResponseBody
+//    public ResponseEntity<?> getSavedCode(@RequestParam Long assignmentId, @RequestParam Long studentId) {
+//        Optional<Submission> submissionOptional = submissionService.getSavedCode(assignmentId, studentId);
+//        if (submissionOptional.isPresent()) {
+//            Submission submission = submissionOptional.get();
+//            Map<String, Object> response = new HashMap<>();
+//            response.put("assignmentId", submission.getAssignment().getId());
+//            response.put("studentId", submission.getStudent().getId());
+//            response.put("code", submission.getCode());
+//            response.put("language", submission.getLanguage());
+//            response.put("lastSavedDate", submission.getLastSavedDate());
+//            response.put("passCount", submission.getPass_count());
+//            return ResponseEntity.ok(response);
+//        } else {
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No saved code found");
+//        }
+//    }
+
     @GetMapping("/getSavedCode")
-    public String getSavedCode(@RequestParam Long assignmentId, @RequestParam Long studentId) {
+    @ResponseBody
+    public ResponseEntity<String> getSavedCode(@RequestParam Long assignmentId, @RequestParam Long studentId) {
         Optional<Submission> submissionOptional = submissionService.getSavedCode(assignmentId, studentId);
         if (submissionOptional.isPresent()) {
             Submission submission = submissionOptional.get();
-            SubmissionDTO submissionDTO = new SubmissionDTO(
-                    submission.getAssignment().getId(),
-                    submission.getStudent().getId(),
-                    submission.getCode(),
-                    submission.getLanguage(),
-                    submission.getLastSavedDate(),
-                    submission.getTotal_count(),
-                    submission.getPass_count()
-            );
-            return submission.getCode();
+            return ResponseEntity.ok(submission.getCode());
         } else {
-            return null;
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No saved code found");
         }
     }
+
 
     @PostMapping("/submit")
     public ResponseEntity<?> submit(@RequestBody SubmissionDTO submissionDTO) {
@@ -73,4 +89,5 @@ public class SubmissionController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
         }
     }
+
 }

@@ -218,7 +218,7 @@
                                 th:data-result="${submission.result}"
                                 th:data-submittedat="${submission.submittedAt}"
                                 th:data-passcount="${submission.pass_count}"
-                                th:data-totalcount="${submission.total_count}">
+                                th:data-totalcount="${assignment.testcaseCount}">
                             <img th:src="@{/img/view.png}" alt="View Icon" style="width: 24px; height: 24px;">
                         </button>
                     </td>
@@ -333,11 +333,13 @@
 
     async function saveCode() {
         const code = window.editor.getValue();
+        const lastSavedDate = new Date();
+
         try {
             const response = await fetch('/api/saveCode', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ assignmentId: assignmentId, studentId: studentId, code: code, language: language })
+                body: JSON.stringify({ assignmentId: assignmentId, studentId: studentId, code: code, language: language, lastSavedDate: lastSavedDate.toISOString() })
             });
             if (!response.ok) {
                 const text = await response.text();
@@ -345,7 +347,7 @@
             }
             const data = await response.json();
             alert('코드가 저장되었습니다!');
-            document.getElementById('saved-time').innerText = `Last saved at: ${new Date(data.lastSavedDate).toLocaleString()}`;
+            document.getElementById('saved-time').innerText = `Last saved at: ${lastSavedDate.toLocaleString()}`;
         } catch (error) {
             console.error('Error:', error);
             alert('코드 저장에 실패했습니다!\n' + error.message);
@@ -376,16 +378,19 @@
 
     async function submitCode() {
         const code = window.editor.getValue();
+        const lastSavedDate = new Date(); // 현재 시간을 lastSavedDate로 사용
+
         try {
             const response = await fetch('/api/submit', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     assignmentId: assignmentId,
+                    studentId: studentId,
                     code: code,
                     language: language,
-                    totalTestCases: totalTestCases,
-                    passedTestCases: passedTestCases
+                    lastSavedDate: lastSavedDate.toISOString(), // ISO 형식으로 전송
+                    passCount: passedTestCases
                 })
             });
             if (!response.ok) {
@@ -399,6 +404,7 @@
             alert('제출 실패!\n' + error.message);
         }
     }
+
 
     function showProblemStatement() {
         document.getElementById('problem-statement').style.display = 'block';

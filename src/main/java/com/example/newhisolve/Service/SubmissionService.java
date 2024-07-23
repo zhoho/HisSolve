@@ -41,21 +41,32 @@ public class SubmissionService {
 
         Assignment assignment = assignmentOptional.get();
         User student = studentOptional.get();
-        Submission submission = submissionRepository.findByAssignmentAndStudent(assignment, student)
-                .orElse(new Submission());
+        Optional<Submission> submissionOptional = submissionRepository.findByAssignmentAndStudent(assignment, student);
 
-        submission.setAssignment(assignment);
-        submission.setStudent(student);
+        Submission submission;
+        if (submissionOptional.isPresent()) {
+            submission = submissionOptional.get(); // 기존 제출물 업데이트
+        } else {
+            submission = new Submission(); // 새로운 제출물 생성
+            submission.setAssignment(assignment);
+            submission.setStudent(student);
+        }
+
         submission.setCode(submissionDTO.getCode());
         submission.setLanguage(submissionDTO.getLanguage());
         submission.setSubmittedAt(LocalDateTime.now());
-        submission.setTotal_count(String.valueOf(submissionDTO.getTotalCount()));
+        submission.setLastSavedDate(submissionDTO.getLastSavedDate());
         submission.setPass_count(String.valueOf(submissionDTO.getPassCount()));
-        submission.setResult(Objects.equals(submissionDTO.getTotalCount(), submissionDTO.getPassCount()) ? "성공" : "실패");
+
+        int passCount = Integer.parseInt(submissionDTO.getPassCount());
+        boolean allTestsPassed = passCount == assignment.getTestCases().size();
+        submission.setResult(allTestsPassed ? "성공" : "실패");
 
         return submissionRepository.save(submission);
     }
 
+
+    @Transactional
     public Submission saveCode(SubmissionDTO submissionDTO) {
         Optional<Assignment> assignmentOptional = assignmentRepository.findById(submissionDTO.getAssignmentId());
         Optional<User> studentOptional = userRepository.findById(submissionDTO.getStudentId());
@@ -66,14 +77,14 @@ public class SubmissionService {
 
         Assignment assignment = assignmentOptional.get();
         User student = studentOptional.get();
-
         Submission submission = submissionRepository.findByAssignmentAndStudent(assignment, student)
                 .orElse(new Submission());
+
         submission.setAssignment(assignment);
         submission.setStudent(student);
         submission.setCode(submissionDTO.getCode());
         submission.setLanguage(submissionDTO.getLanguage());
-        submission.setLastSavedDate(LocalDateTime.now());
+        submission.setLastSavedDate(submissionDTO.getLastSavedDate());
 
         return submissionRepository.save(submission);
     }

@@ -31,8 +31,6 @@ public class Submission {
     private String result;
 
     private String pass_count;
-    
-    private String total_count;
 
     private LocalDateTime submittedAt;
     private LocalDateTime lastSavedDate;
