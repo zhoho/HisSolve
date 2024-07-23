@@ -113,4 +113,12 @@ public class SubmissionService {
     public void deleteSubmissionsByAssignmentId(Long assignmentId) {
         submissionRepository.deleteByAssignmentId(assignmentId);
     }
+
+    public List<Submission> findByAssignmentAndStudent(Long assignmentId, Long studentId) {
+        return submissionRepository.findByAssignmentIdAndStudentId(assignmentId, studentId);
+    }
+
+    public Submission getSubmissionById(Long id) {
+        return submissionRepository.findById(id).orElse(null);
+    }
 }
