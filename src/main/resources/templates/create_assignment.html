@@ -1,123 +1,233 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title>Create Assignment</title>
+  <title>Create New Assignment</title>
+  <!-- Bootstrap CSS -->
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
   <link th:href="@{/css/styles.css}" rel="stylesheet">
   <style>
-    .form-group label {
-      font-weight: 700;
-      color: #edf2f4;
+    body {
+      background-color: #edf2f4;
     }
-    .rounded {
-      border-radius: 0.5rem !important;
+    .course-banner {
+      background: linear-gradient(to right, #37517e, #000000);
+      color: white;
+      padding: 30px;
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      margin-top: -10px;
     }
-    .card-custom {
-      background-color: #2E3440;
-      color: #edf2f4;
-      margin-bottom: 1rem;
-      border-radius: 0.5rem;
+    .course-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
     }
-    .card-custom .card-header {
-      background-color: #3B4252;
-      color: #edf2f4;
-      border-radius: 0.5rem 0.5rem 0 0;
-      padding: 1rem;
-      font-size: 1.25rem;
+    .course-header h1, .course-header .course-code {
+      font-size: 1.5rem;
+      font-weight: bold;
     }
-    .card-custom .card-body {
-      padding: 1.5rem;
+    .course-description {
+      margin-top: 10px;
+    }
+    .btn-lightblue {
+      background-color: #47b2e4;
+      border: 0;
+      color: #fff;
+      transition: 0.4s;
+      border-radius: 50px;
+    }
+    .btn-lightblue:hover {
+      background-color: #138496;
+      text-decoration: none;
+      color: white;
+    }
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .main-container {
+      background-color: #f3f5fa;
+      border: 1px solid #dfdfff;
+      padding: 20px;
+      margin-top: 20px;
+      border-radius: 10px;
+    }
+    .assignment-card, .student-card, .co-teacher-card {
+      background-color: white;
+      border: none;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+    .card-body {
+      display: flex;
+      align-items: center;
+    }
+    .card-title {
+      color: #37517e;
+      font-weight: bold;
+    }
+    .card-text {
+      margin-bottom: 0;
+    }
+    .card-icon {
+      font-size: 3rem;
+      margin-right: 20px;
+    }
+    .summary-container {
+      margin-top: 20px;
+      text-align: left;
+      padding-left: 15px;
+    }
+    .delete-btn {
+      background: none;
+      border: none;
+      color: red;
+      font-size: 1.5rem;
+    }
+    .nav-link.active {
+      background-color: #ffffff !important;
+      border: 1px solid #dee2e6 !important;
+      border-bottom-color: transparent !important;
+    }
+    .tab-content {
+      border: 1px solid #dee2e6;
+      border-top: none;
+      padding: 10px;
+      background-color: #ffffff;
     }
   </style>
 </head>
 <body>
 <div th:replace="~{fragments :: nav}"></div>
 
-<div class="container">
-  <h1 class="my-4 text-center">문제 생성 하기</h1>
-  <form th:action="@{/assignment/create}" th:object="${assignment}" method="post" class="p-4 rounded">
-    <input type="hidden" th:name="courseId" th:value="${course.id}" />
-    <div class="card card-custom mb-4">
-      <div class="card-header">문제 세부 정보</div>
-      <div class="card-body">
-        <div class="form-group">
-          <label for="title">문제 제목:</label>
-          <input type="text" id="title" th:field="*{title}" class="form-control" placeholder="Enter title" />
-        </div>
-        <div class="form-group">
-          <label for="description">문제 설명:</label>
-          <textarea id="description" th:field="*{description}" class="form-control" placeholder="Enter description"></textarea>
-        </div>
-        <div class="form-group">
-          <label for="dueDate">마감일:</label>
-          <input type="datetime-local" id="dueDate" th:field="*{dueDate}" class="form-control" placeholder="Enter due date" />
-        </div>
-      </div>
+<div class="container mt-1">
+  <div class="course-banner">
+    <div class="course-header">
+      <h1>Create New Assignment</h1>
     </div>
-    <div class="card card-custom mb-4">
-      <div class="card-header">테스트 케이스</div>
-      <div class="card-body" id="testCases">
-        <div class="test-case">
-          <div class="form-group input-section">
-            <label for="input0">Input:</label>
-            <textarea name="inputs" id="input0" class="form-control" placeholder="Enter input"></textarea>
+  </div>
+
+  <div class="main-container">
+    <form th:action="@{/assignment/create}" method="post">
+      <div class="form-group">
+        <label for="assignmentName" class="font-weight-bold">Assignment name:</label>
+        <input type="text" class="form-control" id="assignmentName" name="assignmentName" required>
+      </div>
+      <div class="form-group">
+        <label class="font-weight-bold">Problem Statement</label>
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+          <li class="nav-item">
+            <a class="nav-link active" id="problem-statement-tab" data-toggle="tab" href="#problem-statement" role="tab" aria-controls="problem-statement" aria-selected="true">Problem Statement</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="preview-tab" data-toggle="tab" href="#preview" role="tab" aria-controls="preview" aria-selected="false">Preview</a>
+          </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+          <div class="tab-pane fade show active" id="problem-statement" role="tabpanel" aria-labelledby="problem-statement-tab">
+            <textarea class="form-control mt-3" rows="10" name="problemStatement" id="problemStatement" placeholder="Use Markdown syntax to write the problem statement..."></textarea>
           </div>
-          <div class="form-group output-section">
-            <label for="output0">Expected Output:</label>
-            <textarea name="outputs" id="output0" class="form-control" placeholder="Enter expected output"></textarea>
+          <div class="tab-pane fade" id="preview" role="tabpanel" aria-labelledby="preview-tab">
+            <div class="mt-3" id="previewContent"></div>
           </div>
         </div>
       </div>
-    </div>
-    <button type="button" class="btn btn-secondary my-3" onclick="addTestCase()">테스트 케이스 개수 추가</button>
-    <div class="text-center">
-      <button type="submit" class="btn btn-primary">문제 생성 하기</button>
-    </div>
-  </form>
+      <div class="form-group">
+        <label class="font-weight-bold">Test Cases</label>
+        <div id="testCasesContainer">
+          <div class="form-group row align-items-center">
+            <div class="col-md-5">
+              <label class="font-weight-bold">Input Cases</label>
+              <textarea class="form-control" id="inputCase" name="inputCase" placeholder="Input case"></textarea>
+            </div>
+            <div class="col-md-5">
+              <label class="font-weight-bold">Output Cases</label>
+              <textarea class="form-control" id="outputCase" name="outputCase" placeholder="Output case"></textarea>
+            </div>
+            <div class="col-md-2 text-center">
+              <button type="button" class="delete-btn" onclick="removeTestCase(this)"><i class="fas fa-trash-alt"></i></button>
+            </div>
+          </div>
+        </div>
+        <button type="button" class="btn btn-lightblue mt-3" id="addCaseBtn">Add case</button>
+      </div>
+      <div class="form-group">
+        <label for="deadline" class="font-weight-bold">Deadline</label>
+        <input type="datetime-local" class="form-control" id="deadline" name="deadline" required>
+      </div>
+      <button type="submit" class="btn btn-lightblue">Create</button>
+      <a href="/dashboard" class="btn btn-lightblue">Cancel</a>
+    </form>
+  </div>
 </div>
 
+<!-- Footer -->
 <div th:replace="~{fragments :: footer}"></div>
+
+<!-- Bootstrap JS and dependencies -->
 <div th:replace="~{fragments :: scripts}"></div>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <script>
-  let testCaseIndex = 1;
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.addEventListener('click', function (e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href').substring(1);
+        document.querySelectorAll('.tab-pane').forEach(tab => {
+          tab.classList.remove('show', 'active');
+        });
+        document.querySelector(`#${targetId}`).classList.add('show', 'active');
 
-  function addTestCase() {
-    const testCasesDiv = document.getElementById('testCases');
+        document.querySelectorAll('.nav-link').forEach(link => {
+          link.classList.remove('active');
+        });
+        this.classList.add('active');
 
+        if (targetId === 'preview') {
+          const problemStatement = document.getElementById('problemStatement').value;
+          document.getElementById('previewContent').innerHTML = marked.parse(problemStatement);
+        }
+      });
+    });
+  });
+
+  let caseCount = 1;
+  document.getElementById('addCaseBtn').addEventListener('click', function () {
+    const inputCase = "Input case";
+    const outputCase = "Output case";
+
+    caseCount++;
     const testCaseDiv = document.createElement('div');
-    testCaseDiv.className = 'test-case mt-3 p-3 rounded';
+    testCaseDiv.className = 'form-group row align-items-center';
+    testCaseDiv.innerHTML = `
+      <div class="col-md-5">
+        <textarea class="form-control" name="inputCase${caseCount}" placeholder="Input case">${inputCase}</textarea>
+      </div>
+      <div class="col-md-5">
+        <textarea class="form-control" name="outputCase${caseCount}" placeholder="Output case">${outputCase}</textarea>
+      </div>
+      <div class="col-md-2 text-center">
+        <button type="button" class="delete-btn" onclick="removeTestCase(this)"><i class="fas fa-trash-alt"></i></button>
+      </div>
+    `;
+    document.getElementById('testCasesContainer').appendChild(testCaseDiv);
 
-    const inputDiv = document.createElement('div');
-    inputDiv.className = 'form-group input-section';
-    const inputLabel = document.createElement('label');
-    inputLabel.innerText = 'Input:';
-    const inputTextarea = document.createElement('textarea');
-    inputTextarea.name = 'inputs';
-    inputTextarea.id = 'input' + testCaseIndex;
-    inputTextarea.className = 'form-control';
-    inputTextarea.placeholder = 'Enter input';
-    inputDiv.appendChild(inputLabel);
-    inputDiv.appendChild(inputTextarea);
+    document.getElementById('inputCase').value = '';
+    document.getElementById('outputCase').value = '';
+  });
 
-    const outputDiv = document.createElement('div');
-    outputDiv.className = 'form-group output-section';
-    const outputLabel = document.createElement('label');
-    outputLabel.innerText = 'Expected Output:';
-    const outputTextarea = document.createElement('textarea');
-    outputTextarea.name = 'outputs';
-    outputTextarea.id = 'output' + testCaseIndex;
-    outputTextarea.className = 'form-control';
-    outputTextarea.placeholder = 'Enter expected output';
-    outputDiv.appendChild(outputLabel);
-    outputDiv.appendChild(outputTextarea);
-
-    testCaseDiv.appendChild(inputDiv);
-    testCaseDiv.appendChild(outputDiv);
-
-    testCasesDiv.appendChild(testCaseDiv);
-
-    testCaseIndex++;
+  function removeTestCase(button) {
+    const testCaseDiv = button.closest('.form-group');
+    if (testCaseDiv && testCaseDiv.parentElement) {
+      testCaseDiv.parentElement.removeChild(testCaseDiv);
+    }
   }
 </script>
 </body>

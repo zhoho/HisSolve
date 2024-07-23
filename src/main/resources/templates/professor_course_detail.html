@@ -124,8 +124,11 @@
                 <i class="fas fa-file-code card-icon"></i>
               </div>
               <div class="card-content">
+<!--                <h5 class="card-title">-->
+<!--                  <a th:href="@{/assignment/{id}(id=${assignment.id})}" th:text="${assignment.title}" style="color: #37517e;"></a>-->
+<!--                </h5>-->
                 <h5 class="card-title">
-                  <a th:href="@{/assignment/{id}(id=${assignment.id})}" th:text="${assignment.title}" style="color: #37517e;"></a>
+                  <a th:href="@{/professor_assignment_detail/{id}(id=${assignment.id})}" th:text="${assignment.title}" style="color: #37517e;"></a>
                 </h5>
                 <p class="card-text" th:text="'Due: ' + ${assignment.dueDate}"></p>
               </div>
