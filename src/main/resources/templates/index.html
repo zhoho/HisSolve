@@ -168,7 +168,7 @@
         <button class="btn btn-success btn-run" onclick="runCode()">Run</button>
         <button class="btn btn-primary" onclick="compileCode()">TestCase</button>
         <button id="submit-btn" class="btn btn-danger" onclick="submitCode()" disabled>Submit</button>
-        <button class="btn btn-third" onclick="saveCode()">Save</button>
+        <button class="btn-third" onclick="saveCode()">Save</button>
         <div id="saved-time" class="saved-time"></div>
     </div>
     <div class="container-fluid">
@@ -211,7 +211,7 @@
                     <td th:text="${submission.result}"></td>
                     <td th:text="${submission.language}"></td>
                     <td>
-                        <button class="btn btn-info" onclick="showDetails(this)"
+                        <button onclick="showDetails(this)"
                                 th:data-id="${submission.id}"
                                 th:data-code="${submission.code}"
                                 th:data-student="${submission.student.username}"
