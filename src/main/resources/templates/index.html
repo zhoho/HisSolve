@@ -10,16 +10,17 @@
             height: 100%;
             font-family: Arial, sans-serif;
             background-color: #EBECED;
-            overflow: auto; /* Enable scrolling */
+            overflow: auto;
         }
         .course-banner {
             background: linear-gradient(to right, #37517e, #000000);
             color: white;
-            padding: 30px; /* 배너 높이를 적절하게 조정 */
+            padding: 30px;
             border-radius: 10px;
             display: flex;
             flex-direction: column;
-            margin-top: -10px; /* 상단바와의 간격을 줄이기 위해 마진을 조정 */
+            margin-top: -10px;
+            margin-bottom: 35px;
         }
         .course-header {
             display: flex;
@@ -47,12 +48,12 @@
         }
         .container-fluid {
             display: flex;
-            flex-direction: column; /* Adjust for vertical layout */
-            margin-bottom: 20px; /* Add space below */
+            flex-direction: column;
+            margin-bottom: 20px;
         }
         .panel-wrapper {
             display: flex;
-            flex-direction: row; /* Adjust for horizontal layout */
+            flex-direction: row;
             flex-grow: 1;
             overflow: hidden;
         }
@@ -72,7 +73,7 @@
             flex-direction: column;
             background-color: white;
             margin-top: 20px;
-            overflow: auto; /* Enable scrolling within middle panel */
+            overflow: auto;
         }
         .right-panel {
             flex: 3;
@@ -80,7 +81,7 @@
             flex-direction: column;
             background-color: white;
             margin-top: 20px;
-            overflow: auto; /* Enable scrolling within right panel */
+            overflow: auto;
         }
         .btn-container {
             display: flex;
@@ -135,6 +136,13 @@
             border: 1px solid #dee2e6;
             border-radius: 5px;
         }
+        #results-table-container {
+            margin-top: 10px;
+            background-color: #f8f9fa;
+            padding: 10px;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+        }
         .saved-time {
             margin-left: 20px;
             font-size: 1rem;
@@ -165,7 +173,7 @@
             color: white;
         }
         .btn img {
-            background-color: transparent; /* Remove background color from image button */
+            background-color: transparent;
         }
         .btn-third {
             background-color: #6c757d;
@@ -182,14 +190,25 @@
             color: #fff;
             transition: 0.4s;
             border-radius: 50px;
-            padding: 0.5rem 1rem;
-            font-size: 1rem;
-            margin: 20px 0;
+            padding: 0.5rem 1.5rem;
+            font-size: 1.3rem;
         }
         .back-button:hover {
             background-color: #138496;
             text-decoration: none;
             color: white;
+        }
+        .results-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .results-table th, .results-table td {
+            border: 1px solid #dee2e6;
+            padding: 8px;
+            text-align: left;
+        }
+        .results-table th {
+            background-color: #f2f2f2;
         }
     </style>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
@@ -211,13 +230,10 @@
                 <p>마감 기한: <span th:text="${assignment.dueDate}"></span></p>
             </div>
         </div>
-<!--        <div class="course-description">-->
-<!--            <p th:text="${course.description}"></p>-->
-<!--        </div>-->
     </div>
-    <a href="#" class="back-button" onclick="window.history.back(); return false;"><i class="bi bi-arrow-left"></i> Back to dashboard</a>
+    <a href="#" class="back-button" onclick="window.history.back(); return false;"><i class="bi bi-arrow-left"></i> Back to Classroom</a>
 </div>
-    <div class="outer-container">
+<div class="outer-container">
     <div class="btn-container">
         <button class="btn btn-success btn-run" onclick="runCode()">Run</button>
         <button class="btn btn-primary" onclick="compileCode()">TestCase</button>
@@ -247,7 +263,7 @@
         </div>
         <div id="testcase-results">
             <h5>Test Case Results:</h5>
-            <pre id="testcase-output"></pre>
+            <div id="results-table-container"></div>
         </div>
         <div>
             <table class="submissions-table">
@@ -283,7 +299,6 @@
     </div>
 </div>
 
-<!-- Details Modal -->
 <div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="detailsModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
@@ -306,211 +321,258 @@
             </div>
         </div>
     </div>
-<script>
-    const urlParams = new URLSearchParams(window.location.search);
-    const assignmentId = urlParams.get('assignmentId');
-    const language = urlParams.get('language');
-    const studentId = document.body.getAttribute('data-student-id');
-    const baseCode = `#include <stdio.h>\n\nint main() {\n    printf("Hello, World!");\n    return 0;\n}`;
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const assignmentId = urlParams.get('assignmentId');
+        const language = urlParams.get('language');
+        const studentId = document.body.getAttribute('data-student-id');
+        const baseCode = `#include <stdio.h>\n\nint main() {\n    printf("Hello, World!");\n    return 0;\n}`;
 
-    require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.30.1/min/vs' }});
-    require(['vs/editor/editor.main'], async function() {
-        const editorElement = document.getElementById('editor');
-        const savedCode = await getSavedCode();
+        require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.30.1/min/vs' }});
+        require(['vs/editor/editor.main'], async function() {
+            const editorElement = document.getElementById('editor');
+            const savedCode = await getSavedCode();
 
-        window.editor = monaco.editor.create(editorElement, {
-            value: savedCode,
-            language: language,
-            fontSize: 18
+            window.editor = monaco.editor.create(editorElement, {
+                value: savedCode,
+                language: language,
+                fontSize: 18
+            });
         });
-    });
 
-    let inputs = [];
-    let totalTestCases = 0;
-    let passedTestCases = 0;
+        let inputs = [];
+        let totalTestCases = 0;
+        let passedTestCases = 0;
 
-    async function compileCode() {
-        const code = window.editor.getValue();
-        showLoadingSpinner('.btn-primary'); // Show loading spinner
-        try {
-            const response = await fetch('/api/compile', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ assignmentId: assignmentId, code: code, language: language })
-            });
-            if (!response.ok) {
-                const text = await response.text();
-                throw new Error(text);
+        async function compileCode() {
+            const code = window.editor.getValue();
+            showLoadingSpinner('.btn-primary');
+            try {
+                const response = await fetch('/api/compile', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ assignmentId: assignmentId, code: code, language: language })
+                });
+                if (!response.ok) {
+                    const text = await response.text();
+                    throw new Error(text);
+                }
+                const data = await response.json();
+
+                const tableContainer = document.getElementById('results-table-container');
+                if (!tableContainer) {
+                    throw new Error('Element with id "results-table-container" not found');
+                }
+
+                tableContainer.innerHTML = ''; // Clear previous results
+                const table = document.createElement('table');
+                table.className = 'results-table';
+
+                const thead = document.createElement('thead');
+                const headerRow = document.createElement('tr');
+                const headers = ['테스트 번호', '상태', '입력값', '기댓값', '실행 결과'];
+                headers.forEach(headerText => {
+                    const th = document.createElement('th');
+                    th.innerText = headerText;
+                    headerRow.appendChild(th);
+                });
+                thead.appendChild(headerRow);
+                table.appendChild(thead);
+
+                const tbody = document.createElement('tbody');
+                data.forEach(result => {
+                    const row = document.createElement('tr');
+                    const values = [
+                        result.testNumber,
+                        result.status,
+                        result.input,
+                        result.expectedOutput,
+                        result.actualOutput
+                    ];
+                    values.forEach(value => {
+                        const td = document.createElement('td');
+                        td.innerText = value;
+                        row.appendChild(td);
+                    });
+                    tbody.appendChild(row);
+                });
+                table.appendChild(tbody);
+
+                tableContainer.appendChild(table);
+
+                const passedTests = data.filter(result => result.status === '통과').length;
+                totalTestCases = data.length;
+                passedTestCases = passedTests;
+
+                document.getElementById('submit-btn').disabled = false;
+            } catch (error) {
+                console.error('Error:', error);
+                const testcaseOutput = document.getElementById('testcase-output');
+                if (testcaseOutput) {
+                    testcaseOutput.innerText = error.message;
+                } else {
+                    alert('Error: Element with id "testcase-output" not found');
+                }
+            } finally {
+                hideLoadingSpinner('.btn-primary');
             }
-            const data = await response.json();
-            document.getElementById('testcase-output').innerText = data.output;
-
-            const results = data.output.split('\n');
-            totalTestCases = results.filter(result => result.startsWith('테스트')).length;
-            passedTestCases = results.filter(result => result.includes('통과')).length;
-
-            document.getElementById('submit-btn').disabled = false;
-        } catch (error) {
-            console.error('Error:', error);
-            document.getElementById('testcase-output').innerText = error.message;
-        } finally {
-            hideLoadingSpinner('.btn-primary'); // Hide loading spinner
         }
-    }
 
-    async function runCode() {
-        const code = window.editor.getValue();
-        showLoadingSpinner('.btn-success'); // Show loading spinner
-        try {
-            const response = await fetch('/api/runWithInput', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ code: code, language: language, inputs: inputs })
-            });
-            if (!response.ok) {
-                const text = await response.text();
-                throw new Error(text);
+        async function runCode() {
+            const code = window.editor.getValue();
+            showLoadingSpinner('.btn-success');
+            try {
+                const response = await fetch('/api/runWithInput', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ code: code, language: language, inputs: inputs })
+                });
+                if (!response.ok) {
+                    const text = await response.text();
+                    throw new Error(text);
+                }
+                const data = await response.json();
+                document.getElementById('output').innerText = data.output;
+                inputs = [];
+                showConsole();
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('output').innerText = error.message;
+            } finally {
+                hideLoadingSpinner('.btn-success');
             }
-            const data = await response.json();
-            document.getElementById('output').innerText = data.output;
-            inputs = [];
-            showConsole(); // Show console when Run is clicked
-        } catch (error) {
-            console.error('Error:', error);
-            document.getElementById('output').innerText = error.message;
-        } finally {
-            hideLoadingSpinner('.btn-success'); // Hide loading spinner
         }
-    }
 
-    async function saveCode() {
-        const code = window.editor.getValue();
-        const lastSavedDate = new Date();
+        async function saveCode() {
+            const code = window.editor.getValue();
+            const lastSavedDate = new Date();
 
-        try {
-            const response = await fetch('/api/saveCode', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ assignmentId: assignmentId, studentId: studentId, code: code, language: language, lastSavedDate: lastSavedDate.toISOString() })
-            });
-            if (!response.ok) {
-                const text = await response.text();
-                throw new Error(text);
+            try {
+                const response = await fetch('/api/saveCode', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ assignmentId: assignmentId, studentId: studentId, code: code, language: language, lastSavedDate: lastSavedDate.toISOString() })
+                });
+                if (!response.ok) {
+                    const text = await response.text();
+                    throw new Error(text);
+                }
+                const data = await response.json();
+                alert('코드가 저장되었습니다!');
+                document.getElementById('saved-time').innerText = `Last saved at: ${lastSavedDate.toLocaleString()}`;
+            } catch (error) {
+                console.error('Error:', error);
+                alert('코드 저장에 실패했습니다!\n' + error.message);
             }
-            const data = await response.json();
-            alert('코드가 저장되었습니다!');
-            document.getElementById('saved-time').innerText = `Last saved at: ${lastSavedDate.toLocaleString()}`;
-        } catch (error) {
-            console.error('Error:', error);
-            alert('코드 저장에 실패했습니다!\n' + error.message);
         }
-    }
 
-    async function getSavedCode() {
-        try {
-            const response = await fetch(`/api/getSavedCode?assignmentId=${assignmentId}&studentId=${studentId}`);
-            const text = await response.text();
-            return text || baseCode;
-        } catch (error) {
-            console.error('Error:', error);
-            return baseCode;
-        }
-    }
-
-    function handleKeyPress(event) {
-        if (event.key === 'Enter') {
-            const inputLine = document.getElementById('input-line');
-            const outputElement = document.getElementById('output');
-            const input = inputLine.value;
-            inputs.push(input);
-            outputElement.innerText += `\n$ ${input}`;
-            inputLine.value = '';
-        }
-    }
-
-    async function submitCode() {
-        const code = window.editor.getValue();
-        const lastSavedDate = new Date(); // 현재 시간을 lastSavedDate로 사용
-
-        try {
-            const response = await fetch('/api/submit', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    assignmentId: assignmentId,
-                    studentId: studentId,
-                    code: code,
-                    language: language,
-                    lastSavedDate: lastSavedDate.toISOString(), // ISO 형식으로 전송
-                    passCount: passedTestCases
-                })
-            });
-            if (!response.ok) {
+        async function getSavedCode() {
+            try {
+                const response = await fetch(`/api/getSavedCode?assignmentId=${assignmentId}&studentId=${studentId}`);
                 const text = await response.text();
-                throw new Error(text);
+
+                if (text === 'No saved code found') {
+                    return baseCode;
+                }
+
+                return text || baseCode;
+            } catch (error) {
+                console.error('Error:', error);
+                return baseCode;
             }
-            const data = await response.json();
-            alert('제출 성공!');
-        } catch (error) {
-            console.error('Error:', error);
-            alert('제출 실패!\n' + error.message);
         }
-    }
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                const inputLine = document.getElementById('input-line');
+                const outputElement = document.getElementById('output');
+                const input = inputLine.value;
+                inputs.push(input);
+                outputElement.innerText += `\n$ ${input}`;
+                inputLine.value = '';
+            }
+        }
 
+        async function submitCode() {
+            const code = window.editor.getValue();
+            const lastSavedDate = new Date();
 
-    function showProblemStatement() {
-        document.getElementById('problem-statement').style.display = 'block';
-        document.getElementById('console').style.display = 'none';
-        document.getElementById('problem-btn').classList.add('active');
-        document.getElementById('console-btn').classList.remove('active');
-    }
+            try {
+                const response = await fetch('/api/submit', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        assignmentId: assignmentId,
+                        studentId: studentId,
+                        code: code,
+                        language: language,
+                        lastSavedDate: lastSavedDate.toISOString(),
+                        passCount: passedTestCases
+                    })
+                });
+                if (!response.ok) {
+                    const text = await response.text();
+                    throw new Error(text);
+                }
+                const data = await response.json();
+                alert('제출 성공!');
+            } catch (error) {
+                console.error('Error:', error);
+                alert('제출 실패!\n' + error.message);
+            }
+        }
 
-    function showConsole() {
-        document.getElementById('problem-statement').style.display = 'none';
-        document.getElementById('console').style.display = 'block';
-        document.getElementById('console-btn').classList.add('active');
-        document.getElementById('problem-btn').classList.remove('active');
-    }
+        function showProblemStatement() {
+            document.getElementById('problem-statement').style.display = 'block';
+            document.getElementById('console').style.display = 'none';
+            document.getElementById('problem-btn').classList.add('active');
+            document.getElementById('console-btn').classList.remove('active');
+        }
 
-    function showDetails(button) {
-        const student = button.getAttribute('data-student');
-        const result = button.getAttribute('data-result');
-        const submittedAt = button.getAttribute('data-submittedat');
-        const code = button.getAttribute('data-code');
-        const passCount = button.getAttribute('data-passcount');
-        const totalCount = button.getAttribute('data-totalcount');
+        function showConsole() {
+            document.getElementById('problem-statement').style.display = 'none';
+            document.getElementById('console').style.display = 'block';
+            document.getElementById('console-btn').classList.add('active');
+            document.getElementById('problem-btn').classList.remove('active');
+        }
 
-        document.getElementById('studentName').innerText = student;
-        document.getElementById('result').innerText = result;
-        document.getElementById('submittedAt').innerText = submittedAt;
-        document.getElementById('code').textContent = code;
-        document.getElementById('testCase').textContent = passCount + "/" + totalCount;
+        function showDetails(button) {
+            const student = button.getAttribute('data-student');
+            const result = button.getAttribute('data-result');
+            const submittedAt = button.getAttribute('data-submittedat');
+            const code = button.getAttribute('data-code');
+            const passCount = button.getAttribute('data-passcount');
+            const totalCount = button.getAttribute('data-totalcount');
 
-        // Apply syntax highlighting
-        Prism.highlightAll();
+            document.getElementById('studentName').innerText = student;
+            document.getElementById('result').innerText = result;
+            document.getElementById('submittedAt').innerText = submittedAt;
+            document.getElementById('code').textContent = code;
+            document.getElementById('testCase').textContent = passCount + "/" + totalCount;
 
-        $('#detailsModal').modal('show');
-    }
+            Prism.highlightAll();
 
-    function showLoadingSpinner(selector) {
-        const button = document.querySelector(selector);
-        button.disabled = true;
-        button.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...';
-    }
+            $('#detailsModal').modal('show');
+        }
 
-    function hideLoadingSpinner(selector) {
-        const button = document.querySelector(selector);
-        button.disabled = false;
-        button.innerHTML = button.classList.contains('btn-success') ? 'Run' : 'TestCase';
-    }
+        function showLoadingSpinner(selector) {
+            const button = document.querySelector(selector);
+            button.disabled = true;
+            button.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...';
+        }
 
-    document.addEventListener('DOMContentLoaded', () => {
-        const markdownDescription = document.getElementById('description').getAttribute('data-description');
-        document.getElementById('description').innerHTML = marked.parse(markdownDescription);
-        showProblemStatement();
-    });
-</script>
-<div th:replace="~{fragments :: footer}"></div>
-<div th:replace="~{fragments :: scripts}"></div>
+        function hideLoadingSpinner(selector) {
+            const button = document.querySelector(selector);
+            button.disabled = false;
+            button.innerHTML = button.classList.contains('btn-success') ? 'Run' : 'TestCase';
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const markdownDescription = document.getElementById('description').getAttribute('data-description');
+            document.getElementById('description').innerHTML = marked.parse(markdownDescription);
+            showProblemStatement();
+        });
+    </script>
+    <div th:replace="~{fragments :: footer}"></div>
+    <div th:replace="~{fragments :: scripts}"></div>
 </body>
 </html>

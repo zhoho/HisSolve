@@ -1,40 +1,39 @@
 package com.example.newhisolve.Service;
 
 import com.example.newhisolve.Model.TestCase;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class CompilerService {
 
-    public String compileAndRun(Long assignmentId, String code, String language, List<TestCase> testCases) {
+    public List<Map<String, String>> compileAndRun(Long assignmentId, String code, String language, List<TestCase> testCases) {
+        List<Map<String, String>> results = new ArrayList<>();
         try {
-            // 임시 디렉토리 생성
             File tempDir = new File("tempDir");
             if (!tempDir.exists()) {
                 tempDir.mkdir();
             }
 
-            // 임시 파일 생성 및 저장
             String fileName = "TempCode";
             String fileExtension = getFileExtension(language);
             String filePath = tempDir.getAbsolutePath() + "/" + fileName + fileExtension;
 
-            // 코드 파일로 저장
             saveCodeToFile(filePath, code);
             System.out.println("Code saved to file: " + filePath);
 
-            // Docker 명령어 실행
             String dockerImage = getDockerImage(language);
             String command = getDockerCommand(language, fileName + fileExtension, tempDir.getAbsolutePath());
 
-            // 결과 변수
-            StringBuilder results = new StringBuilder();
             int testCount = 0;
             for (TestCase testCase : testCases) {
-                testCount ++; //test case count up
+                testCount++;
                 System.out.println("Executing command: " + command);
 
                 ProcessBuilder processBuilder = new ProcessBuilder("sh", "-c", command);
@@ -56,58 +55,27 @@ public class CompilerService {
                     output.append(line).append("\n");
                 }
                 reader.close();
-
                 process.waitFor();
 
                 String actualInput = testCase.getInput();
                 String actualOutput = output.toString().trim().replaceAll("\\s+", "");
                 String expectedOutput = testCase.getExpectedOutput().trim().replaceAll("\\s+", "");
 
-
-                // 디버깅 출력 추가
-                System.out.println("Test Case - Input: " + testCase.getInput());
-                System.out.println("Expected Output: " + expectedOutput);
-                System.out.println("Actual Output: " + actualOutput);
-
-
-                if (actualOutput.equals(expectedOutput)) {
-                    results.append("테스트 ").append(testCount).append(" - 통과\n")
-                            .append("---------------\n")
-                            .append("입력값:\n")
-                            .append(actualInput).append("\n")
-                            .append("---------------\n")
-                            .append("기댓값:\n")
-                            .append(testCase.getExpectedOutput()).append("\n")
-                            .append("---------------\n")
-                            .append("실행 결과:\n")
-                            .append(output.toString().trim()).append("\n")
-                            .append("---------------\n")
-                            .append("실행 결과가 기댓값과 일치합니다!\n")
-                            .append("=================================\n");
-                } else {
-                    results.append("테스트 ").append(testCount).append(" - 실패\n")
-                            .append("---------------\n")
-                            .append("입력값:\n")
-                            .append(actualInput).append("\n")
-                            .append("---------------\n")
-                            .append("기댓값:\n")
-                            .append(testCase.getExpectedOutput()).append("\n")
-                            .append("---------------\n")
-                            .append("실행 결과:\n")
-                            .append(output.toString().trim()).append("\n")
-                            .append("---------------\n")
-                            .append("실행 결과가 기댓값과 다릅니다!\n")
-                            .append("=================================\n");
-                }
+                Map<String, String> result = new HashMap<>();
+                result.put("testNumber", "테스트 " + testCount);
+                result.put("status", actualOutput.equals(expectedOutput) ? "통과" : "실패");
+                result.put("input", actualInput);
+                result.put("expectedOutput", testCase.getExpectedOutput());
+                result.put("actualOutput", output.toString().trim());
+                results.add(result);
             }
             deleteDirectory(tempDir);
-
-            return results.toString();
         } catch (Exception e) {
             e.printStackTrace();
-            return "Error: " + e.getMessage();
         }
+        return results;
     }
+
 
     public String runCode(String code, String language) {
         return runCodeWithInput(code, language, null);

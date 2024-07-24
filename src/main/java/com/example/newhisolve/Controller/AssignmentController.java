@@ -15,7 +15,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -72,7 +71,7 @@ public class AssignmentController {
             descriptionWithTestCases.append("  <div style=\"flex: 1; padding: 10px; border: 1px solid #ccc; margin-right: 10px;\">\n");
             descriptionWithTestCases.append("    <pre>").append(inputs.get(i)).append("</pre>\n");
             descriptionWithTestCases.append("  </div>\n");
-            descriptionWithTestCases.append("\n#### 예제 출력 ").append(i + 1).append(":\n");
+            descriptionWithTestCases.append("#### 예제 출력 ").append(i + 1).append(":\n");
             descriptionWithTestCases.append("  <div style=\"flex: 1; padding: 10px; border: 1px solid #ccc;\">\n");
             descriptionWithTestCases.append("    <pre>").append(outputs.get(i)).append("</pre>\n");
             descriptionWithTestCases.append("  </div>\n");
