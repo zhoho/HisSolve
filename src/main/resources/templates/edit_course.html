@@ -62,11 +62,11 @@
                     <button type="submit" class="btn btn-lightblue">Save</button>
                     <a th:href="@{/professor_course/{courseId}(courseId=${course.id})}" class="btn btn-lightblue">Cancel</a>
                 </div>
-                <form th:action="@{/course/delete}" method="post" onsubmit="return confirm('Are you sure you want to delete this course?');">
-                    <input type="hidden" name="courseId" th:value="${course.id}">
-                    <button type="submit" class="btn btn-danger">Delete</button>
-                </form>
             </div>
+        </form>
+        <form th:action="@{/course/delete}" method="post" onsubmit="return confirm('Are you sure you want to delete this course?');">
+            <input type="hidden" name="courseId" th:value="${course.id}">
+            <button type="submit" class="btn btn-danger">Delete</button>
         </form>
     </div>
 </div>
