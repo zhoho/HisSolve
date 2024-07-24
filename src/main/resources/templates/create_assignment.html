@@ -201,27 +201,21 @@
 
   let caseCount = 1;
   document.getElementById('addCaseBtn').addEventListener('click', function () {
-    const inputCase = "Input case";
-    const outputCase = "Output case";
-
     caseCount++;
     const testCaseDiv = document.createElement('div');
     testCaseDiv.className = 'form-group row align-items-center';
     testCaseDiv.innerHTML = `
       <div class="col-md-5">
-        <textarea class="form-control" name="inputCase${caseCount}" placeholder="Input case">${inputCase}</textarea>
+        <textarea class="form-control" name="inputCase${caseCount}" placeholder="Input case"></textarea>
       </div>
       <div class="col-md-5">
-        <textarea class="form-control" name="outputCase${caseCount}" placeholder="Output case">${outputCase}</textarea>
+        <textarea class="form-control" name="outputCase${caseCount}" placeholder="Output case"></textarea>
       </div>
       <div class="col-md-2 text-center">
         <button type="button" class="delete-btn" onclick="removeTestCase(this)"><i class="fas fa-trash-alt"></i></button>
       </div>
     `;
     document.getElementById('testCasesContainer').appendChild(testCaseDiv);
-
-    document.getElementById('inputCase').value = '';
-    document.getElementById('outputCase').value = '';
   });
 
   function removeTestCase(button) {
@@ -230,6 +224,7 @@
       testCaseDiv.parentElement.removeChild(testCaseDiv);
     }
   }
+
 </script>
 </body>
 </html>
