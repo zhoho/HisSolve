@@ -62,8 +62,14 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public void updateCourse(Course course) {
-        courseRepository.save(course);
+        // 기존 강의를 데이터베이스에서 불러와서 수정사항을 반영
+        Course existingCourse = courseRepository.findById(course.getId())
+                .orElseThrow(() -> new RuntimeException("Course not found"));
+        existingCourse.setName(course.getName());
+        existingCourse.setDescription(course.getDescription());
+        courseRepository.save(existingCourse);
     }
+
     @Override
     public List<Course> findCoursesByProfessor(User professor) {
         return courseRepository.findByProfessor(professor);

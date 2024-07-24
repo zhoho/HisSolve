@@ -128,10 +128,11 @@ public class AssignmentController {
             model.addAttribute("assignment", assignment);
             model.addAttribute("course", assignment.getCourse());
             model.addAttribute("testCases", assignment.getTestCases());
-            return "edit_assignment";  // 새로 만들 수정 페이지 템플릿
+            return "edit_assignment";
         }
         return "redirect:/dashboard";
     }
+
 
     @PostMapping("/assignment/update")
     @PreAuthorize("hasRole('PROFESSOR')")

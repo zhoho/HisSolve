@@ -1,10 +1,8 @@
 package com.example.newhisolve.Controller;
 
 import com.example.newhisolve.Model.Course;
-import com.example.newhisolve.Model.User;
 import com.example.newhisolve.Service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -48,8 +46,6 @@ public class CourseController {
         return "course_detail";
     }
 
-
-
     @GetMapping("/professor_course/{id}")
     public String viewProfessorCourse(@PathVariable Long id, Model model) {
         Course courseEntity = courseService.findById(id);
@@ -63,5 +59,25 @@ public class CourseController {
     public String removeStudent(@RequestParam Long courseId, @RequestParam Long studentId) {
         courseService.removeStudentFromCourse(courseId, studentId);
         return "redirect:/professor_course/" + courseId;
+    }
+
+    @GetMapping("/course/edit")
+    public String editCourse(@RequestParam Long courseId, Model model) {
+        Course courseEntity = courseService.findById(courseId);
+        model.addAttribute("course", courseEntity);
+        return "edit_course";
+    }
+
+    @PostMapping("/course/edit")
+    public String updateCourse(@ModelAttribute Course course) {
+        courseService.updateCourse(course);
+        return "redirect:/professor_course/" + course.getId();
+    }
+
+    @PostMapping("/course/delete")
+    public String deleteCourse(@RequestParam Long courseId) {
+        Course course = courseService.findById(courseId);
+        courseService.deleteCourse(course);
+        return "redirect:/dashboard";
     }
 }

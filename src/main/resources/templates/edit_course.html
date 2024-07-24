@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Edit Classroom</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link th:href="@{/css/styles.css}" rel="stylesheet">
+    <style>
+        body {
+            background-color: #edf2f4;
+        }
+        .main-container {
+            background-color: #f3f5fa;
+            border: 1px solid #dfdfff;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 10px;
+        }
+        .btn-lightblue {
+            background-color: #47b2e4;
+            border: 0;
+            color: #fff;
+            transition: 0.4s;
+            border-radius: 50px;
+            padding: 0.5rem 1rem;
+            font-size: 1rem;
+            margin: 20px 0;
+        }
+        .btn-lightblue:hover {
+            background-color: #138496;
+            text-decoration: none;
+            color: white;
+        }
+        .btn-danger {
+            border-radius: 50px;
+            padding: 0.5rem 1rem;
+            font-size: 1rem;
+        }
+    </style>
+</head>
+<body>
+<div th:replace="~{fragments :: nav}"></div>
+
+<div class="container mt-1">
+    <div class="main-container">
+        <h2>Edit Classroom</h2>
+        <form th:action="@{/course/edit}" method="post">
+            <input type="hidden" name="id" th:value="${course.id}">
+            <div class="form-group">
+                <label for="courseName">Class Name</label>
+                <input type="text" class="form-control" id="courseName" name="name" th:value="${course.name}" required>
+            </div>
+            <div class="form-group">
+                <label for="courseDescription">Class Description</label>
+                <textarea class="form-control" id="courseDescription" name="description" rows="3" required th:text="${course.description}"></textarea>
+            </div>
+            <div class="d-flex justify-content-between">
+                <div>
+                    <button type="submit" class="btn btn-lightblue">Save</button>
+                    <a th:href="@{/professor_course/{courseId}(courseId=${course.id})}" class="btn btn-lightblue">Cancel</a>
+                </div>
+                <form th:action="@{/course/delete}" method="post" onsubmit="return confirm('Are you sure you want to delete this course?');">
+                    <input type="hidden" name="courseId" th:value="${course.id}">
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Footer -->
+<div th:replace="~{fragments :: footer}"></div>
+
+<!-- Bootstrap JS and dependencies -->
+<div th:replace="~{fragments :: scripts}"></div>
+</body>
+</html>
