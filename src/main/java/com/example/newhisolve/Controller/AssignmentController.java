@@ -15,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,7 +48,11 @@ public class AssignmentController {
     }
 
     @PostMapping("/assignment/create")
-    public String createAssignment(@ModelAttribute Assignment assignment, @RequestParam Long courseId, @RequestParam List<String> inputs, @RequestParam List<String> outputs, Principal principal) {
+    public String createAssignment(@ModelAttribute Assignment assignment,
+                                   @RequestParam Long courseId,
+                                   @RequestParam List<String> inputs,
+                                   @RequestParam List<String> outputs,
+                                   Principal principal) {
         User user = userService.findByUsername(principal.getName());
         if (!user.getRole().equals("PROFESSOR")) {
             return "redirect:/dashboard";
@@ -74,6 +79,7 @@ public class AssignmentController {
             descriptionWithTestCases.append("</div>\n");
         }
 
+        assignment.setTestcaseCount(String.valueOf(inputs.size()));
         assignment.setTestCases(testCases);
         assignment.setDescription(descriptionWithTestCases.toString());
 
@@ -85,6 +91,8 @@ public class AssignmentController {
 
         return "redirect:/professor_course/" + courseId;
     }
+
+
 
     @GetMapping("/assignment/{id}")
     public String SolveAssignment(@PathVariable Long id, Principal principal) {
@@ -128,11 +136,10 @@ public class AssignmentController {
             model.addAttribute("assignment", assignment);
             model.addAttribute("course", assignment.getCourse());
             model.addAttribute("testCases", assignment.getTestCases());
-            return "edit_assignment";
+            return "edit_assignment";  // 새로 만들 수정 페이지 템플릿
         }
         return "redirect:/dashboard";
     }
-
 
     @PostMapping("/assignment/update")
     @PreAuthorize("hasRole('PROFESSOR')")
