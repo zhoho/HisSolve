@@ -12,13 +12,38 @@
             background-color: #EBECED;
             overflow: auto; /* Enable scrolling */
         }
-        .outer-container {
-            background-color: #f0f0f0;
+        .course-banner {
+            background: linear-gradient(to right, #37517e, #000000);
+            color: white;
+            padding: 30px; /* 배너 높이를 적절하게 조정 */
             border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            margin-top: -10px; /* 상단바와의 간격을 줄이기 위해 마진을 조정 */
+        }
+        .course-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+        .course-header h1, .course-header .course-code {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        .outer-container {
+            background-color: #F3F5FA;
             padding: 20px;
             margin: 20px auto;
             width: 80%;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border: 1px solid #dfdfff;
+        }
+        .basic-container {
+            padding-right: 20px;
+            padding-left: 20px;
+            padding-top: 10px;
+            margin: 20px auto;
+            width: 80%;
         }
         .container-fluid {
             display: flex;
@@ -151,6 +176,21 @@
         .btn-third:hover {
             background-color: #5a6268;
         }
+        .back-button {
+            background-color: #47b2e4;
+            border: 0;
+            color: #fff;
+            transition: 0.4s;
+            border-radius: 50px;
+            padding: 0.5rem 1rem;
+            font-size: 1rem;
+            margin: 20px 0;
+        }
+        .back-button:hover {
+            background-color: #138496;
+            text-decoration: none;
+            color: white;
+        }
     </style>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
@@ -163,7 +203,21 @@
 </head>
 <body th:attr="data-student-id=${student.id}">
 <div th:replace="~{fragments :: nav}"></div>
-<div class="outer-container">
+<div class="basic-container">
+    <div class="course-banner">
+        <div class="course-header">
+            <h1 th:text="${assignment.title}"></h1>
+            <div class="course-code">
+                <p>마감 기한: <span th:text="${assignment.dueDate}"></span></p>
+            </div>
+        </div>
+<!--        <div class="course-description">-->
+<!--            <p th:text="${course.description}"></p>-->
+<!--        </div>-->
+    </div>
+    <a href="#" class="back-button" onclick="window.history.back(); return false;"><i class="bi bi-arrow-left"></i> Back to dashboard</a>
+</div>
+    <div class="outer-container">
     <div class="btn-container">
         <button class="btn btn-success btn-run" onclick="runCode()">Run</button>
         <button class="btn btn-primary" onclick="compileCode()">TestCase</button>
@@ -252,8 +306,6 @@
             </div>
         </div>
     </div>
-</div>
-
 <script>
     const urlParams = new URLSearchParams(window.location.search);
     const assignmentId = urlParams.get('assignmentId');

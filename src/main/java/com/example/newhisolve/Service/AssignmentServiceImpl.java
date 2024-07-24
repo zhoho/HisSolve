@@ -27,6 +27,7 @@ public class AssignmentServiceImpl implements AssignmentService {
         Course course = courseRepository.findById(courseId).orElseThrow(() -> new RuntimeException("Course not found"));
         assignment.setCourse(course);
         assignment.setCreateDate(LocalDateTime.now());
+        assignment.setLastModifiedDate(LocalDateTime.now());
         assignment.getDueDate();
         assignmentRepository.save(assignment);
         return assignmentRepository.save(assignment);
