@@ -89,7 +89,6 @@
     <div class="d-flex justify-content-between my-3">
         <a th:href="@{/professor_course/{courseId}(courseId=${assignment.course.id})}" class="btn btn-lightblue"><i class="fas fa-arrow-left"></i> Back to classroom</a>
         <div>
-            <a th:href="@{/assignment/archive(assignmentId=${assignment.id})}" class="btn btn-lightblue"><i class="fas fa-archive"></i> Archive</a>
             <a th:href="@{/assignment/edit(assignmentId=${assignment.id})}" class="btn btn-lightblue"><i class="fas fa-edit"></i> Edit assignment</a>
         </div>
     </div>
@@ -97,12 +96,7 @@
     <div class="main-container">
         <div class="assignment-details">
             <h3 th:text="${assignment.title}"></h3>
-            <p th:utext="${assignment.description}"></p>
-<!--            <h4>Test Cases</h4>-->
-<!--            <div th:each="testCase : ${assignment.testCases}">-->
-<!--                <p><strong>Input:</strong> <span th:text="${testCase.input}"></span></p>-->
-<!--                <p><strong>Output:</strong> <span th:text="${testCase.expectedOutput}"></span></p>-->
-<!--            </div>-->
+            <div id="description" th:attr="data-description=${assignment.description}"></div>
         </div>
 
         <div class="submissions-table">
@@ -141,5 +135,13 @@
 
 <!-- Bootstrap JS and dependencies -->
 <div th:replace="~{fragments :: scripts}"></div>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const descriptionElement = document.getElementById('description');
+        const markdownDescription = descriptionElement.getAttribute('data-description');
+        descriptionElement.innerHTML = marked.parse(markdownDescription);
+    });
+</script>
 </body>
 </html>
