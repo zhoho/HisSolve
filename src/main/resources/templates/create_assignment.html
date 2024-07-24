@@ -145,11 +145,11 @@
           <div class="form-group row align-items-center">
             <div class="col-md-5">
               <label class="font-weight-bold">Input Cases</label>
-              <textarea class="form-control" name="inputs" placeholder="Input case"></textarea>
+              <textarea class="form-control" name="inputs[]" placeholder="Input case"></textarea>
             </div>
             <div class="col-md-5">
               <label class="font-weight-bold">Output Cases</label>
-              <textarea class="form-control" name="outputs" placeholder="Output case"></textarea>
+              <textarea class="form-control" name="outputs[]" placeholder="Output case"></textarea>
             </div>
             <div class="col-md-2 text-center">
               <button type="button" class="delete-btn" onclick="removeTestCase(this)"><i class="fas fa-trash-alt"></i></button>
@@ -206,10 +206,10 @@
     testCaseDiv.className = 'form-group row align-items-center';
     testCaseDiv.innerHTML = `
       <div class="col-md-5">
-        <textarea class="form-control" name="inputCase${caseCount}" placeholder="Input case"></textarea>
+        <textarea class="form-control" name="inputs[]" placeholder="Input case"></textarea>
       </div>
       <div class="col-md-5">
-        <textarea class="form-control" name="outputCase${caseCount}" placeholder="Output case"></textarea>
+        <textarea class="form-control" name="outputs[]" placeholder="Output case"></textarea>
       </div>
       <div class="col-md-2 text-center">
         <button type="button" class="delete-btn" onclick="removeTestCase(this)"><i class="fas fa-trash-alt"></i></button>
@@ -224,7 +224,6 @@
       testCaseDiv.parentElement.removeChild(testCaseDiv);
     }
   }
-
 </script>
 </body>
 </html>
