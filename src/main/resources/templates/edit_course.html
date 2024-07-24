@@ -62,7 +62,10 @@
                     <button type="submit" class="btn btn-lightblue">Save</button>
                     <a th:href="@{/professor_course/{courseId}(courseId=${course.id})}" class="btn btn-lightblue">Cancel</a>
                 </div>
-                <button type="button" class="btn btn-danger" th:onclick="'deleteCourse(' + ${course.id} + ')'">Delete</button>
+                <form th:action="@{/course/delete}" method="post" onsubmit="return confirm('Are you sure you want to delete this course?');">
+                    <input type="hidden" name="courseId" th:value="${course.id}">
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
             </div>
         </form>
     </div>
@@ -73,25 +76,5 @@
 
 <!-- Bootstrap JS and dependencies -->
 <div th:replace="~{fragments :: scripts}"></div>
-<script>
-    function deleteCourse(courseId) {
-        if (confirm("Are you sure you want to delete this course?")) {
-            fetch('/course/delete', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ courseId: courseId })
-            })
-                .then(response => {
-                    if (response.ok) {
-                        window.location.href = '/dashboard';
-                    } else {
-                        alert('Failed to delete course.');
-                    }
-                });
-        }
-    }
-</script>
 </body>
 </html>
