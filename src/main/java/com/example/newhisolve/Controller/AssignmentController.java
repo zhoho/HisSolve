@@ -15,6 +15,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,11 +54,15 @@ public class AssignmentController {
                                    @RequestParam Long courseId,
                                    @RequestParam List<String> inputs,
                                    @RequestParam List<String> outputs,
+                                   @RequestParam("dueDate") String dueDate,
                                    Principal principal) {
         User user = userService.findByUsername(principal.getName());
         if (!user.getRole().equals("PROFESSOR")) {
             return "redirect:/dashboard";
         }
+
+        LocalDateTime localDateTime = LocalDateTime.parse(dueDate);
+        assignment.setDueDate(localDateTime);
 
         List<TestCase> testCases = new ArrayList<>();
         StringBuilder descriptionWithTestCases = new StringBuilder(assignment.getDescription()).append("\n\n --- \n");
@@ -115,8 +122,7 @@ public class AssignmentController {
     @PreAuthorize("hasRole('PROFESSOR')")
     public String deleteAssignment(@PathVariable Long id, Principal principal) {
         User user = userService.findByUsername(principal.getName());
-        //교수 처리
-        if(!user.getRole().equals("PROFESSOR")) {
+        if (!user.getRole().equals("PROFESSOR")) {
             return "redirect:/dashboard";
         }
         Assignment assignment = assignmentService.findById(id);
@@ -140,18 +146,22 @@ public class AssignmentController {
         return "edit_assignment";
     }
 
-
     @PostMapping("/assignment/update")
     @PreAuthorize("hasRole('PROFESSOR')")
     public String updateAssignment(@ModelAttribute Assignment assignment,
                                    @RequestParam Long courseId,
                                    @RequestParam List<String> inputs,
                                    @RequestParam List<String> outputs,
+                                   @RequestParam("dueDate") String dueDate,
                                    Principal principal) {
         User user = userService.findByUsername(principal.getName());
         if (!user.getRole().equals("PROFESSOR")) {
             return "redirect:/dashboard";
         }
+
+        LocalDateTime localDateTime = LocalDateTime.parse(dueDate);
+        ZonedDateTime zonedDateTime = localDateTime.atZone(ZoneId.of("Asia/Seoul")).withZoneSameInstant(ZoneId.of("UTC"));
+        assignment.setDueDate(zonedDateTime.toLocalDateTime());
 
         List<TestCase> testCases = new ArrayList<>();
         StringBuilder descriptionWithTestCases = new StringBuilder(assignment.getDescription()).append("\n\n --- \n");
@@ -187,7 +197,6 @@ public class AssignmentController {
         return "redirect:/professor_course/" + courseId;
     }
 
-
     @GetMapping("/professor_assignment_detail/{id}")
     @PreAuthorize("hasRole('PROFESSOR')")
     public String detailAsignment(@PathVariable Long id, Principal principal, Model model) {
@@ -198,8 +207,6 @@ public class AssignmentController {
         model.addAttribute("user", user);
         model.addAttribute("course", course);
         model.addAttribute("submissions", assignmentService.findSubmissionsByAssignment(assignment));
-//        return "redirect:/professor_assignment_detail/" + course.getId();
         return "professor_assignment_detail";
-
     }
 }
