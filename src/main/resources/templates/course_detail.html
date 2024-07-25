@@ -14,11 +14,11 @@
     .course-banner {
       background: linear-gradient(to right, #37517e, #000000);
       color: white;
-      padding: 30px; /* 배너 높이를 적절하게 조정 */
+      padding: 30px;
       border-radius: 10px;
       display: flex;
       flex-direction: column;
-      margin-top: -10px; /* 상단바와의 간격을 줄이기 위해 마진을 조정 */
+      margin-top: -10px;
     }
     .course-header {
       display: flex;
@@ -53,10 +53,10 @@
       border: 1px solid #dfdfff;
       padding: 20px;
       margin-top: 20px;
-      border-radius: 10px; /* 테두리 둥글게 */
+      border-radius: 10px;
     }
     .assignment-container h2 {
-      margin-bottom: 30px; /* 원하는 간격으로 설정 */
+      margin-bottom: 30px;
     }
     .assignment-card {
       background-color: white;
@@ -84,7 +84,7 @@
 <!-- Navigation Bar -->
 <div th:replace="~{fragments :: nav}"></div>
 
-<div class="container mt-1"> <!-- 상단바와의 간격을 줄이기 위해 mt-2에서 mt-1로 수정 -->
+<div class="container mt-1">
   <div class="course-banner">
     <div class="course-header">
       <h1 th:text="${course.name}"></h1>
@@ -110,7 +110,7 @@
               <h5 class="card-title">
                 <a th:href="@{/assignment/{id}(id=${assignment.id})}" class="text-primary" th:text="${assignment.title}" style="color: #37517e;"></a>
               </h5>
-              <p class="card-text" th:text="'Due: ' + ${assignment.dueDate}"></p>
+              <p class="card-text due-date" th:text="'Due: ' + ${assignment.dueDate}"></p>
             </div>
           </div>
         </div>
@@ -124,5 +124,23 @@
 
 <!-- Bootstrap JS and dependencies -->
 <div th:replace="~{fragments :: scripts}"></div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const dueDates = document.querySelectorAll('.due-date');
+    const now = new Date();
+
+    dueDates.forEach(function (dueDate) {
+      const dateText = dueDate.textContent.replace('Due: ', '').trim();
+      const dueDateObject = new Date(dateText);
+
+      if (dueDateObject < now) {
+        dueDate.classList.add('text-danger');
+      } else {
+        dueDate.classList.add('text-success');
+      }
+    });
+  });
+</script>
 </body>
 </html>
