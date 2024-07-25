@@ -79,6 +79,7 @@ public class AssignmentServiceImpl implements AssignmentService {
     }
 
     @Override
+    @Transactional
     public void updateAssignment(Assignment assignment, Long courseId) {
         Assignment existingAssignment = assignmentRepository.findById(assignment.getId()).orElseThrow();
         existingAssignment.setTitle(assignment.getTitle());

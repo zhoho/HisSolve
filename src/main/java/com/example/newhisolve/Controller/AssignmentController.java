@@ -130,33 +130,63 @@ public class AssignmentController {
     @PreAuthorize("hasRole('PROFESSOR')")
     public String showEditAssignmentForm(@PathVariable Long id, Model model, Principal principal) {
         User user = userService.findByUsername(principal.getName());
-        if (user.getRole().equals("PROFESSOR")) {
-            Assignment assignment = assignmentService.findById(id);
-            model.addAttribute("assignment", assignment);
-            model.addAttribute("course", assignment.getCourse());
-            model.addAttribute("testCases", assignment.getTestCases());
-            return "edit_assignment";  // 새로 만들 수정 페이지 템플릿
+        if (!user.getRole().equals("PROFESSOR")) {
+            return "redirect:/dashboard";
         }
-        return "redirect:/dashboard";
+        Assignment assignment = assignmentService.findById(id);
+        model.addAttribute("assignment", assignment);
+        model.addAttribute("course", assignment.getCourse());
+        model.addAttribute("testCases", assignment.getTestCases());
+        return "edit_assignment";
     }
+
 
     @PostMapping("/assignment/update")
     @PreAuthorize("hasRole('PROFESSOR')")
-    public String updateAssignment(@ModelAttribute Assignment assignment, @RequestParam Long courseId, Principal principal) {
+    public String updateAssignment(@ModelAttribute Assignment assignment,
+                                   @RequestParam Long courseId,
+                                   @RequestParam List<String> inputs,
+                                   @RequestParam List<String> outputs,
+                                   Principal principal) {
         User user = userService.findByUsername(principal.getName());
-        if (user.getRole().equals("PROFESSOR")) {
-//            List<TestCase> testCases = new ArrayList<>();
-//            for (int i = 0; i < inputs.size(); i++) {
-//                TestCase testCase = new TestCase();
-//                testCase.setInput(inputs.get(i));
-//                testCase.setExpectedOutput(outputs.get(i));
-//                testCases.add(testCase);
-//            }
-//            assignment.setTestCases(testCases);
-            assignmentService.updateAssignment(assignment, courseId);
+        if (!user.getRole().equals("PROFESSOR")) {
+            return "redirect:/dashboard";
         }
+
+        List<TestCase> testCases = new ArrayList<>();
+        StringBuilder descriptionWithTestCases = new StringBuilder(assignment.getDescription()).append("\n\n --- \n");
+
+        for (int i = 0; i < inputs.size(); i++) {
+            TestCase testCase = new TestCase();
+            testCase.setInput(inputs.get(i));
+            testCase.setExpectedOutput(outputs.get(i));
+            testCases.add(testCase);
+
+            descriptionWithTestCases.append("\n#### 예제 입력 ").append(i + 1).append(":\n");
+            descriptionWithTestCases.append("<div style=\"display: flex;\">\n");
+            descriptionWithTestCases.append("  <div style=\"flex: 1; padding: 10px; border: 1px solid #ccc; margin-right: 10px;\">\n");
+            descriptionWithTestCases.append("    <pre>").append(inputs.get(i)).append("</pre>\n");
+            descriptionWithTestCases.append("  </div>\n");
+            descriptionWithTestCases.append("\n#### 예제 출력 ").append(i + 1).append(":\n");
+            descriptionWithTestCases.append("  <div style=\"flex: 1; padding: 10px; border: 1px solid #ccc;\">\n");
+            descriptionWithTestCases.append("    <pre>").append(outputs.get(i)).append("</pre>\n");
+            descriptionWithTestCases.append("  </div>\n");
+            descriptionWithTestCases.append("</div>\n");
+        }
+
+        assignment.setTestcaseCount(String.valueOf(inputs.size()));
+        assignment.setTestCases(testCases);
+        assignment.setDescription(descriptionWithTestCases.toString());
+
+        assignmentService.updateAssignment(assignment, courseId);
+
+        for (TestCase testCase : assignment.getTestCases()) {
+            System.out.println("Test Case - Input: " + testCase.getInput() + ", Expected Output: " + testCase.getExpectedOutput());
+        }
+
         return "redirect:/professor_course/" + courseId;
     }
+
 
     @GetMapping("/professor_assignment_detail/{id}")
     @PreAuthorize("hasRole('PROFESSOR')")
