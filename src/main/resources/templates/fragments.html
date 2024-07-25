@@ -1,64 +1,3 @@
-<!--<!DOCTYPE html>-->
-<!--<html xmlns:th="http://www.thymeleaf.org">-->
-<!--<head>-->
-<!--    <title>Fragments</title>-->
-<!--    &lt;!&ndash; 공통 CSS 파일 참조 &ndash;&gt;-->
-<!--    <link th:href="@{/css/styles.css}" rel="stylesheet">-->
-<!--    &lt;!&ndash; Bootstrap CSS 파일 참조 &ndash;&gt;-->
-<!--    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">-->
-<!--    &lt;!&ndash; Font Awesome for icons &ndash;&gt;-->
-<!--    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">-->
-<!--</head>-->
-<!--<body>-->
-<!--&lt;!&ndash; Navigation Bar Fragment &ndash;&gt;-->
-<!--<nav th:fragment="nav">-->
-<!--    <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #37517e;">-->
-<!--        <div class="container">-->
-<!--            <a class="navbar-brand" href="/dashboard" style="color: #edf2f4;">Hisolve</a>-->
-<!--            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">-->
-<!--                <span class="navbar-toggler-icon"></span>-->
-<!--            </button>-->
-<!--            <div class="collapse navbar-collapse justify-content-center" id="navbarNav">-->
-<!--                <ul class="navbar-nav">-->
-<!--                    <li class="nav-item">-->
-<!--                        <a class="nav-link" href="/dashboard" style="color: #edf2f4;">Home</a>-->
-<!--                    </li>-->
-<!--                    <li class="nav-item">-->
-<!--                        <a class="nav-link" href="/help" style="color: #edf2f4;">Help</a>-->
-<!--                    </li>-->
-<!--                    <li class="nav-item" th:if="${user != null}">-->
-<!--                        <a class="nav-link" href="/profile" style="color: #edf2f4;">-->
-<!--                            <span th:text="${user.username} + '학부생'"></span>-->
-<!--                        </a>-->
-<!--                    </li>-->
-<!--                    <li class="nav-item">-->
-<!--                        <a class="nav-link" th:href="@{/logout}" style="color: #edf2f4;">-->
-<!--                            <img th:src="@{/img/logout.png}" alt="Logout Icon" style="width: 24px; height: 24px;"> Logout-->
-<!--                        </a>-->
-<!--                    </li>-->
-<!--                </ul>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </nav>-->
-<!--</nav>-->
-
-<!--&lt;!&ndash; Footer Fragment &ndash;&gt;-->
-<!--<footer th:fragment="footer">-->
-<!--    <footer class="text-center text-lg-start" style="background-color: #37517e;">-->
-<!--        <div class="text-center p-3 footer-text" style="color: #edf2f4;">-->
-<!--            © 2024 Porkmon walab.-->
-<!--        </div>-->
-<!--    </footer>-->
-<!--</footer>-->
-
-<!--&lt;!&ndash; Bootstrap JS and dependencies Fragment &ndash;&gt;-->
-<!--<script th:fragment="scripts">-->
-<!--    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>-->
-<!--<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>-->
-<!--<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>-->
-<!--</script>-->
-<!--</body>-->
-<!--</html>-->
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -89,10 +28,10 @@
                     </li>
                     <li class="nav-item" th:if="${user != null}">
                         <a class="nav-link" href="/profile" style="color: #edf2f4;">
-                            <span th:text="${user.username} + ' 학부생'"></span>
+                            <span th:text="${user.username} + ' ' + (${user.role} == 'PROFESSOR' ? '교수님' : '학부생')"></span>
                         </a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item" th:if="${user != null}">
                         <a class="nav-link" th:href="@{/logout}" style="color: #edf2f4;">
                             <img th:src="@{/img/logout.png}" alt="Logout Icon" style="width: 24px; height: 24px;"> Logout
                         </a>

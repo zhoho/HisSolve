@@ -89,7 +89,7 @@
     <div class="d-flex justify-content-between my-3">
         <a th:href="@{/professor_course/{courseId}(courseId=${assignment.course.id})}" class="btn btn-lightblue"><i class="fas fa-arrow-left"></i> Back to classroom</a>
         <div>
-            <a th:href="@{/assignment/edit(assignmentId=${assignment.id})}" class="btn btn-lightblue"><i class="fas fa-edit"></i> Edit assignment</a>
+            <a th:href="@{/assignment/edit/{id}(id=${assignment.id})}" class="btn btn-lightblue"><i class="fas fa-edit"></i> Edit assignment</a>
         </div>
     </div>
 
