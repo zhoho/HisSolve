@@ -26,13 +26,16 @@ public class GlobalControllerAdvice {
         }
 
         if ("anonymousUser".equals(username)) {
-            return null; // 또는 익명 사용자에 대한 기본 User 객체 반환
+            return null;
         }
 
         User user = userService.findByUsername(username);
         if (user == null) {
             throw new IllegalArgumentException("User not found: " + username);
         }
+
+        // 디버깅 로그 추가
+        System.out.println("Logged in user: " + user.getUsername() + ", Role: " + user.getRole());
 
         return user;
     }
