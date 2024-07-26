@@ -101,7 +101,8 @@ public class AssignmentController {
         User user = userService.findByUsername(principal.getName());
         model.addAttribute("assignment", assignment);
         model.addAttribute("user", user);
-        model.addAttribute("submissions", assignmentService.findSubmissionsByAssignment(assignment));
+        model.addAttribute("submissions", submissionService.findSubmissionsByAssignment(assignment));
+//        System.out.printf(submissionService.findByAssignmentAndStudent(assignment).toString());
         return "assignment_view";
     }
 
@@ -186,7 +187,7 @@ public class AssignmentController {
         model.addAttribute("assignment", assignment);
         model.addAttribute("user", user);
         model.addAttribute("course", course);
-        model.addAttribute("submissions", assignmentService.findSubmissionsByAssignment(assignment));
+        model.addAttribute("submissions", submissionService.findSubmissionsByAssignment(assignment));
 //        return "redirect:/professor_assignment_detail/" + course.getId();
         return "professor_assignment_detail";
 

@@ -163,7 +163,7 @@
                     </td>
                     <td th:text="${#temporals.format(submission.submittedAt, 'yyyy-MM-dd HH:mm:ss')}"></td>
                     <td><a th:href="@{/submission/view(id=${submission.id})}" class="btn btn-lightblue"><i class="fas fa-external-link-alt"></i></a></td>
-                    <td><button th:onclick="'deleteSubmission(' + ${submission.id} + ')'" class="btn btn-lightblue"><i class="fas fa-trash-alt"></i></button></td>
+                    <td><button type="button" class="btn btn-lightblue" onclick="deleteSubmission(this)" th:data-id="${submission.id}"><i class="fas fa-trash-alt"></i></button></td>
                 </tr>
                 </tbody>
             </table>
@@ -184,6 +184,26 @@
         const markdownDescription = descriptionElement.getAttribute('data-description');
         descriptionElement.innerHTML = marked.parse(markdownDescription);
     });
+
+    function deleteSubmission(button) {
+        const submissionId = button.getAttribute('data-id');
+        if (confirm('정말 삭제하시겠습니까?')) {
+            fetch(`/submission/delete/${submissionId}`, {
+                method: 'POST',
+            })
+                .then(response => {
+                    if (response.ok) {
+                        button.closest('tr').remove();
+                    } else {
+                        alert('Failed to delete submission.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred while deleting the submission.');
+                });
+        }
+    }
 </script>
 </body>
 </html>

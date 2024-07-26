@@ -132,4 +132,12 @@ public class SubmissionService {
     public Submission getSubmissionById(Long id) {
         return submissionRepository.findById(id).orElse(null);
     }
+
+    public List<Submission> findSubmissionsByAssignment(Assignment assignment) {
+        return submissionRepository.findByAssignment(assignment);
+    }
+
+    public void deleteSubmissionById(Long id) {
+        submissionRepository.deleteById(id);
+    }
 }

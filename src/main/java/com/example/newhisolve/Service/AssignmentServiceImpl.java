@@ -55,10 +55,7 @@ public class AssignmentServiceImpl implements AssignmentService {
         }
     }
 
-    @Override
-    public List<Submission> findSubmissionsByAssignment(Assignment assignment) {
-        return null;
-    }
+
     @Override
     public Assignment getAssignmentById(Long assignmentId) {
         Optional<Assignment> assignment = assignmentRepository.findById(assignmentId);

@@ -10,7 +10,6 @@ import java.util.List;
 public interface AssignmentService {
     Assignment createAssignment(Assignment assignment, Long courseId);
     Assignment findById(Long id);
-    List<Submission> findSubmissionsByAssignment(Assignment assignment);
 
     List<TestCase> getTestCasesForAssignment(Long assignmentId);
 
