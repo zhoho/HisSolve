@@ -103,7 +103,6 @@ public class AssignmentController {
     @PreAuthorize("hasRole('PROFESSOR')")
     public String deleteAssignment(@PathVariable Long id, Principal principal) {
         User user = userService.findByUsername(principal.getName());
-        //교수 처리
         if(!user.getRole().equals("PROFESSOR")) {
             return "redirect:/dashboard";
         }

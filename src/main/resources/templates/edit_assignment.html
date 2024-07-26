@@ -46,6 +46,18 @@
       text-decoration: none;
       color: white;
     }
+    .btn-danger {
+      background-color: #e74c3c;
+      border: 0;
+      color: #fff;
+      transition: 0.4s;
+      border-radius: 50px;
+    }
+    .btn-danger:hover {
+      background-color: #c0392b;
+      text-decoration: none;
+      color: white;
+    }
     .main-container {
       background-color: #f3f5fa;
       border: 1px solid #dfdfff;
@@ -84,7 +96,7 @@
       background: none;
       border: none;
       color: red;
-      font-size: 1.5rem;
+      font-size: 1.0rem;
     }
     .nav-link.active {
       background-color: #ffffff !important;
@@ -163,6 +175,7 @@
       </div>
       <button type="submit" class="btn btn-lightblue">Save</button>
       <a th:href="@{/dashboard}" class="btn btn-lightblue">Cancel</a>
+      <button type="button" class="btn btn-danger" onclick="deleteAssignment()">Delete</button>
     </form>
   </div>
 </div>
@@ -174,6 +187,22 @@
 <div th:replace="~{fragments :: scripts}"></div>
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <script>
+
+  function deleteAssignment() {
+    if (confirm('Are you sure you want to delete this assignment?')) {
+      fetch('/assignment/delete/' + [[${assignment.id}]], {
+        method: 'POST',
+      })
+              .then(response => {
+                if (response.ok) {
+                  window.location.href = '/professor_course/' + [[${assignment.course.id}]];
+                } else {
+                  alert('Failed to delete the assignment.');
+                }
+              });
+    }
+  }
+
   document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.nav-link').forEach(link => {
       link.addEventListener('click', function (e) {
@@ -195,33 +224,33 @@
         }
       });
     });
-  });
 
-  let caseCount = [[${assignment.testCases.size()}]];
-  document.getElementById('addCaseBtn').addEventListener('click', function () {
-    caseCount++;
-    const testCaseDiv = document.createElement('div');
-    testCaseDiv.className = 'form-group row align-items-center';
-    testCaseDiv.innerHTML = `
-            <div class="col-md-5">
-                <textarea class="form-control" name="inputs[]" placeholder="Input case"></textarea>
-            </div>
-            <div class="col-md-5">
-                <textarea class="form-control" name="outputs[]" placeholder="Output case"></textarea>
-            </div>
-            <div class="col-md-2 text-center">
-                <button type="button" class="delete-btn" onclick="removeTestCase(this)"><i class="fas fa-trash-alt"></i></button>
-            </div>
-        `;
-    document.getElementById('testCasesContainer').appendChild(testCaseDiv);
-  });
+    let caseCount = [[${assignment.testCases.size()}]];
+    document.getElementById('addCaseBtn').addEventListener('click', function () {
+      caseCount++;
+      const testCaseDiv = document.createElement('div');
+      testCaseDiv.className = 'form-group row align-items-center';
+      testCaseDiv.innerHTML = `
+        <div class="col-md-5">
+            <textarea class="form-control" name="inputs[]" placeholder="Input case"></textarea>
+        </div>
+        <div class="col-md-5">
+            <textarea class="form-control" name="outputs[]" placeholder="Output case"></textarea>
+        </div>
+        <div class="col-md-2 text-center">
+            <button type="button" class="delete-btn" onclick="removeTestCase(this)"><i class="fas fa-trash-alt"></i></button>
+        </div>
+      `;
+      document.getElementById('testCasesContainer').appendChild(testCaseDiv);
+    });
 
-  function removeTestCase(button) {
-    const testCaseDiv = button.closest('.form-group');
-    if (testCaseDiv && testCaseDiv.parentElement) {
-      testCaseDiv.parentElement.removeChild(testCaseDiv);
-    }
-  }
+    window.removeTestCase = function(button) {
+      const testCaseDiv = button.closest('.form-group');
+      if (testCaseDiv && testCaseDiv.parentElement) {
+        testCaseDiv.parentElement.removeChild(testCaseDiv);
+      }
+    };
+  });
 </script>
 </body>
 </html>
