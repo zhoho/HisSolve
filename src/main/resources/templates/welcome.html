@@ -4,6 +4,7 @@
     <title>Hisolve</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;700&display=swap" rel="stylesheet">
+    <link th:href="@{/css/styles.css}" rel="stylesheet">
     <style>
         @keyframes fadeIn {
             from { opacity: 0; }
@@ -32,20 +33,6 @@
             display: flex;
             flex-direction: column;
         }
-        /* 네비게이션 바 스타일 */
-        .navbar, footer {
-            background-color: #2b2d42; /* 네비게이션 바 및 푸터 배경색 */
-        }
-        .navbar-brand, .navbar-nav .nav-link, .footer-text {
-            color: #edf2f4 !important; /* 네비게이션 바 및 푸터 텍스트 색상 */
-            font-size: 1.14rem; /* 네비게이션 바 텍스트 크기 증가 */
-        }
-        .navbar-light .navbar-nav .nav-link:hover {
-            color: #ef233c !important; /* 네비게이션 바 링크 호버 색상 */
-        }
-        .navbar-light .navbar-toggler-icon {
-            filter: invert(1);
-        }
 
         /* 푸터 스타일 */
         footer {
@@ -55,9 +42,6 @@
             font-size: 1.2rem; /* 푸터 텍스트 크기 증가 */
         }
 
-        .navbar-brand, .navbar-nav .nav-link, .footer-text {
-            color: #D8DEE9 !important;
-        }
         .content {
             display: flex;
             justify-content: center;
@@ -77,28 +61,26 @@
         .animated-text h1 {
             font-size: 7rem;
         }
-        .navbar-light .navbar-nav .nav-link:hover {
-            color: #ffcc00 !important;
-        }
-        .navbar-light .navbar-toggler-icon {
-            filter: invert(1);
-        }
 
     </style>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-light">
-    <a class="navbar-brand" href="#">Hisolve</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ml-auto">
-            <li class="nav-item">
-                <a class="nav-link" href="https://walab.info:8443/HisnetLogin/hisnet-login?returnUrl=http://localhost:8080/login&accessKey=bcPZJPzxceIGPe6EQuxY">Login</a>
-            </li>
-        </ul>
-    </div>
+<nav th:fragment="nav">
+    <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #37517e;">
+        <div class="container">
+            <a class="navbar-brand" href="/welcome" style="color: #edf2f4;">Hisolve</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://walab.info:8443/HisnetLogin/hisnet-login?returnUrl=http://localhost:8080/login&accessKey=bcPZJPzxceIGPe6EQuxY">Login</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
 </nav>
 
 <div class="content">
