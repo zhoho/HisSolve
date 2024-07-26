@@ -72,6 +72,12 @@
         .table th, .table td {
             vertical-align: middle;
         }
+        .table .pass {
+            background-color: #d4edda;
+        }
+        .table .fail {
+            background-color: #f8d7da;
+        }
     </style>
 </head>
 <body>
@@ -82,7 +88,7 @@
         <div class="course-header">
             <h1 th:text="${assignment.title}"></h1>
             <div class="course-code">
-                <p th:text="'Due: ' + ${assignment.dueDate}"></p>
+                <p th:text="'Due: ' + ${#temporals.format(assignment.dueDate, 'yyyy-MM-dd HH:mm:ss')}"></p>
             </div>
         </div>
     </div>
@@ -117,8 +123,13 @@
                 <tr th:each="submission : ${submissions}">
                     <td th:text="${submission.student.username}"></td>
                     <td th:text="${submission.student.email}"></td>
-                    <td th:text="${submission.pass_count}"></td>
-                    <td th:text="${submission.submittedAt}"></td>
+                    <td th:classappend="${submission.pass_count == assignment.testcaseCount} ? 'pass' : 'fail'">
+                        <span th:text="${submission.pass_count}"></span>
+                    </td>
+                    <td>
+                        <span th:text="${submission.pass_count} + '/' + ${assignment.testcaseCount}"></span>
+                    </td>
+                    <td th:text="${#temporals.format(submission.submittedAt, 'yyyy-MM-dd HH:mm:ss')}"></td>
                     <td><a th:href="@{/submission/view(id=${submission.id})}" class="btn btn-lightblue"><i class="fas fa-external-link-alt"></i></a></td>
                     <td><button th:onclick="'deleteSubmission(' + ${submission.id} + ')'" class="btn btn-lightblue"><i class="fas fa-trash-alt"></i></button></td>
                 </tr>
