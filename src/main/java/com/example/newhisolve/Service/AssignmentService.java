@@ -21,4 +21,7 @@ public interface AssignmentService {
 
     @Transactional
     void updateAssignment(Assignment assignment, Long courseId);
-}
+
+    void deleteTestCasesByAssignmentId(Long assignmentId);
+
+    }

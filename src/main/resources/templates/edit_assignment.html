@@ -112,6 +112,7 @@
   <div class="main-container">
     <form th:action="@{/assignment/update}" method="post">
       <input type="hidden" name="id" th:value="${assignment.id}"/>
+      <input type="hidden" name="courseId" th:value="${assignment.course.id}"/> <!-- courseId 숨겨진 필드 추가 -->
       <div class="form-group">
         <label for="title" class="font-weight-bold">Assignment name:</label>
         <input type="text" class="form-control" id="title" name="title" th:value="${assignment.title}" required>
@@ -146,7 +147,7 @@
               </div>
               <div class="col-md-5">
                 <label class="font-weight-bold">Output Cases</label>
-                <textarea class="form-control" name="outputs[]" placeholder="Output case" th:text="${testCase.expectedOutput}"></textarea> <!-- 필드 이름 수정 -->
+                <textarea class="form-control" name="outputs[]" placeholder="Output case" th:text="${testCase.expectedOutput}"></textarea>
               </div>
               <div class="col-md-2 text-center">
                 <button type="button" class="delete-btn" onclick="removeTestCase(this)"><i class="fas fa-trash-alt"></i></button>
@@ -158,7 +159,7 @@
       </div>
       <div class="form-group">
         <label for="dueDate" class="font-weight-bold">Deadline</label>
-        <input type="datetime-local" class="form-control" id="dueDate" name="dueDate" th:value="${#dates.format(assignment.dueDate, 'yyyy-MM-dd\'T\'HH:mm')}" required>
+        <input type="datetime-local" class="form-control" id="dueDate" name="dueDate" th:value="${formattedDueDate}" required>
       </div>
       <button type="submit" class="btn btn-lightblue">Save</button>
       <a th:href="@{/dashboard}" class="btn btn-lightblue">Cancel</a>

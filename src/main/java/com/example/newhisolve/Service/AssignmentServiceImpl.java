@@ -1,10 +1,7 @@
 package com.example.newhisolve.Service;
 
 import com.example.newhisolve.Model.*;
-import com.example.newhisolve.Repository.AssignmentRepository;
-import com.example.newhisolve.Repository.CourseRepository;
-import com.example.newhisolve.Repository.SubmissionRepository;
-import com.example.newhisolve.Repository.UserRepository;
+import com.example.newhisolve.Repository.*;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +18,7 @@ public class AssignmentServiceImpl implements AssignmentService {
 
     @Autowired
     private CourseRepository courseRepository;
+
 
     @Override
     public Assignment createAssignment(Assignment assignment, Long courseId) {
@@ -69,6 +67,14 @@ public class AssignmentServiceImpl implements AssignmentService {
         } else {
             throw new RuntimeException("Assignment를 찾을 수 없습니다: " + assignmentId);
         }
+    }
+
+    @Override
+    @Transactional
+    public void deleteTestCasesByAssignmentId(Long assignmentId) {
+        Assignment assignment = assignmentRepository.findById(assignmentId).orElseThrow(() -> new IllegalArgumentException("Invalid assignment Id:" + assignmentId));
+        assignment.getTestCases().clear();
+        assignmentRepository.save(assignment);
     }
 
 
