@@ -115,7 +115,7 @@
   </div>
 
   <div class="main-container">
-    <form th:action="@{/assignment/create}" method="post">
+    <form th:action="@{/assignment/create}" method="post" onsubmit="convertToUTC()">
       <div class="form-group">
         <label for="title" class="font-weight-bold">Assignment name:</label>
         <input type="text" class="form-control" id="title" name="title" required>
@@ -224,6 +224,16 @@
       testCaseDiv.parentElement.removeChild(testCaseDiv);
     }
   }
+
+  // convertToUTC 함수 제거
+  function convertToUTC() {
+    const dueDateInput = document.getElementById('dueDate');
+    const localDate = new Date(dueDateInput.value);
+    const utcDate = new Date(localDate.getTime() - localDate.getTimezoneOffset() * 60000); // 밀리초 단위로 변환
+    dueDateInput.value = utcDate.toISOString().slice(0, 16); // 'yyyy-MM-ddTHH:mm' 형식으로 변환
+  }
+
+
 </script>
 </body>
 </html>

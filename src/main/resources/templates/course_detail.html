@@ -73,10 +73,10 @@
       margin-bottom: 0;
     }
     .due-date {
-      color: red;
+      color: black;
     }
-    .due-date.complete {
-      color: green;
+    .due-date.past-due {
+      color: red;
     }
   </style>
 </head>
@@ -110,7 +110,7 @@
               <h5 class="card-title">
                 <a th:href="@{/assignment/{id}(id=${assignment.id})}" class="text-primary" th:text="${assignment.title}" style="color: #37517e;"></a>
               </h5>
-              <p class="card-text due-date" th:text="'Due: ' + ${assignment.dueDate}"></p>
+              <p class="card-text due-date" th:data-duedate="${assignment.dueDate}"></p>
             </div>
           </div>
         </div>
@@ -131,14 +131,15 @@
     const now = new Date();
 
     dueDates.forEach(function (dueDate) {
-      const dateText = dueDate.textContent.replace('Due: ', '').trim();
+      const dateText = dueDate.getAttribute('data-duedate').trim();
       const dueDateObject = new Date(dateText);
 
       if (dueDateObject < now) {
-        dueDate.classList.add('text-danger');
-      } else {
-        dueDate.classList.add('text-success');
+        dueDate.classList.add('past-due');
       }
+
+      const options = { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' };
+      dueDate.textContent = 'Due: ' + dueDateObject.toLocaleDateString('ko-KR', options).replace(', ', ' ');
     });
   });
 </script>

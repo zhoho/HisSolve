@@ -72,6 +72,12 @@
         .table th, .table td {
             vertical-align: middle;
         }
+        .table .pass {
+            background-color: #d4edda;
+        }
+        .table .fail {
+            background-color: #f8d7da;
+        }
         .test-case-container {
             margin-bottom: 20px;
         }
@@ -149,9 +155,13 @@
                 <tr th:each="submission : ${submissions}">
                     <td th:text="${submission.student.username}"></td>
                     <td th:text="${submission.student.email}"></td>
-                    <!--                    <td th:text="${submission.total_count}"></td>-->
-                    <td th:text="${submission.pass_count}"></td>
-                    <td th:text="${submission.submittedAt}"></td>
+                    <td th:classappend="${submission.pass_count == assignment.testcaseCount} ? 'pass' : 'fail'">
+                        <span th:text="${submission.pass_count}"></span>
+                    </td>
+                    <td>
+                        <span th:text="${submission.pass_count} + '/' + ${assignment.testcaseCount}"></span>
+                    </td>
+                    <td th:text="${#temporals.format(submission.submittedAt, 'yyyy-MM-dd HH:mm:ss')}"></td>
                     <td><a th:href="@{/submission/view(id=${submission.id})}" class="btn btn-lightblue"><i class="fas fa-external-link-alt"></i></a></td>
                     <td><button th:onclick="'deleteSubmission(' + ${submission.id} + ')'" class="btn btn-lightblue"><i class="fas fa-trash-alt"></i></button></td>
                 </tr>

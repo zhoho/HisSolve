@@ -15,7 +15,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
-import java.time.format.DateTimeFormatter;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,11 +54,15 @@ public class AssignmentController {
                                    @RequestParam Long courseId,
                                    @RequestParam List<String> inputs,
                                    @RequestParam List<String> outputs,
+                                   @RequestParam("dueDate") String dueDate,
                                    Principal principal) {
         User user = userService.findByUsername(principal.getName());
         if (!user.getRole().equals("PROFESSOR")) {
             return "redirect:/dashboard";
         }
+
+        LocalDateTime localDateTime = LocalDateTime.parse(dueDate);
+        assignment.setDueDate(localDateTime);
 
         List<TestCase> testCases = new ArrayList<>();
 
@@ -103,6 +109,7 @@ public class AssignmentController {
     @PreAuthorize("hasRole('PROFESSOR')")
     public String deleteAssignment(@PathVariable Long id, Principal principal) {
         User user = userService.findByUsername(principal.getName());
+        //교수 처리
         if(!user.getRole().equals("PROFESSOR")) {
             return "redirect:/dashboard";
         }
@@ -115,30 +122,38 @@ public class AssignmentController {
 
     @GetMapping("/assignment/edit/{id}")
     @PreAuthorize("hasRole('PROFESSOR')")
-    public String showEditAssignmentForm(@PathVariable Long id, Model model) {
+    public String showEditAssignmentForm(@PathVariable Long id, Model model, Principal principal) {
+        User user = userService.findByUsername(principal.getName());
+        if (!user.getRole().equals("PROFESSOR")) {
+            return "redirect:/dashboard";
+        }
         Assignment assignment = assignmentService.findById(id);
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
-        String formattedDueDate = assignment.getDueDate().format(formatter);
-
         model.addAttribute("assignment", assignment);
         model.addAttribute("course", assignment.getCourse());
         model.addAttribute("testCases", assignment.getTestCases());
-        model.addAttribute("formattedDueDate", formattedDueDate); // 모델에 포맷된 날짜 추가
         return "edit_assignment";
     }
+
 
     @PostMapping("/assignment/update")
     @PreAuthorize("hasRole('PROFESSOR')")
     public String updateAssignment(@ModelAttribute Assignment assignment,
                                    @RequestParam Long courseId,
                                    @RequestParam List<String> inputs,
-                                   @RequestParam List<String> outputs) {
+                                   @RequestParam List<String> outputs,
+                                   @RequestParam("dueDate") String dueDate,
+                                   Principal principal) {
+        User user = userService.findByUsername(principal.getName());
+        if (!user.getRole().equals("PROFESSOR")) {
+            return "redirect:/dashboard";
+        }
 
-        //기존 테스트 케이스 삭제
-        assignmentService.deleteTestCasesByAssignmentId(assignment.getId());
+        LocalDateTime localDateTime = LocalDateTime.parse(dueDate);
+        ZonedDateTime zonedDateTime = localDateTime.atZone(ZoneId.of("Asia/Seoul")).withZoneSameInstant(ZoneId.of("UTC"));
+        assignment.setDueDate(zonedDateTime.toLocalDateTime());
+
         List<TestCase> testCases = new ArrayList<>();
-
+        StringBuilder descriptionWithTestCases = new StringBuilder(assignment.getDescription()).append("\n\n --- \n");
 
         for (int i = 0; i < inputs.size(); i++) {
             TestCase testCase = new TestCase();
