@@ -2,8 +2,73 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <link th:href="@{/css/styles.css}" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <title>Online Compiler</title>
     <style>
+        .btn {
+            margin: 0 10px;
+            padding: 12px 25px;
+            font-size: 1rem;
+            border-radius: 25px;
+            border: none;
+            transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
+            color: white;
+            font-weight: bold;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            outline: none;
+        }
+
+        .btn:focus {
+            outline: none;
+            box-shadow: 0 0 0 0.2rem rgba(0,123,255,.5);
+        }
+
+        .btn-run {
+            background-color: #4CAF50; /* 초록색 */
+            background-image: linear-gradient(45deg, #4CAF50, #45A049);
+        }
+
+        .btn-run:hover {
+            background-color: #45A049;
+            background-image: linear-gradient(45deg, #45A049, #4CAF50);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-primary {
+            background-color: #2196F3; /* 파란색 */
+            background-image: linear-gradient(45deg, #2196F3, #1976D2);
+        }
+
+        .btn-primary:hover {
+            background-color: #1976D2;
+            background-image: linear-gradient(45deg, #1976D2, #2196F3);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-danger {
+            background-color: #f44336; /* 빨간색 */
+            background-image: linear-gradient(45deg, #f44336, #d32f2f);
+        }
+
+        .btn-danger:hover {
+            background-color: #d32f2f;
+            background-image: linear-gradient(45deg, #d32f2f, #f44336);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-third {
+            background-color: #9E9E9E; /* 회색 */
+            background-image: linear-gradient(45deg, #9E9E9E, #757575);
+        }
+
+        .btn-third:hover {
+            background-color: #757575;
+            background-image: linear-gradient(45deg, #757575, #9E9E9E);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+
         html, body {
             margin: 0;
             padding: 0;
@@ -210,11 +275,7 @@
         .results-table th {
             background-color: #f2f2f2;
         }
-        .view-icon {
-            width: 28px;
-            height: 28px;
-            filter: invert(0) brightness(1) saturate(100%);
-        }
+
     </style>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
@@ -240,12 +301,13 @@
 </div>
 <div class="outer-container">
     <div class="btn-container">
-        <button class="btn btn-success btn-run" onclick="runCode()">Run</button>
+        <button class="btn btn-run" onclick="runCode()">Run</button>
         <button class="btn btn-primary" onclick="compileCode()">TestCase</button>
         <button id="submit-btn" class="btn btn-danger" onclick="submitCode()" disabled>Submit</button>
-        <button class="btn-third" onclick="saveCode()">Save</button>
+        <button class="btn btn-third" onclick="saveCode()">Save</button>
         <div id="saved-time" class="saved-time"></div>
     </div>
+
     <div class="container-fluid">
         <div class="panel-wrapper">
             <div class="middle-panel">
@@ -296,9 +358,10 @@
                                 th:data-submittedat="${#temporals.format(submission.submittedAt, 'yyyy-MM-dd HH:mm:ss')}"
                                 th:data-passcount="${submission.pass_count}"
                                 th:data-totalcount="${assignment.testcaseCount}">
-                            <img th:src="@{/img/view.png}" alt="View Icon" class="view-icon">
+                            <i class="fas fa-external-link-alt" aria-hidden="true"></i>
                         </button>
                     </td>
+
                 </tr>
                 </tbody>
             </table>
