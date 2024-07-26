@@ -215,6 +215,24 @@
             height: 28px;
             filter: invert(0) brightness(1) saturate(100%);
         }
+        .test-case-container {
+            margin-bottom: 20px;
+        }
+        .test-case-title {
+            font-weight: bold;
+        }
+        .flex-container {
+            display: flex;
+            justify-content: space-between;
+        }
+        .flex-item {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ccc;
+        }
+        .flex-item + .flex-item {
+            margin-left: 10px;
+        }
     </style>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
@@ -263,6 +281,20 @@
                 <div id="problem-statement" class="flex-grow-1">
                     <h1 class="my-4"><span th:text="${assignment.title}"></span></h1>
                     <div id="description" th:attr="data-description=${assignment.description}"></div>
+                    <div class="test-case-container">
+                        <div th:each="testCase, iterStat : ${assignment.testCases}">
+                            <div class="flex-container">
+                                <div class="flex-item">
+                                    <div class="test-case-title" th:text="'예제 입력 ' + ${iterStat.index + 1} + ':'"></div>
+                                    <pre th:text="${testCase.input}"></pre>
+                                </div>
+                                <div class="flex-item">
+                                    <div class="test-case-title" th:text="'예제 출력 ' + ${iterStat.index + 1} + ':'"></div>
+                                    <pre th:text="${testCase.expectedOutput}"></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
