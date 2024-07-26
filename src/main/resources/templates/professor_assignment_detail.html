@@ -117,7 +117,6 @@
                 <tr th:each="submission : ${submissions}">
                     <td th:text="${submission.student.username}"></td>
                     <td th:text="${submission.student.email}"></td>
-<!--                    <td th:text="${submission.total_count}"></td>-->
                     <td th:text="${submission.pass_count}"></td>
                     <td th:text="${submission.submittedAt}"></td>
                     <td><a th:href="@{/submission/view(id=${submission.id})}" class="btn btn-lightblue"><i class="fas fa-external-link-alt"></i></a></td>
