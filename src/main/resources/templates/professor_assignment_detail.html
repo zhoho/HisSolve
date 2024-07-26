@@ -72,10 +72,10 @@
         .table th, .table td {
             vertical-align: middle;
         }
-        .table .pass {
+        .table .pass-bg {
             background-color: #d4edda;
         }
-        .table .fail {
+        .table .fail-bg {
             background-color: #f8d7da;
         }
         .test-case-container {
@@ -155,9 +155,7 @@
                 <tr th:each="submission : ${submissions}">
                     <td th:text="${submission.student.username}"></td>
                     <td th:text="${submission.student.email}"></td>
-                    <td th:classappend="${submission.pass_count == assignment.testcaseCount} ? 'pass' : 'fail'">
-                        <span th:text="${submission.pass_count}"></span>
-                    </td>
+                    <td th:classappend="${submission.pass_count == assignment.testcaseCount} ? 'pass-bg' : 'fail-bg'"></td>
                     <td>
                         <span th:text="${submission.pass_count} + '/' + ${assignment.testcaseCount}"></span>
                     </td>
