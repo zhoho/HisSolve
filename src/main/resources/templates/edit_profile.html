@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Edit Profile</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link th:href="@{/css/styles.css}" rel="stylesheet">
+    <style>
+        body {
+            background-color: #edf2f4;
+        }
+        .course-banner {
+            background: linear-gradient(to right, #37517e, #000000);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            margin-top: -10px;
+        }
+        .course-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+        .course-header h1 {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        .main-container {
+            background-color: #f3f5fa;
+            border: 1px solid #dfdfff;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 10px;
+        }
+        .btn-primary {
+            background-color: #47b2e4;
+            border: 0;
+            color: #fff;
+            transition: 0.4s;
+            border-radius: 50px;
+        }
+        .btn-primary:hover {
+            background-color: #138496;
+        }
+        .form-group label {
+            font-weight: bold;
+            color: #37517e;
+        }
+    </style>
+</head>
+<body>
+<div th:replace="~{fragments :: nav}"></div>
+
+<div class="container mt-1">
+    <div class="course-banner">
+        <div class="course-header">
+            <h1>Edit Profile</h1>
+        </div>
+    </div>
+
+    <div class="main-container">
+        <form th:action="@{/profile/update}" method="post" th:object="${user}">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" th:field="*{username}" class="form-control" readonly />
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" th:field="*{email}" class="form-control" required />
+            </div>
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary">Update Profile</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div th:replace="~{fragments :: footer}"></div>
+</body>
+</html>
