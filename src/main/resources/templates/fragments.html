@@ -27,7 +27,7 @@
                         <a class="nav-link" href="/help" style="color: #edf2f4;">Help</a>
                     </li>
                     <li class="nav-item" th:if="${user != null}">
-                        <a class="nav-link" href="/profile" style="color: #edf2f4;">
+                        <a class="nav-link" href="/profile/edit" style="color: #edf2f4;">
                             <span th:text="${user.username} + ' ' + (${user.role} == 'PROFESSOR' ? '교수님' : '학부생')"></span>
                         </a>
                     </li>

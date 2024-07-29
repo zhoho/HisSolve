@@ -315,7 +315,7 @@
         <div class="course-header">
             <h1 th:text="${assignment.title}"></h1>
             <div class="course-code">
-                <p>마감 기한: <span th:text="${assignment.dueDate}"></span></p>
+                <p th:text="'Due: ' + ${#temporals.format(assignment.dueDate, 'yyyy-MM-dd HH:mm:ss')}"></p>
             </div>
         </div>
     </div>
@@ -329,6 +329,16 @@
         <button class="btn btn-third" onclick="saveCode()">Save</button>
         <div id="saved-time" class="saved-time"></div>
     </div>
+
+    <div class="form-group">
+        <label for="language-select" class="font-weight-bold">Language</label>
+        <select id="language-select" class="form-control" onchange="changeLanguage(this)">
+            <option value="c">C</option>
+            <option value="python">Python</option>
+            <option value="java">Java</option>
+        </select>
+    </div>
+
     <div class="container-fluid">
         <div class="panel-wrapper">
             <div class="middle-panel">
@@ -430,7 +440,7 @@
 <script>
     const urlParams = new URLSearchParams(window.location.search);
     const assignmentId = urlParams.get('assignmentId');
-    const language = urlParams.get('language');
+    let language = urlParams.get('language');
     const studentId = document.body.getAttribute('data-student-id');
     const baseCode = `#include <stdio.h>\n\nint main() {\n    printf("Hello, World!");\n    return 0;\n}`;
 
@@ -445,7 +455,6 @@
             fontSize: 18
         });
     });
-
 
     let inputs = [];
     let totalTestCases = 0;
@@ -527,7 +536,12 @@
 
     async function runCode() {
         const code = window.editor.getValue();
-        showLoadingSpinner('.btn-success');
+        showLoadingSpinner('.btn.btn-run');
+        const timeoutId = setTimeout(() => {
+            hideLoadingSpinner('.btn.btn-run');
+            alert('Execution timeout. Please try again.');
+        }, 5000); // 5초 후에 실행
+
         try {
             const response = await fetch('/api/runWithInput', {
                 method: 'POST',
@@ -546,7 +560,8 @@
             console.error('Error:', error);
             document.getElementById('output').innerText = error.message;
         } finally {
-            hideLoadingSpinner('.btn-success');
+            clearTimeout(timeoutId);
+            hideLoadingSpinner('.btn.btn-run');
         }
     }
 
@@ -763,21 +778,42 @@
 
     function showLoadingSpinner(selector) {
         const button = document.querySelector(selector);
+        if (!button) {
+            console.error('Button not found for selector:', selector);
+            return;
+        }
         button.disabled = true;
         button.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...';
     }
 
     function hideLoadingSpinner(selector) {
         const button = document.querySelector(selector);
+        if (!button) {
+            console.error('Button not found for selector:', selector);
+            return;
+        }
         button.disabled = false;
-        button.innerHTML = button.classList.contains('btn-success') ? 'Run' : 'TestCase';
+        button.innerHTML = button.classList.contains('btn-run') ? 'Run' : 'TestCase';
     }
 
     document.addEventListener('DOMContentLoaded', () => {
         const markdownDescription = document.getElementById('description').getAttribute('data-description');
         document.getElementById('description').innerHTML = marked.parse(markdownDescription);
         showProblemStatement();
+
+        const languageSelect = document.getElementById('language-select');
+        languageSelect.value = language;
     });
+
+
+    function changeLanguage(select) {
+        const selectedLanguage = select.value;
+        const urlParams = new URLSearchParams(window.location.search);
+        urlParams.set('language', selectedLanguage);
+        const newUrl = `${window.location.pathname}?${urlParams.toString()}`;
+        window.location.href = newUrl;
+    }
+
 </script>
 <div th:replace="~{fragments :: footer}"></div>
 <div th:replace="~{fragments :: scripts}"></div>
