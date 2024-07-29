@@ -5,26 +5,25 @@ import com.example.newhisolve.Model.User;
 import com.example.newhisolve.Service.AssignmentService;
 import com.example.newhisolve.Service.SubmissionService;
 import com.example.newhisolve.Service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
 @Controller
+@RequiredArgsConstructor
 public class IndexController {
 
-    @Autowired
-    private AssignmentService assignmentService;
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private SubmissionService submissionService;
+    private final AssignmentService assignmentService;
+    private final UserService userService;
+    private final SubmissionService submissionService;
 
     @GetMapping("/index")
+    @PreAuthorize("hasRole('STUDENT')")
     public String showIndexPage(@RequestParam("assignmentId") Long assignmentId,
                                 @RequestParam("language") String language,
                                 Model model) {

@@ -2,7 +2,8 @@ package com.example.newhisolve.Controller;
 
 import com.example.newhisolve.Model.Course;
 import com.example.newhisolve.Service.CourseService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -10,18 +11,21 @@ import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
 
 @Controller
+@RequiredArgsConstructor
 public class CourseController {
 
-    @Autowired
-    private CourseService courseService;
+
+    private final CourseService courseService;
 
     @GetMapping("/course/create")
+    @PreAuthorize("hasRole('PROFESSOR')")
     public String showCreateCourseForm(Model model) {
         model.addAttribute("course", new Course());
         return "create_course";
     }
 
     @PostMapping("/course/create")
+    @PreAuthorize("hasRole('PROFESSOR')")
     public String createCourse(@ModelAttribute Course course, Principal principal) {
         courseService.createCourse(course, principal.getName());
         return "redirect:/dashboard";
@@ -47,6 +51,7 @@ public class CourseController {
     }
 
     @GetMapping("/professor_course/{id}")
+    @PreAuthorize("hasRole('PROFESSOR')")
     public String viewProfessorCourse(@PathVariable Long id, Model model) {
         Course courseEntity = courseService.findById(id);
         model.addAttribute("course", courseEntity);
@@ -56,12 +61,14 @@ public class CourseController {
     }
 
     @PostMapping("/course/removeStudent")
+    @PreAuthorize("hasRole('PROFESSOR')")
     public String removeStudent(@RequestParam Long courseId, @RequestParam Long studentId) {
         courseService.removeStudentFromCourse(courseId, studentId);
         return "redirect:/professor_course/" + courseId;
     }
 
     @GetMapping("/course/edit")
+    @PreAuthorize("hasRole('PROFESSOR')")
     public String editCourse(@RequestParam Long courseId, Model model) {
         Course courseEntity = courseService.findById(courseId);
         model.addAttribute("course", courseEntity);
@@ -69,12 +76,14 @@ public class CourseController {
     }
 
     @PostMapping("/course/edit")
+    @PreAuthorize("hasRole('PROFESSOR')")
     public String updateCourse(@ModelAttribute Course course) {
         courseService.updateCourse(course);
         return "redirect:/professor_course/" + course.getId();
     }
 
     @PostMapping("/course/delete")
+    @PreAuthorize("hasRole('PROFESSOR')")
     public String deleteCourse(@RequestParam Long courseId) {
         Course course = courseService.findById(courseId);
         courseService.deleteCourse(course);

@@ -8,7 +8,7 @@ import com.example.newhisolve.Service.AssignmentService;
 import com.example.newhisolve.Service.CourseService;
 import com.example.newhisolve.Service.SubmissionService;
 import com.example.newhisolve.Service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,19 +22,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
+@RequiredArgsConstructor
 public class AssignmentController {
 
-    @Autowired
-    private AssignmentService assignmentService;
-
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private CourseService courseService;
-
-    @Autowired
-    private SubmissionService submissionService;
+    private final AssignmentService assignmentService;
+    private final UserService userService;
+    private final CourseService courseService;
+    private final SubmissionService submissionService;
 
     @GetMapping("/assignment/create")
     @PreAuthorize("hasRole('PROFESSOR')")
@@ -50,6 +44,7 @@ public class AssignmentController {
     }
 
     @PostMapping("/assignment/create")
+    @PreAuthorize("hasRole('PROFESSOR')")
     public String createAssignment(@ModelAttribute Assignment assignment,
                                    @RequestParam Long courseId,
                                    @RequestParam List<String> inputs,
@@ -78,10 +73,6 @@ public class AssignmentController {
 
         assignmentService.createAssignment(assignment, courseId);
 
-        for (TestCase testCase : assignment.getTestCases()) {
-            System.out.println("Test Case - Input: " + testCase.getInput() + ", Expected Output: " + testCase.getExpectedOutput());
-        }
-
         return "redirect:/professor_course/" + courseId;
     }
 
@@ -102,7 +93,6 @@ public class AssignmentController {
         model.addAttribute("assignment", assignment);
         model.addAttribute("user", user);
         model.addAttribute("submissions", submissionService.findSubmissionsByAssignment(assignment));
-//        System.out.printf(submissionService.findByAssignmentAndStudent(assignment).toString());
         return "assignment_view";
     }
 
@@ -110,7 +100,7 @@ public class AssignmentController {
     @PreAuthorize("hasRole('PROFESSOR')")
     public String deleteAssignment(@PathVariable Long id, Principal principal) {
         User user = userService.findByUsername(principal.getName());
-        //교수 처리
+
         if(!user.getRole().equals("PROFESSOR")) {
             return "redirect:/dashboard";
         }
@@ -163,10 +153,8 @@ public class AssignmentController {
             testCases.add(testCase);
         }
 
-
         assignment.setTestcaseCount(String.valueOf(inputs.size()));
         assignment.setTestCases(testCases);
-//        assignment.setDescription(descriptionWithTestCases.toString());
 
         assignmentService.updateAssignment(assignment, courseId);
 
@@ -188,7 +176,6 @@ public class AssignmentController {
         model.addAttribute("user", user);
         model.addAttribute("course", course);
         model.addAttribute("submissions", submissionService.findSubmissionsByAssignment(assignment));
-//        return "redirect:/professor_assignment_detail/" + course.getId();
         return "professor_assignment_detail";
 
     }

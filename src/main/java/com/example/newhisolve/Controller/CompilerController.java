@@ -3,23 +3,19 @@ import com.example.newhisolve.Request.CompileRequest;
 import com.example.newhisolve.Model.TestCase;
 import com.example.newhisolve.Service.AssignmentService;
 import com.example.newhisolve.Service.CompilerService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api")
 public class CompilerController {
 
-    @Autowired
-    private CompilerService compilerService;
-
-    @Autowired
-    private AssignmentService assignmentService;
+    private final CompilerService compilerService;
+    private final AssignmentService assignmentService;
 
     @PostMapping("/compile")
     public ResponseEntity<List<Map<String, String>>> compileCode(@RequestBody CompileRequest request) {

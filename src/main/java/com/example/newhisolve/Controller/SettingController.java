@@ -4,7 +4,7 @@ import com.example.newhisolve.Model.Course;
 import com.example.newhisolve.Model.User;
 import com.example.newhisolve.Service.CourseService;
 import com.example.newhisolve.Service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,13 +14,11 @@ import java.security.Principal;
 import java.util.List;
 
 @Controller
+@RequiredArgsConstructor
 public class SettingController {
 
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private CourseService courseService;
+    private final UserService userService;
+    private final CourseService courseService;
 
     @GetMapping("/settings")
     @PreAuthorize("hasRole('PROFESSOR')")

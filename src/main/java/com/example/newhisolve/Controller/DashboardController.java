@@ -1,10 +1,9 @@
 package com.example.newhisolve.Controller;
-
 import com.example.newhisolve.Model.Course;
 import com.example.newhisolve.Model.User;
 import com.example.newhisolve.Service.CourseService;
 import com.example.newhisolve.Service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -14,13 +13,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import java.util.List;
 
 @Controller
+@RequiredArgsConstructor
 public class DashboardController {
 
-    @Autowired
-    private CourseService courseService;
-
-    @Autowired
-    private UserService userService;
+    private final CourseService courseService;
+    private final UserService userService;
 
     @GetMapping("/dashboard")
     public String viewDashboard(Model model) {
@@ -41,6 +38,6 @@ public class DashboardController {
         List<Course> courses = courseService.findByUser(user);
         model.addAttribute("user", user);
         model.addAttribute("courses", courses);
-        return "dashboard"; // Thymeleaf 템플릿 이름
+        return "dashboard";
     }
 }
