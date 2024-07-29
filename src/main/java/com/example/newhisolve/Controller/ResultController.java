@@ -4,6 +4,7 @@ import com.example.newhisolve.Model.Assignment;
 import com.example.newhisolve.Model.Submission;
 import com.example.newhisolve.Service.AssignmentService;
 import com.example.newhisolve.Service.SubmissionService;
+import lombok.RequiredArgsConstructor;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,14 +22,12 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("/results")
 public class ResultController {
 
-    @Autowired
-    private SubmissionService submissionService;
-
-    @Autowired
-    private AssignmentService assignmentService;
+    private final SubmissionService submissionService;
+    private final AssignmentService assignmentService;
 
     @GetMapping("/download")
     public ResponseEntity<byte[]> downloadResults(@RequestParam("assignmentId") Long assignmentId) throws IOException {
