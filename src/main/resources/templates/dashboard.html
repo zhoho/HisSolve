@@ -36,7 +36,7 @@
             border-radius: 50px;
             padding: 0.5rem 1rem;
             font-size: 1rem;
-            margin-right: 50px; /* 오른쪽 margin 추가 */
+            margin-right: 50px;
         }
         .edit-btn a:hover {
             background-color: #138496;
@@ -75,6 +75,10 @@
         }
         .card-text {
             font-size: 1rem;
+            white-space: nowrap;         /* 텍스트를 한 줄로 표시 */
+            overflow: hidden;            /* 넘친 텍스트를 감춤 */
+            text-overflow: ellipsis;     /* 넘친 부분을 ...으로 표시 */
+            max-width: 200px;            /* 텍스트가 넘칠 최대 너비 설정 */
         }
         .btn-primary {
             background-color: #47b2e4;
