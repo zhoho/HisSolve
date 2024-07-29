@@ -4,30 +4,70 @@
     <title>Create Course</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <link th:href="@{/css/styles.css}" rel="stylesheet">
     <style>
-        .form-group label {
-            font-weight: 700;
-            color: #edf2f4;
+        body {
+            background-color: #edf2f4;
         }
-        .rounded {
-            border-radius: 0.5rem !important;
+        .course-banner {
+            background: linear-gradient(to right, #37517e, #000000);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            margin-top: -10px;
+        }
+        .course-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+        .course-header h1 {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        .btn-lightblue {
+            background-color: #47b2e4;
+            border: 0;
+            color: #fff;
+            transition: 0.4s;
+            border-radius: 50px;
+        }
+        .btn-lightblue:hover {
+            background-color: #138496;
+            text-decoration: none;
+            color: white;
+        }
+        .main-container {
+            background-color: #f3f5fa;
+            border: 1px solid #dfdfff;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 10px;
         }
         .card-custom {
-            background-color: #2E3440;
-            color: #edf2f4;
-            margin-bottom: 1rem;
-            border-radius: 0.5rem;
+            background-color: white;
+            border: none;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
         }
-        .card-custom .card-header {
+        .card-header-custom {
             background-color: #3B4252;
             color: #edf2f4;
-            border-radius: 0.5rem 0.5rem 0 0;
+            border-radius: 10px 10px 0 0;
             padding: 1rem;
             font-size: 1.25rem;
         }
-        .card-custom .card-body {
+        .card-body-custom {
             padding: 1.5rem;
+        }
+        .form-group label {
+            font-weight: bold;
+            color: #37517e;
         }
     </style>
 </head>
@@ -35,31 +75,40 @@
 <!-- Navigation Bar -->
 <div th:replace="~{fragments :: nav}"></div>
 
+<div class="container mt-1">
+    <div class="course-banner">
+        <div class="course-header">
+            <h1>Create Course</h1>
+        </div>
+    </div>
 
-<div class="container">
-    <h1 class="my-4 text-center">수업 생성 하기</h1>
-    <form th:action="@{/course/create}" th:object="${course}" method="post" class="p-4 rounded">
-        <div class="card card-custom mb-4">
-            <div class="card-header">수업 상세 정보</div>
-            <div class="card-body">
-                <div class="form-group">
-                    <label for="name">수업명:</label>
-                    <input type="text" id="name" th:field="*{name}" class="form-control" placeholder="Enter course name" />
-                </div>
-                <div class="form-group">
-                    <label for="language">사용 언어(C, Java, Python):</label>
-                    <select id="language" th:field="*{language}" class="form-control">
-                        <option value="c">C</option>
-                        <option value="python">Python</option>
-                        <option value="java">Java</option>
-                    </select>
+    <div class="main-container">
+        <form th:action="@{/course/create}" th:object="${course}" method="post">
+            <div class="card card-custom mb-4">
+                <div class="card-body card-body-custom">
+                    <div class="form-group">
+                        <label for="name">Course Name:</label>
+                        <input type="text" id="name" th:field="*{name}" class="form-control" placeholder="Enter course name" />
+                    </div>
+                    <div class="form-group">
+                        <label for="language">Language (C, Java, Python):</label>
+                        <select id="language" th:field="*{language}" class="form-control">
+                            <option value="c">C</option>
+                            <option value="python">Python</option>
+                            <option value="java">Java</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Description:</label>
+                        <textarea id="description" th:field="*{description}" class="form-control" rows="5" placeholder="Enter course description"></textarea>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="text-center">
-            <button type="submit" class="btn btn-primary">수업 생성 하기</button>
-        </div>
-    </form>
+            <div class="text-center">
+                <button type="submit" class="btn btn-lightblue">Create Course</button>
+            </div>
+        </form>
+    </div>
 </div>
 
 <div th:replace="~{fragments :: footer}"></div>

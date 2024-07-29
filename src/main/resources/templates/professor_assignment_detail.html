@@ -189,7 +189,9 @@
                 </tr>
                 </tbody>
             </table>
-            <a href="/results" class="btn btn-success"><i class="fas fa-download"></i> Results</a>
+            <a th:href="@{/results/download(assignmentId=${assignment.id})}" class="btn btn-success">
+                <i class="fas fa-download"></i> Results
+            </a>
         </div>
     </div>
 </div>
