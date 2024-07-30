@@ -142,7 +142,7 @@ public class AssignmentController {
         LocalDateTime localDateTime = LocalDateTime.parse(dueDate);
         ZonedDateTime zonedDateTime = localDateTime.atZone(ZoneId.of("Asia/Seoul")).withZoneSameInstant(ZoneId.of("UTC"));
         assignment.setDueDate(zonedDateTime.toLocalDateTime());
-
+        assignment.setLastModifiedDate(LocalDateTime.now());
         List<TestCase> testCases = new ArrayList<>();
         StringBuilder descriptionWithTestCases = new StringBuilder(assignment.getDescription()).append("\n\n --- \n");
 
