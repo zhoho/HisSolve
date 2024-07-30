@@ -567,6 +567,20 @@
         }
     }
 
+    document.addEventListener('DOMContentLoaded', () => {
+        const markdownDescription = document.getElementById('description').getAttribute('data-description');
+        document.getElementById('description').innerHTML = marked.parse(markdownDescription);
+        showProblemStatement();
+
+        const languageSelect = document.getElementById('language-select');
+        languageSelect.value = language;
+
+        updateTimeRemaining();
+        setInterval(updateTimeRemaining, 1000); // 1초마다 업데이트
+
+        setInterval(autoSaveCode, 60000); // 1분마다 자동 저장
+    });
+
     async function saveCode() {
         const code = window.editor.getValue();
         const lastSavedDate = new Date();
@@ -583,12 +597,41 @@
             }
             const data = await response.json();
             alert('코드가 저장되었습니다!');
-            document.getElementById('saved-time').innerText = `Last saved at: ${lastSavedDate.toLocaleString()}`;
+            updateSavedTime(lastSavedDate);
         } catch (error) {
             console.error('Error:', error);
             alert('코드 저장에 실패했습니다!\n' + error.message);
         }
     }
+
+    async function autoSaveCode() {
+        const code = window.editor.getValue();
+        const lastSavedDate = new Date();
+
+        try {
+            const response = await fetch('/api/saveCode', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ assignmentId: assignmentId, studentId: studentId, code: code, language: language, lastSavedDate: lastSavedDate.toISOString() })
+            });
+            if (!response.ok) {
+                const text = await response.text();
+                throw new Error(text);
+            }
+            const data = await response.json();
+            updateSavedTime(lastSavedDate);
+        } catch (error) {
+            console.error('Error:', error);
+            // 자동 저장 실패 시 알림을 띄우지 않음
+        }
+    }
+
+    function updateSavedTime(lastSavedDate) {
+        document.getElementById('saved-time').innerText = `Last saved at: ${lastSavedDate.toLocaleString()}`;
+    }
+
+    // 기존 코드 중 updateTimeRemaining 함수와 changeLanguage 함수 유지
+
 
     async function getSavedCode() {
         try {
