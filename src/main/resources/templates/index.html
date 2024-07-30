@@ -584,12 +584,19 @@
     async function saveCode() {
         const code = window.editor.getValue();
         const lastSavedDate = new Date();
+        const lastSavedDateUTC = new Date(lastSavedDate.getTime() - (lastSavedDate.getTimezoneOffset() * 60000));
 
         try {
             const response = await fetch('/api/saveCode', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ assignmentId: assignmentId, studentId: studentId, code: code, language: language, lastSavedDate: lastSavedDate.toISOString() })
+                body: JSON.stringify({
+                    assignmentId: assignmentId,
+                    studentId: studentId,
+                    code: code,
+                    language: language,
+                    lastSavedDate: lastSavedDateUTC.toISOString()
+                })
             });
             if (!response.ok) {
                 const text = await response.text();
@@ -607,12 +614,19 @@
     async function autoSaveCode() {
         const code = window.editor.getValue();
         const lastSavedDate = new Date();
+        const lastSavedDateUTC = new Date(lastSavedDate.getTime() - (lastSavedDate.getTimezoneOffset() * 60000));
 
         try {
             const response = await fetch('/api/saveCode', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ assignmentId: assignmentId, studentId: studentId, code: code, language: language, lastSavedDate: lastSavedDate.toISOString() })
+                body: JSON.stringify({
+                    assignmentId: assignmentId,
+                    studentId: studentId,
+                    code: code,
+                    language: language,
+                    lastSavedDate: lastSavedDateUTC.toISOString()
+                })
             });
             if (!response.ok) {
                 const text = await response.text();
@@ -622,9 +636,10 @@
             updateSavedTime(lastSavedDate);
         } catch (error) {
             console.error('Error:', error);
-            // 자동 저장 실패 시 알림을 띄우지 않음
+            alert('자동 저장에 실패했습니다!\n' + error.message);
         }
     }
+
 
     function updateSavedTime(lastSavedDate) {
         document.getElementById('saved-time').innerText = `Last saved at: ${lastSavedDate.toLocaleString()}`;
