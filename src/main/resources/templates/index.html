@@ -315,7 +315,9 @@
         <div class="course-header">
             <h1 th:text="${assignment.title}"></h1>
             <div class="course-code">
-                <p th:text="'Due: ' + ${#temporals.format(assignment.dueDate, 'yyyy-MM-dd HH:mm:ss')}"></p>
+<!--                <p th:text="'Due: ' + ${#temporals.format(assignment.dueDate, 'yyyy-MM-dd HH:mm:ss')}"></p>-->
+                <p>Due: <span id="due-date" th:text="${#temporals.format(assignment.dueDate, 'yyyy-MM-dd HH:mm:ss')}"></span></p>
+                <p>남은 시간: <span id="time-remaining"></span></p>
             </div>
         </div>
     </div>
@@ -813,6 +815,67 @@
         const newUrl = `${window.location.pathname}?${urlParams.toString()}`;
         window.location.href = newUrl;
     }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const markdownDescription = document.getElementById('description').getAttribute('data-description');
+        document.getElementById('description').innerHTML = marked.parse(markdownDescription);
+        showProblemStatement();
+
+        const languageSelect = document.getElementById('language-select');
+        languageSelect.value = language;
+
+        updateTimeRemaining();
+        setInterval(updateTimeRemaining, 1000); // 1초마다 업데이트
+    });
+
+    function updateTimeRemaining() {
+        const dueDateElement = document.getElementById('due-date');
+        if (!dueDateElement) {
+            console.error('Due date element not found');
+            return;
+        }
+
+        const dueDateText = dueDateElement.innerText;
+        const dueDate = new Date(dueDateText);
+        if (isNaN(dueDate.getTime())) {
+            console.error('Invalid due date:', dueDateText);
+            return;
+        }
+
+        const now = new Date();
+        const timeRemaining = dueDate - now;
+
+        if (timeRemaining > 0) {
+            const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+
+            let timeText = '';
+            if (days > 0) {
+                timeText = `${days}일 ${hours}시간 ${minutes}분 ${seconds}초 남음`;
+            } else if (hours > 0) {
+                timeText = `${hours}시간 ${minutes}분 ${seconds}초 남음`;
+            } else if (minutes > 0) {
+                timeText = `${minutes}분 ${seconds}초 남음`;
+            } else {
+                timeText = `${seconds}초 남음`;
+            }
+
+            document.getElementById('time-remaining').innerText = timeText;
+        } else {
+            document.getElementById('time-remaining').innerText = "마감 시간이 지났습니다.";
+        }
+    }
+
+    function changeLanguage(select) {
+        const selectedLanguage = select.value;
+        const urlParams = new URLSearchParams(window.location.search);
+        urlParams.set('language', selectedLanguage);
+        const newUrl = `${window.location.pathname}?${urlParams.toString()}`;
+        window.location.href = newUrl;
+    }
+
 
 </script>
 <div th:replace="~{fragments :: footer}"></div>
