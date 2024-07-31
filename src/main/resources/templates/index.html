@@ -611,6 +611,7 @@
         }
     }
 
+
     async function autoSaveCode() {
         const code = window.editor.getValue();
         const lastSavedDate = new Date();
@@ -641,6 +642,7 @@
     }
 
 
+
     function updateSavedTime(lastSavedDate) {
         document.getElementById('saved-time').innerText = `Last saved at: ${lastSavedDate.toLocaleString()}`;
     }
@@ -663,6 +665,8 @@
             return baseCode;
         }
     }
+
+
     function handleKeyPress(event) {
         if (event.key === 'Enter') {
             const inputLine = document.getElementById('input-line');
@@ -676,7 +680,9 @@
 
     async function submitCode() {
         const code = window.editor.getValue();
-        const lastSavedDate = new Date();
+
+        // 코드 저장
+        await saveCode();
 
         try {
             const response = await fetch('/api/submit', {
@@ -687,7 +693,6 @@
                     studentId: studentId,
                     code: code,
                     language: language,
-                    lastSavedDate: lastSavedDate.toISOString(),
                     passCount: passedTestCases
                 })
             });
@@ -697,7 +702,6 @@
             }
             const data = await response.json();
 
-            // 모달을 이용하여 확인 버튼만 있는 알림창 띄우기
             showModal('제출 성공!', '확인', function() {
                 location.reload();
             });
@@ -706,6 +710,7 @@
             alert('제출 실패!\n' + error.message);
         }
     }
+
 
     function showModal(message, buttonText, callback) {
         // 모달 요소 생성
