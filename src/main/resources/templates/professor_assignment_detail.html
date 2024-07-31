@@ -174,7 +174,9 @@
                     <td th:text="${#temporals.format(submission.submittedAt, 'yyyy-MM-dd HH:mm:ss')}"></td>
                     <td>
                         <button style="border: none; background-color: #ffffff" onclick="showDetails(this)"
-                                th:data-id="${submission.id}">
+                                th:data-id="${submission.id}"
+                                th:data-language="${submission.language}">
+
                             <i class="fas fa-external-link-alt" aria-hidden="true"></i>
                         </button>
                     </td>
@@ -220,12 +222,10 @@
         }
     }
 
-    let detailsEditor; // 전역으로 detailsEditor 선언
-
-
     function showDetails(button) {
         const submissionId = button.getAttribute('data-id');
-        window.location.href = `/submission_detail/${submissionId}`;
+        const language = button.getAttribute('data-language');
+        window.location.href = `/submission_detail/${submissionId}?language=${language}`;
     }
 
 </script>

@@ -161,10 +161,6 @@ public class AssignmentController {
         return "redirect:/professor_course/" + courseId;
     }
 
-
-
-
-
     @GetMapping("/professor_assignment_detail/{id}")
     @PreAuthorize("hasRole('PROFESSOR')")
     public String detailAsignment(@PathVariable Long id, Principal principal, Model model) {
@@ -177,18 +173,5 @@ public class AssignmentController {
         model.addAttribute("submissions", submissionService.findSubmissionsByAssignment(assignment));
         return "professor_assignment_detail";
 
-    }
-
-    @GetMapping("/submission_detail/{id}")
-    @PreAuthorize("hasRole('PROFESSOR')")
-    public String detailSubmission(@PathVariable Long id, Principal principal, Model model) {
-        Assignment assignment = assignmentService.findById(id);
-        User user = userService.findByUsername(principal.getName());
-        Course course = assignment.getCourse();
-        model.addAttribute("assignment", assignment);
-        model.addAttribute("user", user);
-        model.addAttribute("course", course);
-        model.addAttribute("submissions", submissionService.findSubmissionsByAssignment(assignment));
-        return "submission_detail";
     }
 }

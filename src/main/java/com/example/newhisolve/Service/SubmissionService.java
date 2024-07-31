@@ -116,6 +116,14 @@ public class SubmissionService {
         return savedCodeOptional;
     }
 
+    public Optional<Submission> getSubmission(Long submissionId) {
+        Optional<Submission> submissionOptional = submissionRepository.findById(submissionId);
+        if (!submissionOptional.isPresent()) {
+            throw new IllegalArgumentException("Submission not found");
+        }
+        return submissionOptional;
+    }
+
     public List<Submission> findByAssignmentId(Long assignmentId) {
         List<Submission> submissions = submissionRepository.findByAssignmentId(assignmentId);
         submissions.forEach(submission -> logger.info(submission.toString()));
@@ -131,15 +139,7 @@ public class SubmissionService {
         return submissionRepository.findByAssignmentIdAndStudentId(assignmentId, studentId);
     }
 
-    public Submission getSubmissionById(Long id) {
-        return submissionRepository.findById(id).orElse(null);
-    }
-
     public List<Submission> findSubmissionsByAssignment(Assignment assignment) {
         return submissionRepository.findByAssignment(assignment);
-    }
-
-    public void deleteSubmissionById(Long id) {
-        submissionRepository.deleteById(id);
     }
 }

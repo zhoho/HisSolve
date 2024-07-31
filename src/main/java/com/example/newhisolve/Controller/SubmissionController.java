@@ -49,6 +49,17 @@ public class SubmissionController {
         }
     }
 
+//    @GetMapping("/getSubmissionCode")
+//    @ResponseBody
+//    public ResponseEntity<String> getSubmissionCode(@RequestParam Long submissionId) {
+//        Optional<Submission> submissionOptional = submissionService.getSubmission(submissionId);
+//        if (submissionOptional.isPresent()) {
+//            Submission submission = submissionOptional.get();
+//            return ResponseEntity.ok(submission.getCode());
+//        }
+//        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No submission found");
+//    }
+
     @PostMapping("/submit")
     public ResponseEntity<?> submit(@RequestBody SubmissionDTO submissionDTO) {
         try {
