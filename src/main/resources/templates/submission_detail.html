@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;700&display=swap" rel="stylesheet">
+  <link th:href="@{/css/styles.css}" rel="stylesheet">
+    <title>Submission_detail 페이지</title>
+    <style>
+        .btn {
+            margin: 0 10px;
+            padding: 12px 25px;
+            font-size: 1rem;
+            border-radius: 25px;
+            border: none;
+            transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
+            color: white;
+            font-weight: bold;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            outline: none;
+        }
+
+        .btn:focus {
+            outline: none;
+            box-shadow: 0 0 0 0.2rem rgba(0,123,255,.5);
+        }
+
+        .btn-run {
+            background-color: #4CAF50; /* 초록색 */
+            background-image: linear-gradient(45deg, #4CAF50, #45A049);
+        }
+
+        .btn-run:hover {
+            background-color: #45A049;
+            background-image: linear-gradient(45deg, #45A049, #4CAF50);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-primary {
+            background-color: #2196F3; /* 파란색 */
+            background-image: linear-gradient(45deg, #2196F3, #1976D2);
+        }
+
+        .btn-primary:hover {
+            background-color: #1976D2;
+            background-image: linear-gradient(45deg, #1976D2, #2196F3);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: Arial, sans-serif;
+            background-color: #EBECED;
+            overflow: auto;
+        }
+        .course-banner {
+            background: linear-gradient(to right, #37517e, #000000);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            margin-top: -10px;
+            margin-bottom: 35px;
+        }
+        .course-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+        .course-header h1, .course-header .course-code {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        .outer-container {
+            background-color: #F3F5FA;
+            padding: 20px;
+            margin: 20px auto;
+            width: 80%;
+            border: 1px solid #dfdfff;
+        }
+        .basic-container {
+            padding-right: 20px;
+            padding-left: 20px;
+            padding-top: 10px;
+            margin: 20px auto;
+            width: 80%;
+        }
+        .container-fluid {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 20px;
+        }
+        .panel-wrapper {
+            display: flex;
+            flex-direction: row;
+            flex-grow: 1;
+            overflow: hidden;
+        }
+        .middle-panel {
+            flex: 3;
+            display: flex;
+            flex-direction: column;
+            background-color: white;
+            margin-top: 20px;
+            overflow: auto;
+        }
+        .right-panel {
+            flex: 3;
+            display: flex;
+            flex-direction: column;
+            background-color: white;
+            margin-top: 20px;
+            overflow: auto;
+        }
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+            z-index: 1000;
+        }
+        .btn-container button {
+            margin: 0 10px;
+            padding: 10px 20px;
+            font-size: 1rem;
+        }
+        #editor, #problem-statement {
+            flex-grow: 1;
+            background-color: white;
+            color: black;
+            padding: 10px;
+            overflow-y: auto;
+            display: none;
+        }
+        #console {
+            flex-grow: 1;
+            background-color: black;
+            color: white;
+            padding: 10px;
+            overflow-y: auto;
+            display: none;
+        }
+        #editor {
+            display: block;
+        }
+        #output {
+            color: white;
+        }
+        #input-line {
+            background-color: black;
+            color: white;
+            border: none;
+            width: 100%;
+        }
+        .section-buttons {
+            display: flex;
+            justify-content: space-between;
+        }
+        .section-buttons button {
+            flex: 1;
+        }
+        #testcase-results {
+            margin-top: 10px;
+            background-color: #f8f9fa;
+            padding: 10px;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+        }
+        #results-table-container {
+            margin-top: 10px;
+            background-color: #f8f9fa;
+            padding: 10px;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+        }
+        .saved-time {
+            margin-left: 20px;
+            font-size: 1rem;
+            align-self: center;
+        }
+        .submissions-table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .submissions-table th, .submissions-table td {
+            padding: 10px;
+            border: 1px solid #dee2e6;
+            text-align: left;
+        }
+        .submissions-table th {
+            background-color: #f8f9fa;
+            font-weight: bold;
+        }
+        .submissions-table tbody tr:hover {
+            background-color: #f1f1f1;
+        }
+        .btn.active {
+            background-color: #007bff;
+            color: white;
+        }
+        .btn img {
+            background-color: transparent;
+        }
+        .back-button {
+            background-color: #47b2e4;
+            border: 0;
+            color: #fff;
+            transition: 0.4s;
+            border-radius: 50px;
+            padding: 0.5rem 1.5rem;
+            font-size: 1.3rem;
+        }
+        .back-button:hover {
+            background-color: #138496;
+            text-decoration: none;
+            color: white;
+        }
+        .results-table th, .results-table td {
+            border: 1px solid #dee2e6;
+            padding: 8px;
+            text-align: left;
+        }
+        .results-table th {
+            background-color: #f2f2f2;
+        }
+        .test-case-container {
+            margin-bottom: 20px;
+        }
+        .test-case-title {
+            font-weight: bold;
+        }
+        .flex-container {
+            display: flex;
+            justify-content: space-between;
+        }
+        .flex-item {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ccc;
+        }
+        .flex-item + .flex-item {
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+<div th:replace="~{fragments :: nav}"></div>
+<div class="basic-container">
+    <div class="course-banner">
+        <div class="course-header">
+            <h1 th:text="${assignment.title}"></h1>
+            <div class="course-code">
+                <p>Due: <span id="due-date" th:text="${#temporals.format(assignment.dueDate, 'yyyy-MM-dd HH:mm:ss')}"></span></p>
+                <p>남은 시간: <span id="time-remaining"></span></p>
+            </div>
+        </div>
+    </div>
+    <a href="#" class="back-button" onclick="window.history.back(); return false;"><i class="bi bi-arrow-left"></i> Back to Classroom</a>
+</div>
+<div class="outer-container">
+    <div class="btn-container">
+        <button class="btn btn-run" onclick="runCode()">Run</button>
+        <button class="btn btn-primary" onclick="compileCode()">Test</button>
+        <div id="saved-time" class="saved-time"></div>
+    </div>
+
+    <div class="form-group">
+        <label for="language-select" class="font-weight-bold">Language</label>
+        <select id="language-select" class="form-control" onchange="changeLanguage(this)">
+            <option value="c">C</option>
+            <option value="python">Python</option>
+            <option value="java">Java</option>
+        </select>
+    </div>
+
+    <div class="container-fluid">
+        <div class="panel-wrapper">
+            <div class="middle-panel">
+                <div id="editor"></div>
+            </div>
+            <div class="right-panel">
+                <div class="section-buttons">
+                    <button id="console-btn" class="btn btn-secondary" onclick="showConsole()">Console</button>
+                    <button id="problem-btn" class="btn btn-info" onclick="showProblemStatement()">Problem</button>
+                </div>
+                <div id="console" class="flex-grow-1">
+                    <pre id="output"></pre>
+                    <input type="text" id="input-line" onkeypress="handleKeyPress(event)">
+                </div>
+                <div id="problem-statement" class="flex-grow-1">
+                    <h1 class="my-4"><span th:text="${assignment.title}"></span></h1>
+                    <div id="description" th:attr="data-description=${assignment.description}"></div>
+                    <div class="test-case-container">
+                        <div th:each="testCase, iterStat : ${assignment.testCases}">
+                            <div class="flex-container">
+                                <div class="flex-item">
+                                    <div class="test-case-title" th:text="'예제 입력 ' + ${iterStat.index + 1} + ':'"></div>
+                                    <pre th:text="${testCase.input}"></pre>
+                                </div>
+                                <div class="flex-item">
+                                    <div class="test-case-title" th:text="'예제 출력 ' + ${iterStat.index + 1} + ':'"></div>
+                                    <pre th:text="${testCase.expectedOutput}"></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="testcase-results">
+            <h5>Test Case Results:</h5>
+            <div id="results-table-container"></div>
+        </div>
+        <div>
+            <h2> </h2>
+            <h5>Submission:</h5>
+            <table class="submissions-table">
+                <thead>
+                <tr>
+                    <th>제출 시간</th>
+                    <th>테스트케이스 성공 유무</th>
+                    <th>사용 언어</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="submission : ${submissions}">
+                    <td th:text="${#temporals.format(submission.submittedAt, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                    <td th:text="${submission.result}"></td>
+                    <td th:text="${submission.language}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="detailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="detailsModalLabel">제출 정보</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p><strong>이름:</strong> <span id="studentName"></span></p>
+                <p><strong>결과:</strong> <span id="result"></span></p>
+                <p><strong>테스트 결과:</strong> <span id="testCase"></span></p>
+                <p><strong>제출일:</strong> <span id="submittedAt"></span></p>
+                <p><strong>제출 코드</strong></p>
+                <div id="code-editor" style="width:100%; height:400px;"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{fragments :: footer}"></div>
+<div th:replace="~{fragments :: scripts}"></div>
+</body>
+</html>

@@ -174,14 +174,7 @@
                     <td th:text="${#temporals.format(submission.submittedAt, 'yyyy-MM-dd HH:mm:ss')}"></td>
                     <td>
                         <button style="border: none; background-color: #ffffff" onclick="showDetails(this)"
-                                th:data-id="${submission.id}"
-                                th:data-code="${submission.code}"
-                                th:data-student="${submission.student.username}"
-                                th:data-result="${submission.result}"
-                                th:data-submittedat="${#temporals.format(submission.submittedAt, 'yyyy-MM-dd HH:mm:ss')}"
-                                th:data-passcount="${submission.pass_count}"
-                                th:data-totalcount="${assignment.testcaseCount}"
-                                th:data-language="${submission.language}">
+                                th:data-id="${submission.id}">
                             <i class="fas fa-external-link-alt" aria-hidden="true"></i>
                         </button>
                     </td>
@@ -192,30 +185,6 @@
             <a th:href="@{/results/download(assignmentId=${assignment.id})}" class="btn btn-success">
                 <i class="fas fa-download"></i> Results
             </a>
-        </div>
-    </div>
-</div>
-
-<!-- 모달 추가 -->
-<div class="modal fade" id="detailsModal" tabindex="-1" role="dialog" aria-labelledby="detailsModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="detailsModalLabel">Submission Details</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <p><strong>Student:</strong> <span id="studentName"></span></p>
-                <p><strong>Result:</strong> <span id="result"></span></p>
-                <p><strong>Submission Time:</strong> <span id="submittedAt"></span></p>
-                <p><strong>Test Case:</strong> <span id="testCase"></span></p>
-                <div id="code-editor" style="width:100%; height:400px;"></div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            </div>
         </div>
     </div>
 </div>
@@ -253,43 +222,12 @@
 
     let detailsEditor; // 전역으로 detailsEditor 선언
 
-    async function showDetails(button) {
-        const student = button.getAttribute('data-student');
-        const result = button.getAttribute('data-result');
-        const submittedAt = button.getAttribute('data-submittedat');
-        const code = button.getAttribute('data-code');
-        const passCount = button.getAttribute('data-passcount');
-        const totalCount = button.getAttribute('data-totalcount');
-        const language = button.getAttribute('data-language'); // 동적으로 언어 설정
 
-        document.getElementById('studentName').innerText = student;
-        document.getElementById('result').innerText = result;
-        document.getElementById('submittedAt').innerText = submittedAt;
-        document.getElementById('testCase').textContent = passCount + "/" + totalCount;
-
-        $('#detailsModal').modal('show');
-
-        $('#detailsModal').on('shown.bs.modal', function() {
-            require(['vs/editor/editor.main'], function() {
-                if (!detailsEditor) {
-                    detailsEditor = monaco.editor.create(document.getElementById('code-editor'), {
-                        value: code,
-                        language: language, // 언어를 동적으로 설정
-                        fontSize: 18,
-                        readOnly: true
-                    });
-                } else {
-                    detailsEditor.setValue(code);
-                    detailsEditor.updateOptions({ language: language }); // 언어를 동적으로 업데이트
-                    detailsEditor.layout(); // 추가된 layout 호출
-                }
-            });
-        });
-
-        $('#detailsModal').on('hidden.bs.modal', function() {
-            $('#detailsModal').off('shown.bs.modal');
-        });
+    function showDetails(button) {
+        const submissionId = button.getAttribute('data-id');
+        window.location.href = `/submission_view/${submissionId}`;
     }
+
 </script>
 </body>
 </html>
