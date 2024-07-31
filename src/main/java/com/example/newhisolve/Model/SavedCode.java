@@ -1,4 +1,5 @@
 package com.example.newhisolve.Model;
+
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,8 +9,8 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
-@Table(name = "submissions")
-public class Submission {
+@Table(name = "saved_code")
+public class SavedCode {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,28 +24,23 @@ public class Submission {
     @JoinColumn(name = "student_id")
     private User student;
 
-
     @Lob
     @Column(columnDefinition = "LONGTEXT")
     private String code;
 
-    private String result;
-
-    private String pass_count;
-
-    private LocalDateTime submittedAt;
+    @Column(name = "last_saved_date")
+    private LocalDateTime lastSavedDate;
 
     private String language;
 
     @Override
     public String toString() {
-        return "Submission{" +
+        return "SavedCode{" +
                 "id=" + id +
                 ", assignment=" + (assignment != null ? assignment.getId() : "null") +
                 ", student=" + (student != null ? student.getUsername() : "null") +
                 ", code='" + code + '\'' +
-                ", result='" + result + '\'' +
-                ", submittedAt=" + submittedAt +
+                ", lastSavedDate=" + lastSavedDate +
                 ", language='" + language + '\'' +
                 '}';
     }
