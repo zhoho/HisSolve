@@ -33,7 +33,6 @@ public class Submission {
     private String pass_count;
 
     private LocalDateTime submittedAt;
-    private LocalDateTime lastSavedDate;
 
     private String language;
 

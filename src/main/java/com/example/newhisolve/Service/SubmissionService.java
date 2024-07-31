@@ -2,9 +2,11 @@ package com.example.newhisolve.Service;
 
 import com.example.newhisolve.Model.Assignment;
 import com.example.newhisolve.Model.Submission;
+import com.example.newhisolve.Model.SavedCode; // 추가
 import com.example.newhisolve.Model.User;
 import com.example.newhisolve.Repository.AssignmentRepository;
 import com.example.newhisolve.Repository.SubmissionRepository;
+import com.example.newhisolve.Repository.SavedCodeRepository; // 추가
 import com.example.newhisolve.Repository.UserRepository;
 import com.example.newhisolve.dto.SubmissionDTO;
 import org.slf4j.Logger;
@@ -29,6 +31,8 @@ public class SubmissionService {
     private AssignmentRepository assignmentRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private SavedCodeRepository savedCodeRepository; // 추가
 
     @Transactional
     public Submission saveSubmission(SubmissionDTO submissionDTO) {
@@ -55,7 +59,6 @@ public class SubmissionService {
         submission.setCode(submissionDTO.getCode());
         submission.setLanguage(submissionDTO.getLanguage());
         submission.setSubmittedAt(LocalDateTime.now());
-        submission.setLastSavedDate(submissionDTO.getLastSavedDate());
         submission.setPass_count(String.valueOf(submissionDTO.getPassCount()));
 
         int passCount = Integer.parseInt(submissionDTO.getPassCount());
@@ -65,9 +68,8 @@ public class SubmissionService {
         return submissionRepository.save(submission);
     }
 
-
     @Transactional
-    public Submission saveCode(SubmissionDTO submissionDTO) {
+    public SavedCode saveCode(SubmissionDTO submissionDTO) { // 변경
         Optional<Assignment> assignmentOptional = assignmentRepository.findById(submissionDTO.getAssignmentId());
         Optional<User> studentOptional = userRepository.findById(submissionDTO.getStudentId());
 
@@ -77,19 +79,19 @@ public class SubmissionService {
 
         Assignment assignment = assignmentOptional.get();
         User student = studentOptional.get();
-        Submission submission = submissionRepository.findByAssignmentAndStudent(assignment, student)
-                .orElse(new Submission());
+        SavedCode savedCode = savedCodeRepository.findByAssignmentAndStudent(assignment, student)
+                .orElse(new SavedCode());
 
-        submission.setAssignment(assignment);
-        submission.setStudent(student);
-        submission.setCode(submissionDTO.getCode());
-        submission.setLanguage(submissionDTO.getLanguage());
-        submission.setLastSavedDate(submissionDTO.getLastSavedDate());
+        savedCode.setAssignment(assignment);
+        savedCode.setStudent(student);
+        savedCode.setCode(submissionDTO.getCode());
+        savedCode.setLanguage(submissionDTO.getLanguage());
+        savedCode.setLastSavedDate(submissionDTO.getLastSavedDate());
 
-        return submissionRepository.save(submission);
+        return savedCodeRepository.save(savedCode);
     }
 
-    public Optional<Submission> getSavedCode(Long assignmentId, Long studentId) {
+    public Optional<SavedCode> getSavedCode(Long assignmentId, Long studentId) { // 변경
         Optional<Assignment> assignmentOptional = assignmentRepository.findById(assignmentId);
         Optional<User> studentOptional = userRepository.findById(studentId);
 
@@ -103,15 +105,15 @@ public class SubmissionService {
         System.out.println("Assignment ID: " + assignment.getId());
         System.out.println("Student ID: " + student.getId());
 
-        Optional<Submission> submissionOptional = submissionRepository.findByAssignmentAndStudent(assignment, student);
+        Optional<SavedCode> savedCodeOptional = savedCodeRepository.findByAssignmentAndStudent(assignment, student); // 변경
 
-        if (submissionOptional.isPresent()) {
-            System.out.println("Submission found with code: " + submissionOptional.get().getCode());
+        if (savedCodeOptional.isPresent()) {
+            System.out.println("SavedCode found with code: " + savedCodeOptional.get().getCode());
         } else {
-            System.out.println("No Submission found for this assignment and student");
+            System.out.println("No SavedCode found for this assignment and student");
         }
 
-        return submissionOptional;
+        return savedCodeOptional;
     }
 
     public List<Submission> findByAssignmentId(Long assignmentId) {

@@ -3,6 +3,7 @@ package com.example.newhisolve.Controller;
 import com.example.newhisolve.dto.SubmissionDTO;
 import com.example.newhisolve.Service.SubmissionService;
 import com.example.newhisolve.Model.Submission;
+import com.example.newhisolve.Model.SavedCode; // 추가
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,10 +22,10 @@ public class SubmissionController {
     @PostMapping("/saveCode")
     public ResponseEntity<?> saveCode(@RequestBody SubmissionDTO submissionDTO) {
         try {
-            Submission savedSubmission = submissionService.saveCode(submissionDTO);
+            SavedCode savedCode = submissionService.saveCode(submissionDTO); // 변경
 
             Map<String, Object> response = new HashMap<>();
-            response.put("lastSavedDate", savedSubmission.getLastSavedDate());
+            response.put("lastSavedDate", savedCode.getLastSavedDate()); // 변경
             response.put("message", "Code saved successfully!");
 
             return ResponseEntity.ok(response);
@@ -39,15 +40,14 @@ public class SubmissionController {
     @GetMapping("/getSavedCode")
     @ResponseBody
     public ResponseEntity<String> getSavedCode(@RequestParam Long assignmentId, @RequestParam Long studentId) {
-        Optional<Submission> submissionOptional = submissionService.getSavedCode(assignmentId, studentId);
-        if (submissionOptional.isPresent()) {
-            Submission submission = submissionOptional.get();
-            return ResponseEntity.ok(submission.getCode());
+        Optional<SavedCode> savedCodeOptional = submissionService.getSavedCode(assignmentId, studentId); // 변경
+        if (savedCodeOptional.isPresent()) {
+            SavedCode savedCode = savedCodeOptional.get(); // 변경
+            return ResponseEntity.ok(savedCode.getCode()); // 변경
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No saved code found");
         }
     }
-
 
     @PostMapping("/submit")
     public ResponseEntity<?> submit(@RequestBody SubmissionDTO submissionDTO) {
