@@ -143,8 +143,8 @@ public class AssignmentController {
         ZonedDateTime zonedDateTime = localDateTime.atZone(ZoneId.of("Asia/Seoul")).withZoneSameInstant(ZoneId.of("UTC"));
         assignment.setDueDate(zonedDateTime.toLocalDateTime());
         assignment.setLastModifiedDate(LocalDateTime.now());
+
         List<TestCase> testCases = new ArrayList<>();
-        StringBuilder descriptionWithTestCases = new StringBuilder(assignment.getDescription()).append("\n\n --- \n");
 
         for (int i = 0; i < inputs.size(); i++) {
             TestCase testCase = new TestCase();
@@ -158,12 +158,11 @@ public class AssignmentController {
 
         assignmentService.updateAssignment(assignment, courseId);
 
-        for (TestCase testCase : assignment.getTestCases()) {
-            System.out.println("Test Case - Input: " + testCase.getInput() + ", Expected Output: " + testCase.getExpectedOutput());
-        }
-
         return "redirect:/professor_course/" + courseId;
     }
+
+
+
 
 
     @GetMapping("/professor_assignment_detail/{id}")
