@@ -679,6 +679,15 @@
     }
 
     async function submitCode() {
+        const now = new Date();
+        const dueDateText = document.getElementById('due-date').innerText;
+        const dueDate = new Date(dueDateText);
+
+        if (now > dueDate) {
+            alert('마감 시간이 지났습니다.');
+            return;
+        }
+
         const code = window.editor.getValue();
 
         // 코드 저장
@@ -889,7 +898,42 @@
 
         updateTimeRemaining();
         setInterval(updateTimeRemaining, 1000); // 1초마다 업데이트
+
+        // 페이지가 로드될 때 마감 시간 확인
+        const dueDateElement = document.getElementById('due-date');
+        const dueDateText = dueDateElement.innerText;
+        const dueDate = new Date(dueDateText);
+        const now = new Date();
+
+        if (now > dueDate) {
+            showAlert("마감 시간이 지났습니다.", () => {
+                window.history.back();
+            });
+        }
+
+        setInterval(autoSaveCode, 60000); // 1분마다 자동 저장
     });
+
+    function showAlert(message, callback) {
+        const alertBox = document.createElement('div');
+        alertBox.innerText = message;
+        alertBox.style.position = 'fixed';
+        alertBox.style.top = '20px';
+        alertBox.style.left = '50%';
+        alertBox.style.transform = 'translateX(-50%)';
+        alertBox.style.backgroundColor = '#f44336';
+        alertBox.style.color = 'white';
+        alertBox.style.padding = '10px 20px';
+        alertBox.style.borderRadius = '5px';
+        alertBox.style.zIndex = 1000;
+        document.body.appendChild(alertBox);
+
+        setTimeout(() => {
+            alertBox.remove();
+            if (callback) callback();
+        }, 3000);
+    }
+
 
     function updateTimeRemaining() {
         const dueDateElement = document.getElementById('due-date');
@@ -907,6 +951,7 @@
 
         const now = new Date();
         const timeRemaining = dueDate - now;
+        const submitButton = document.getElementById('submit-btn');
 
         if (timeRemaining > 0) {
             const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
@@ -926,10 +971,34 @@
             }
 
             document.getElementById('time-remaining').innerText = timeText;
+            submitButton.disabled = false;
         } else {
             document.getElementById('time-remaining').innerText = "마감 시간이 지났습니다.";
+            submitButton.disabled = true;
+            showAlert("마감 시간이 지났습니다.");
         }
     }
+
+    function showAlert(message) {
+        const alertBox = document.createElement('div');
+        alertBox.innerText = message;
+        alertBox.style.position = 'fixed';
+        alertBox.style.top = '20px';
+        alertBox.style.left = '50%';
+        alertBox.style.transform = 'translateX(-50%)';
+        alertBox.style.backgroundColor = '#f44336';
+        alertBox.style.color = 'white';
+        alertBox.style.padding = '10px 20px';
+        alertBox.style.borderRadius = '5px';
+        alertBox.style.zIndex = 1000;
+        document.body.appendChild(alertBox);
+
+        setTimeout(() => {
+            alertBox.remove();
+        }, 3000);
+    }
+
+
 
     function changeLanguage(select) {
         const selectedLanguage = select.value;
