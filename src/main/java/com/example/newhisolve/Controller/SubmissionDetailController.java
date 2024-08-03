@@ -20,6 +20,7 @@ public class SubmissionDetailController {
         Optional<Submission> submissionOptional = submissionService.getSubmission(id);
         if (submissionOptional.isPresent()) {
             Submission submission = submissionOptional.get();
+            model.addAttribute("submissions", submission);
             model.addAttribute("submissionCode", submission.getCode());
             model.addAttribute("submissionLanguage", language);
             model.addAttribute("assignment", submission.getAssignment());
