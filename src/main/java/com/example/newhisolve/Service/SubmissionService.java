@@ -17,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -62,7 +61,12 @@ public class SubmissionService {
         submission.setPass_count(String.valueOf(submissionDTO.getPassCount()));
 
         int passCount = Integer.parseInt(submissionDTO.getPassCount());
-        boolean allTestsPassed = passCount == assignment.getTestCases().size();
+        int totalTestCases = assignment.getTestCases().size();
+        int scorePerTestCase = 100 / totalTestCases;
+        int totalScore = passCount * scorePerTestCase;
+        submission.setScore(totalScore);
+
+        boolean allTestsPassed = passCount == totalTestCases;
         submission.setResult(allTestsPassed ? "성공" : "실패");
 
         return submissionRepository.save(submission);

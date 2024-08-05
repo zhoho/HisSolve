@@ -17,4 +17,5 @@ public class SubmissionDTO {
     private String language;
     private String result;
     private String passCount;
+    private int totalScore;
 }

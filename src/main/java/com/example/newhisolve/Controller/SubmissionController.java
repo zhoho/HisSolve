@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -22,10 +23,10 @@ public class SubmissionController {
     @PostMapping("/saveCode")
     public ResponseEntity<?> saveCode(@RequestBody SubmissionDTO submissionDTO) {
         try {
-            SavedCode savedCode = submissionService.saveCode(submissionDTO); // 변경
+            SavedCode savedCode = submissionService.saveCode(submissionDTO);
 
             Map<String, Object> response = new HashMap<>();
-            response.put("lastSavedDate", savedCode.getLastSavedDate()); // 변경
+            response.put("lastSavedDate", savedCode.getLastSavedDate());
             response.put("message", "Code saved successfully!");
 
             return ResponseEntity.ok(response);
@@ -40,25 +41,14 @@ public class SubmissionController {
     @GetMapping("/getSavedCode")
     @ResponseBody
     public ResponseEntity<String> getSavedCode(@RequestParam Long assignmentId, @RequestParam Long studentId) {
-        Optional<SavedCode> savedCodeOptional = submissionService.getSavedCode(assignmentId, studentId); // 변경
+        Optional<SavedCode> savedCodeOptional = submissionService.getSavedCode(assignmentId, studentId);
         if (savedCodeOptional.isPresent()) {
-            SavedCode savedCode = savedCodeOptional.get(); // 변경
-            return ResponseEntity.ok(savedCode.getCode()); // 변경
+            SavedCode savedCode = savedCodeOptional.get();
+            return ResponseEntity.ok(savedCode.getCode());
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No saved code found");
         }
     }
-
-//    @GetMapping("/getSubmissionCode")
-//    @ResponseBody
-//    public ResponseEntity<String> getSubmissionCode(@RequestParam Long submissionId) {
-//        Optional<Submission> submissionOptional = submissionService.getSubmission(submissionId);
-//        if (submissionOptional.isPresent()) {
-//            Submission submission = submissionOptional.get();
-//            return ResponseEntity.ok(submission.getCode());
-//        }
-//        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No submission found");
-//    }
 
     @PostMapping("/submit")
     public ResponseEntity<?> submit(@RequestBody SubmissionDTO submissionDTO) {
@@ -77,5 +67,4 @@ public class SubmissionController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
         }
     }
-
 }

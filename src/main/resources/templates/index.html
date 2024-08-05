@@ -693,6 +693,18 @@
         // 코드 저장
         await saveCode();
 
+        // 테스트케이스 수
+        const totalTestCases = parseInt(document.getElementById('testcase-results').getAttribute('data-total-testcases'));
+
+        // 각 테스트케이스 당 점수
+        const pointsPerTestCase = 100 / totalTestCases;
+
+        // 통과한 테스트케이스 수
+        const passCount = passedTestCases;
+
+        // 총점 계산
+        const totalScore = pointsPerTestCase * passCount;
+
         try {
             const response = await fetch('/api/submit', {
                 method: 'POST',
@@ -702,7 +714,8 @@
                     studentId: studentId,
                     code: code,
                     language: language,
-                    passCount: passedTestCases
+                    passCount: passCount,
+                    totalScore: totalScore // 총점 추가
                 })
             });
             if (!response.ok) {
@@ -719,6 +732,7 @@
             alert('제출 실패!\n' + error.message);
         }
     }
+
 
 
     function showModal(message, buttonText, callback) {
