@@ -1,12 +1,13 @@
 package com.example.newhisolve.Service;
 
 import com.example.newhisolve.Model.Assignment;
+import com.example.newhisolve.Model.Course;
 import com.example.newhisolve.Model.Submission;
-import com.example.newhisolve.Model.SavedCode; // 추가
+import com.example.newhisolve.Model.SavedCode;
 import com.example.newhisolve.Model.User;
 import com.example.newhisolve.Repository.AssignmentRepository;
 import com.example.newhisolve.Repository.SubmissionRepository;
-import com.example.newhisolve.Repository.SavedCodeRepository; // 추가
+import com.example.newhisolve.Repository.SavedCodeRepository;
 import com.example.newhisolve.Repository.UserRepository;
 import com.example.newhisolve.dto.SubmissionDTO;
 import org.slf4j.Logger;
@@ -31,7 +32,7 @@ public class SubmissionService {
     @Autowired
     private UserRepository userRepository;
     @Autowired
-    private SavedCodeRepository savedCodeRepository; // 추가
+    private SavedCodeRepository savedCodeRepository;
 
     @Transactional
     public Submission saveSubmission(SubmissionDTO submissionDTO) {
@@ -44,6 +45,8 @@ public class SubmissionService {
 
         Assignment assignment = assignmentOptional.get();
         User student = studentOptional.get();
+        Course course = assignment.getCourse(); // assignment로부터 course 가져오기
+
         Optional<Submission> submissionOptional = submissionRepository.findByAssignmentAndStudent(assignment, student);
 
         Submission submission;
@@ -53,14 +56,21 @@ public class SubmissionService {
             submission = new Submission(); // 새로운 제출물 생성
             submission.setAssignment(assignment);
             submission.setStudent(student);
+            submission.setCourse(course); // Course 설정
         }
 
         submission.setCode(submissionDTO.getCode());
         submission.setLanguage(submissionDTO.getLanguage());
         submission.setSubmittedAt(LocalDateTime.now());
-        submission.setPass_count(String.valueOf(submissionDTO.getPassCount()));
+        submission.setPass_count(submissionDTO.getPassCount());
 
-        int passCount = Integer.parseInt(submissionDTO.getPassCount());
+        int passCount;
+        try {
+            passCount = Integer.parseInt(submissionDTO.getPassCount());
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("Invalid pass count format");
+        }
+
         int totalTestCases = assignment.getTestCases().size();
         int scorePerTestCase = 100 / totalTestCases;
         int totalScore = passCount * scorePerTestCase;
@@ -73,7 +83,7 @@ public class SubmissionService {
     }
 
     @Transactional
-    public SavedCode saveCode(SubmissionDTO submissionDTO) { // 변경
+    public SavedCode saveCode(SubmissionDTO submissionDTO) {
         Optional<Assignment> assignmentOptional = assignmentRepository.findById(submissionDTO.getAssignmentId());
         Optional<User> studentOptional = userRepository.findById(submissionDTO.getStudentId());
 
@@ -95,7 +105,7 @@ public class SubmissionService {
         return savedCodeRepository.save(savedCode);
     }
 
-    public Optional<SavedCode> getSavedCode(Long assignmentId, Long studentId) { // 변경
+    public Optional<SavedCode> getSavedCode(Long assignmentId, Long studentId) {
         Optional<Assignment> assignmentOptional = assignmentRepository.findById(assignmentId);
         Optional<User> studentOptional = userRepository.findById(studentId);
 
@@ -106,16 +116,7 @@ public class SubmissionService {
         Assignment assignment = assignmentOptional.get();
         User student = studentOptional.get();
 
-        System.out.println("Assignment ID: " + assignment.getId());
-        System.out.println("Student ID: " + student.getId());
-
-        Optional<SavedCode> savedCodeOptional = savedCodeRepository.findByAssignmentAndStudent(assignment, student); // 변경
-
-        if (savedCodeOptional.isPresent()) {
-            System.out.println("SavedCode found with code: " + savedCodeOptional.get().getCode());
-        } else {
-            System.out.println("No SavedCode found for this assignment and student");
-        }
+        Optional<SavedCode> savedCodeOptional = savedCodeRepository.findByAssignmentAndStudent(assignment, student);
 
         return savedCodeOptional;
     }
