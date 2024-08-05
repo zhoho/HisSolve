@@ -102,6 +102,11 @@
       padding: 10px;
       background-color: #ffffff;
     }
+    .grading-testcase-container {
+      margin-top: 40px;
+      border-top: 2px solid #37517e;
+      padding-top: 20px;
+    }
   </style>
 </head>
 <body>
@@ -158,6 +163,25 @@
         </div>
         <button type="button" class="btn btn-lightblue mt-3" id="addCaseBtn">Add case</button>
       </div>
+      <div class="form-group grading-testcase-container">
+        <label class="font-weight-bold">Grading Test Cases</label>
+        <div id="gradingTestCasesContainer">
+          <div class="form-group row align-items-center">
+            <div class="col-md-5">
+              <label class="font-weight-bold">Input Cases</label>
+              <textarea class="form-control" name="gradingInputs[]" placeholder="Input case"></textarea>
+            </div>
+            <div class="col-md-5">
+              <label class="font-weight-bold">Output Cases</label>
+              <textarea class="form-control" name="gradingOutputs[]" placeholder="Output case"></textarea>
+            </div>
+            <div class="col-md-2 text-center">
+              <button type="button" class="delete-btn" onclick="removeTestCase(this)"><i class="fas fa-trash-alt"></i></button>
+            </div>
+          </div>
+        </div>
+        <button type="button" class="btn btn-lightblue mt-3" id="addGradingCaseBtn">Add grading case</button>
+      </div>
       <div class="form-group">
         <label for="dueDate" class="font-weight-bold">Deadline</label>
         <input type="datetime-local" class="form-control" id="dueDate" name="dueDate" required>
@@ -175,6 +199,9 @@
 <!-- Bootstrap JS and dependencies -->
 <div th:replace="~{fragments :: scripts}"></div>
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script>
   document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.nav-link').forEach(link => {
@@ -197,25 +224,42 @@
         }
       });
     });
-  });
 
-  let caseCount = 1;
-  document.getElementById('addCaseBtn').addEventListener('click', function () {
-    caseCount++;
-    const testCaseDiv = document.createElement('div');
-    testCaseDiv.className = 'form-group row align-items-center';
-    testCaseDiv.innerHTML = `
-      <div class="col-md-5">
-        <textarea class="form-control" name="inputs[]" placeholder="Input case"></textarea>
-      </div>
-      <div class="col-md-5">
-        <textarea class="form-control" name="outputs[]" placeholder="Output case"></textarea>
-      </div>
-      <div class="col-md-2 text-center">
-        <button type="button" class="delete-btn" onclick="removeTestCase(this)"><i class="fas fa-trash-alt"></i></button>
-      </div>
-    `;
-    document.getElementById('testCasesContainer').appendChild(testCaseDiv);
+    let caseCount = 1;
+    document.getElementById('addCaseBtn').addEventListener('click', function () {
+      caseCount++;
+      const testCaseDiv = document.createElement('div');
+      testCaseDiv.className = 'form-group row align-items-center';
+      testCaseDiv.innerHTML = `
+        <div class="col-md-5">
+          <textarea class="form-control" name="inputs[]" placeholder="Input case"></textarea>
+        </div>
+        <div class="col-md-5">
+          <textarea class="form-control" name="outputs[]" placeholder="Output case"></textarea>
+        </div>
+        <div class="col-md-2 text-center">
+          <button type="button" class="delete-btn" onclick="removeTestCase(this)"><i class="fas fa-trash-alt"></i></button>
+        </div>
+      `;
+      document.getElementById('testCasesContainer').appendChild(testCaseDiv);
+    });
+
+    document.getElementById('addGradingCaseBtn').addEventListener('click', function () {
+      const gradingTestCaseDiv = document.createElement('div');
+      gradingTestCaseDiv.className = 'form-group row align-items-center';
+      gradingTestCaseDiv.innerHTML = `
+        <div class="col-md-5">
+          <textarea class="form-control" name="gradingInputs[]" placeholder="Input case"></textarea>
+        </div>
+        <div class="col-md-5">
+          <textarea class="form-control" name="gradingOutputs[]" placeholder="Output case"></textarea>
+        </div>
+        <div class="col-md-2 text-center">
+          <button type="button" class="delete-btn" onclick="removeTestCase(this)"><i class="fas fa-trash-alt"></i></button>
+        </div>
+      `;
+      document.getElementById('gradingTestCasesContainer').appendChild(gradingTestCaseDiv);
+    });
   });
 
   function removeTestCase(button) {
@@ -225,15 +269,12 @@
     }
   }
 
-  // convertToUTC 함수 제거
   function convertToUTC() {
     const dueDateInput = document.getElementById('dueDate');
     const localDate = new Date(dueDateInput.value);
     const utcDate = new Date(localDate.getTime() - localDate.getTimezoneOffset() * 60000); // 밀리초 단위로 변환
     dueDateInput.value = utcDate.toISOString().slice(0, 16); // 'yyyy-MM-ddTHH:mm' 형식으로 변환
   }
-
-
 </script>
 </body>
 </html>

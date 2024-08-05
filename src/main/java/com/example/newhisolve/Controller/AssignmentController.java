@@ -1,9 +1,6 @@
 package com.example.newhisolve.Controller;
 
-import com.example.newhisolve.Model.Assignment;
-import com.example.newhisolve.Model.Course;
-import com.example.newhisolve.Model.TestCase;
-import com.example.newhisolve.Model.User;
+import com.example.newhisolve.Model.*;
 import com.example.newhisolve.Service.AssignmentService;
 import com.example.newhisolve.Service.CourseService;
 import com.example.newhisolve.Service.SubmissionService;
@@ -49,6 +46,8 @@ public class AssignmentController {
                                    @RequestParam Long courseId,
                                    @RequestParam List<String> inputs,
                                    @RequestParam List<String> outputs,
+                                   @RequestParam(required = false) List<String> gradingInputs,
+                                   @RequestParam(required = false) List<String> gradingOutputs,
                                    @RequestParam("dueDate") String dueDate,
                                    Principal principal) {
         User user = userService.findByUsername(principal.getName());
@@ -59,8 +58,8 @@ public class AssignmentController {
         LocalDateTime localDateTime = LocalDateTime.parse(dueDate);
         assignment.setDueDate(localDateTime);
 
+        // Process regular test cases
         List<TestCase> testCases = new ArrayList<>();
-
         for (int i = 0; i < inputs.size(); i++) {
             TestCase testCase = new TestCase();
             testCase.setInput(inputs.get(i));
@@ -71,10 +70,27 @@ public class AssignmentController {
         assignment.setTestcaseCount(String.valueOf(inputs.size()));
         assignment.setTestCases(testCases);
 
+        // Process grading test cases
+        if (gradingInputs != null && gradingOutputs != null) {
+            List<GradingTestCase> gradingTestCases = new ArrayList<>();
+            for (int i = 0; i < gradingInputs.size(); i++) {
+                GradingTestCase gradingTestCase = new GradingTestCase();
+                gradingTestCase.setInput(gradingInputs.get(i));
+                gradingTestCase.setExpectedOutput(gradingOutputs.get(i));
+                gradingTestCases.add(gradingTestCase);
+            }
+
+            assignment.setGradingTestcaseCount(String.valueOf(gradingInputs.size()));
+            assignment.setGradingTestCases(gradingTestCases);
+        } else {
+            assignment.setGradingTestcaseCount(String.valueOf(0));
+        }
+
         assignmentService.createAssignment(assignment, courseId);
 
         return "redirect:/professor_course/" + courseId;
     }
+
 
 
 
@@ -132,6 +148,8 @@ public class AssignmentController {
                                    @RequestParam Long courseId,
                                    @RequestParam List<String> inputs,
                                    @RequestParam List<String> outputs,
+                                   @RequestParam(required = false) List<String> gradingInputs,
+                                   @RequestParam(required = false) List<String> gradingOutputs,
                                    @RequestParam("dueDate") String dueDate,
                                    Principal principal) {
         User user = userService.findByUsername(principal.getName());
@@ -145,7 +163,6 @@ public class AssignmentController {
         assignment.setLastModifiedDate(LocalDateTime.now());
 
         List<TestCase> testCases = new ArrayList<>();
-
         for (int i = 0; i < inputs.size(); i++) {
             TestCase testCase = new TestCase();
             testCase.setInput(inputs.get(i));
@@ -156,10 +173,26 @@ public class AssignmentController {
         assignment.setTestcaseCount(String.valueOf(inputs.size()));
         assignment.setTestCases(testCases);
 
+        if (gradingInputs != null && gradingOutputs != null) {
+            List<GradingTestCase> gradingTestCases = new ArrayList<>();
+            for (int i = 0; i < gradingInputs.size(); i++) {
+                GradingTestCase gradingTestCase = new GradingTestCase();
+                gradingTestCase.setInput(gradingInputs.get(i));
+                gradingTestCase.setExpectedOutput(gradingOutputs.get(i));
+                gradingTestCases.add(gradingTestCase);
+            }
+
+            assignment.setGradingTestcaseCount(String.valueOf(gradingInputs.size()));
+            assignment.setGradingTestCases(gradingTestCases);
+        } else {
+            assignment.setGradingTestcaseCount(String.valueOf(0));
+        }
+
         assignmentService.updateAssignment(assignment, courseId);
 
         return "redirect:/professor_course/" + courseId;
     }
+
 
     @GetMapping("/professor_assignment_detail/{id}")
     @PreAuthorize("hasRole('PROFESSOR')")

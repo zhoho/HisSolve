@@ -90,6 +90,9 @@ public class AssignmentServiceImpl implements AssignmentService {
         existingAssignment.setDescription(assignment.getDescription());
         existingAssignment.setTestCases(assignment.getTestCases());
         existingAssignment.setLastModifiedDate(assignment.getLastModifiedDate());
+        existingAssignment.setGradingTestcaseCount(assignment.getGradingTestcaseCount());
+        existingAssignment.setGradingTestCases(assignment.getGradingTestCases());
+        existingAssignment.setLastModifiedDate(assignment.getLastModifiedDate());
 
         assignmentRepository.save(existingAssignment);
     }
