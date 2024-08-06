@@ -1,14 +1,12 @@
 package com.example.newhisolve.Service;
-
 import com.example.newhisolve.Model.Assignment;
 import com.example.newhisolve.Model.Course;
-import com.example.newhisolve.Model.Submission;
 import com.example.newhisolve.Model.User;
 import com.example.newhisolve.Repository.AssignmentRepository;
 import com.example.newhisolve.Repository.CourseRepository;
 import com.example.newhisolve.Repository.SubmissionRepository;
 import com.example.newhisolve.Repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
@@ -18,19 +16,16 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class CourseServiceImpl implements CourseService {
 
-    @Autowired
-    private CourseRepository courseRepository;
+    private final CourseRepository courseRepository;
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private AssignmentRepository assignmentRepository;
+    private final AssignmentRepository assignmentRepository;
 
-    @Autowired
-    private SubmissionRepository submissionRepository; // 추가된 부분
+    private final SubmissionRepository submissionRepository;
 
     @Override
     public Course createCourse(Course course, String professorUsername) {
