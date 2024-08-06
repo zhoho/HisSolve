@@ -17,8 +17,6 @@ public interface SubmissionRepository extends JpaRepository<Submission, Long> {
     List<Submission> findByAssignmentId(Long assignmentId);
     void deleteByAssignmentId(Long assignmentId);
     List<Submission> findByAssignmentIdAndStudentId(Long assignmentId, Long studentId);
-    void deleteByStudentAndAssignment(User student, Assignment assignment);
-    List<Submission> findByStudentAndAssignment(User student, Assignment assignment);
     List<Submission> findByAssignment(Assignment assignment);
 
     @Query("SELECT SUM(s.score) FROM Submission s WHERE s.student.id = :studentId AND s.course.id = :courseId")

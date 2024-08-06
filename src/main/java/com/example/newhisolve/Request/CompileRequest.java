@@ -4,7 +4,6 @@ import lombok.Getter;
 
 @Getter
 public class CompileRequest {
-    // Getters and Setters
     private Long assignmentId;
     private String code;
     private String language;

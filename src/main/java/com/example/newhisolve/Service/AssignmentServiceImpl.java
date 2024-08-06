@@ -72,15 +72,6 @@ public class AssignmentServiceImpl implements AssignmentService {
         }
     }
 
-    @Override
-    @Transactional
-    public void deleteTestCasesByAssignmentId(Long assignmentId) {
-        Assignment assignment = assignmentRepository.findById(assignmentId).orElseThrow(() -> new IllegalArgumentException("Invalid assignment Id:" + assignmentId));
-        assignment.getTestCases().clear();
-        assignmentRepository.save(assignment);
-    }
-
-
     @Transactional
     @Override
     public void deleteAssignmentById(Long id) {

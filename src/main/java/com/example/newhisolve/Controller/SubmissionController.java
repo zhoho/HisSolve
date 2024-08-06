@@ -1,22 +1,16 @@
 package com.example.newhisolve.Controller;
-
-import com.example.newhisolve.Model.GradingTestCase;
-import com.example.newhisolve.Request.CompileRequest;
 import com.example.newhisolve.dto.SubmissionDTO;
 import com.example.newhisolve.Service.SubmissionService;
 import com.example.newhisolve.Model.Submission;
 import com.example.newhisolve.Model.SavedCode; // 추가
-import junit.framework.TestResult;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
