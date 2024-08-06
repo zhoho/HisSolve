@@ -113,21 +113,21 @@
             <p class="email-text" th:text="${user.email}"></p>
         </div>
         <div class="col-md-4 edit-btn">
-            <a class="btn btn-sm" th:href="@{/profile/edit}">Edit</a>
+            <a class="btn btn-sm" th:href="@{/profile/edit}">수정</a>
         </div>
     </div>
 </div>
 <div class="container mt-4">
     <div class="row">
         <div class="col-md-8">
-            <h2>Classrooms</h2>
+            <h2>대회 목록</h2>
         </div>
         <div class="col-md-4 text-right">
             <form th:if="${user.role == 'STUDENT'}" class="form-inline" th:action="@{/course/join}" method="post">
                 <input class="form-control mr-2" type="text" placeholder="Enter class code" name="code" required>
-                <button class="btn btn-primary" type="submit">Join</button>
+                <button class="btn btn-primary" type="submit">입장</button>
             </form>
-            <a class="btn btn-primary" th:if="${user.role == 'PROFESSOR'}" th:href="@{/course/create}">Create New Class</a>
+            <a class="btn btn-primary" th:if="${user.role == 'PROFESSOR'}" th:href="@{/course/create}">대회 생성</a>
         </div>
     </div>
     <div class="row">

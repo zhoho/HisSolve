@@ -122,22 +122,22 @@
   <div class="main-container">
     <form th:action="@{/assignment/create}" method="post" onsubmit="convertToUTC()">
       <div class="form-group">
-        <label for="title" class="font-weight-bold">Assignment name:</label>
+        <label for="title" class="font-weight-bold">문제 이름:</label>
         <input type="text" class="form-control" id="title" name="title" required>
       </div>
       <div class="form-group">
-        <label class="font-weight-bold">Problem Statement</label>
+        <label class="font-weight-bold">문제 설명</label>
         <ul class="nav nav-tabs" id="myTab" role="tablist">
           <li class="nav-item">
             <a class="nav-link active" id="problem-statement-tab" data-toggle="tab" href="#problem-statement" role="tab" aria-controls="problem-statement" aria-selected="true">Problem Statement</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" id="preview-tab" data-toggle="tab" href="#preview" role="tab" aria-controls="preview" aria-selected="false">Preview</a>
+            <a class="nav-link" id="preview-tab" data-toggle="tab" href="#preview" role="tab" aria-controls="preview" aria-selected="false">미리 보기</a>
           </li>
         </ul>
         <div class="tab-content" id="myTabContent">
           <div class="tab-pane fade show active" id="problem-statement" role="tabpanel" aria-labelledby="problem-statement-tab">
-            <textarea class="form-control mt-3" rows="10" name="description" id="problemStatement" placeholder="Use Markdown syntax to write the problem statement..."></textarea>
+            <textarea class="form-control mt-3" rows="10" name="description" id="problemStatement" placeholder="마크다운 문법을 적용시킬 수 있습니다..."></textarea>
           </div>
           <div class="tab-pane fade" id="preview" role="tabpanel" aria-labelledby="preview-tab">
             <div class="mt-3" id="previewContent"></div>
@@ -183,12 +183,12 @@
         <button type="button" class="btn btn-lightblue mt-3" id="addGradingCaseBtn">Add grading case</button>
       </div>
       <div class="form-group">
-        <label for="dueDate" class="font-weight-bold">Deadline</label>
+        <label for="dueDate" class="font-weight-bold">마감일</label>
         <input type="datetime-local" class="form-control" id="dueDate" name="dueDate" required>
       </div>
       <input type="hidden" name="courseId" th:value="${course.id}" /> <!-- courseId를 동적으로 설정 -->
-      <button type="submit" class="btn btn-lightblue">Create</button>
-      <a href="/dashboard" class="btn btn-lightblue">Cancel</a>
+      <button type="submit" class="btn btn-lightblue">생성</button>
+      <a href="/dashboard" class="btn btn-lightblue">취소</a>
     </form>
   </div>
 </div>

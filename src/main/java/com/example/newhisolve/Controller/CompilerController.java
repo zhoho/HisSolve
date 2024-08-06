@@ -40,9 +40,6 @@ public class CompilerController {
         return ResponseEntity.ok(output);
     }
 
-
-
-
     @PostMapping("/run")
     public Map<String, String> runCode(@RequestBody CompileRequest request) {
         String output = compilerService.runCode(request.getCode(), request.getLanguage());

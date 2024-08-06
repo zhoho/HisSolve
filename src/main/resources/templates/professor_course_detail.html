@@ -118,7 +118,7 @@
     <div class="assignment-container">
       <div class="section-header">
         <h2>Assignments</h2>
-        <a th:href="@{/assignment/create(courseId=${course.id})}" class="btn new-assignment-button"><i class="fas fa-plus"></i> New assignment</a>
+        <a th:href="@{/assignment/create(courseId=${course.id})}" class="btn new-assignment-button"><i class="fas fa-plus"></i>문제 생성</a>
       </div>
       <div class="row">
         <div class="col-lg-6 col-sm-12 my-3" th:each="assignment : ${assignments}">
