@@ -1,6 +1,7 @@
 package com.example.newhisolve.Controller;
 
 import com.example.newhisolve.Model.Course;
+import com.example.newhisolve.Model.User;
 import com.example.newhisolve.Service.CourseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -9,6 +10,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -57,8 +60,18 @@ public class CourseController {
         model.addAttribute("course", courseEntity);
         model.addAttribute("students", courseEntity.getStudents());
         model.addAttribute("assignments", courseService.findAssignmentsByCourse(courseEntity));
+
+        // 학생별 총 점수 계산
+        Map<Long, Integer> studentTotalScores = new HashMap<>();
+        for (User student : courseEntity.getStudents()) {
+            int totalScore = courseService.getTotalScoreByStudentAndCourse(student.getId(), courseEntity.getId());
+            studentTotalScores.put(student.getId(), totalScore);
+        }
+        model.addAttribute("studentTotalScores", studentTotalScores);
+
         return "professor_course_detail";
     }
+
 
     @PostMapping("/course/removeStudent")
     @PreAuthorize("hasRole('PROFESSOR')")

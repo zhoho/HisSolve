@@ -147,6 +147,7 @@
           <th>#</th>
           <th>Name</th>
           <th>Email</th>
+          <th>Total</th> <!-- 추가된 컬럼 -->
           <th>Remove student</th>
         </tr>
         </thead>
@@ -155,6 +156,7 @@
           <td th:text="${iterStat.count}"></td>
           <td th:text="${student.username}"></td>
           <td th:text="${student.email}"></td>
+          <td th:text="${studentTotalScores[student.id]}"></td> <!-- 총 점수 표시 -->
           <td>
             <button type="button" class="btn btn-third" data-toggle="modal" th:data-target="'#deleteUserModal-' + ${student.id}">삭제</button>
           </td>
@@ -164,7 +166,7 @@
     </div>
 
     <div class="summary-container text-center">
-<!--      <a href="/results" class="btn btn-success"><i class="fas fa-download"></i> Download results</a>-->
+      <!--      <a href="/results" class="btn btn-success"><i class="fas fa-download"></i> Download results</a>-->
     </div>
   </div>
 </div>

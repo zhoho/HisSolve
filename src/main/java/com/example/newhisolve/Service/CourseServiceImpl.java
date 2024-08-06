@@ -2,9 +2,11 @@ package com.example.newhisolve.Service;
 
 import com.example.newhisolve.Model.Assignment;
 import com.example.newhisolve.Model.Course;
+import com.example.newhisolve.Model.Submission;
 import com.example.newhisolve.Model.User;
 import com.example.newhisolve.Repository.AssignmentRepository;
 import com.example.newhisolve.Repository.CourseRepository;
+import com.example.newhisolve.Repository.SubmissionRepository;
 import com.example.newhisolve.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,6 +26,9 @@ public class CourseServiceImpl implements CourseService {
 
     @Autowired
     private AssignmentRepository assignmentRepository;
+
+    @Autowired
+    private SubmissionRepository submissionRepository; // 추가된 부분
 
     @Override
     public Course createCourse(Course course, String professorUsername) {
@@ -94,5 +99,11 @@ public class CourseServiceImpl implements CourseService {
         } else {
             throw new IllegalArgumentException("Course or Student not found");
         }
+    }
+
+    @Override
+    public int getTotalScoreByStudentAndCourse(Long studentId, Long courseId) {
+        Integer totalScore = submissionRepository.findTotalScoreByStudentAndCourse(studentId, courseId);
+        return totalScore != null ? totalScore : 0;
     }
 }
