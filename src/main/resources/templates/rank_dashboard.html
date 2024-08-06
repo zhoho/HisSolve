@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Ranking Dashboard</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+  <link th:href="@{/css/styles.css}" rel="stylesheet">
+  <style>
+    body {
+      background-color: #edf2f4;
+    }
+    .course-banner {
+      background: linear-gradient(to right, #37517e, #000000);
+      color: white;
+      padding: 30px;
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      margin-top: -10px;
+    }
+    .course-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+    }
+    .course-header h1 {
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+    .main-container {
+      background-color: #f3f5fa;
+      border: 1px solid #dfdfff;
+      padding: 20px;
+      margin-top: 20px;
+      border-radius: 10px;
+    }
+    .table-container {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+<div th:replace="~{fragments :: nav}"></div>
+
+<div class="container mt-1">
+  <div class="course-banner">
+    <div class="course-header">
+      <h1>Ranking Dashboard</h1>
+    </div>
+  </div>
+  <div class="main-container">
+    <div class="table-container">
+      <table class="table table-hover">
+        <thead>
+        <tr>
+          <th>순위</th>
+          <th>이름</th>
+          <th>학번</th>
+          <th>Email</th>
+          <th>Total Score</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="student, iterStat : ${students}">
+          <td th:text="${iterStat.count}"></td>
+          <td th:text="${student.username}"></td>
+          <td th:text="${student.uniqueId}"></td>
+          <td th:text="${student.email}"></td>
+          <td th:text="${studentTotalScores[student.id]}">0</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<div th:replace="~{fragments :: footer}"></div>
+
+<!-- Bootstrap JS and dependencies -->
+<div th:replace="~{fragments :: scripts}"></div>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

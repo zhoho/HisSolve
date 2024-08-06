@@ -34,7 +34,7 @@
     .course-description {
       margin-top: 10px;
     }
-    .back-button, .edit-button, .new-assignment-button {
+    .back-button, .edit-button, .new-assignment-button, .ranking-dashboard-button {
       background-color: #47b2e4;
       border: 0;
       color: #fff;
@@ -44,7 +44,7 @@
       font-size: 1rem;
       margin: 20px 0;
     }
-    .back-button:hover, .edit-button:hover, .new-assignment-button:hover {
+    .back-button:hover, .edit-button:hover, .new-assignment-button:hover, .ranking-dashboard-button:hover {
       background-color: #138496;
       text-decoration: none;
       color: white;
@@ -144,10 +144,11 @@
       <table class="table table-hover">
         <thead>
         <tr>
-          <th>#</th>
-          <th>Name</th>
+          <th>순위</th>
+          <th>이름</th>
+          <th>학번</th>
           <th>Email</th>
-          <th>Total</th> <!-- 추가된 컬럼 -->
+<!--          <th>총점</th> &lt;!&ndash; 추가된 컬럼 &ndash;&gt;-->
           <th>Remove student</th>
         </tr>
         </thead>
@@ -155,8 +156,9 @@
         <tr th:each="student, iterStat : ${students}">
           <td th:text="${iterStat.count}"></td>
           <td th:text="${student.username}"></td>
+          <td th:text="${student.uniqueId}"></td>
           <td th:text="${student.email}"></td>
-          <td th:text="${studentTotalScores[student.id]}">0</td> <!-- 총 점수 표시 -->
+<!--          <td th:text="${studentTotalScores[student.id]}">0</td> &lt;!&ndash; 총 점수 표시 &ndash;&gt;-->
           <td>
             <button type="button" class="btn btn-third" data-toggle="modal" th:data-target="'#deleteUserModal-' + ${student.id}">삭제</button>
           </td>
@@ -166,6 +168,7 @@
     </div>
 
     <div class="summary-container text-center">
+      <a th:href="@{/professor_course/rankDashboard/{id}(id=${course.id})}" class="btn ranking-dashboard-button"><i class="fas fa-chart-bar"></i> Ranking Dashboard</a>
       <a th:href="@{/course/export(courseId=${course.id})}" class="btn btn-success"><i class="fas fa-download"></i> Download results</a>
     </div>
   </div>

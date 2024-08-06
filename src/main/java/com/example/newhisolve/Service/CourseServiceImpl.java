@@ -11,9 +11,11 @@ import com.example.newhisolve.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class CourseServiceImpl implements CourseService {
@@ -78,6 +80,16 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public List<Course> findCoursesByProfessor(User professor) {
         return courseRepository.findByProfessor(professor);
+    }
+
+    @Override
+    public List<User> getSortedStudentsByTotalScore(Long courseId) {
+        Course course = findById(courseId);
+        List<User> students = course.getStudents();
+
+        return students.stream()
+                .sorted(Comparator.comparingInt(student -> getTotalScoreByStudentAndCourse(((User)student).getId(), courseId)).reversed())
+                .collect(Collectors.toList());
     }
 
     @Override

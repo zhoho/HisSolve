@@ -70,15 +70,6 @@ public class CourseController {
         model.addAttribute("course", courseEntity);
         model.addAttribute("students", courseEntity.getStudents());
         model.addAttribute("assignments", courseService.findAssignmentsByCourse(courseEntity));
-
-        // 학생별 총 점수 계산
-        Map<Long, Integer> studentTotalScores = new HashMap<>();
-        for (User student : courseEntity.getStudents()) {
-            int totalScore = courseService.getTotalScoreByStudentAndCourse(student.getId(), courseEntity.getId());
-            studentTotalScores.put(student.getId(), totalScore);
-        }
-        model.addAttribute("studentTotalScores", studentTotalScores);
-
         return "professor_course_detail";
     }
 
@@ -112,6 +103,29 @@ public class CourseController {
         courseService.deleteCourse(course);
         return "redirect:/dashboard";
     }
+
+    @GetMapping("/professor_course/rankDashboard/{id}")
+    @PreAuthorize("hasRole('PROFESSOR')")
+    public String viewRankDashboard(@PathVariable Long id, Model model) {
+        Course courseEntity = courseService.findById(id);
+        model.addAttribute("course", courseEntity);
+
+        List<User> sortedStudents = courseService.getSortedStudentsByTotalScore(id);
+        model.addAttribute("students", sortedStudents);
+
+        // 학생별 총 점수 계산
+        Map<Long, Integer> studentTotalScores = new HashMap<>();
+        for (User student : sortedStudents) {
+            int totalScore = courseService.getTotalScoreByStudentAndCourse(student.getId(), courseEntity.getId());
+            studentTotalScores.put(student.getId(), totalScore);
+        }
+        model.addAttribute("studentTotalScores", studentTotalScores);
+
+        return "rank_dashboard";
+    }
+
+
+
 
     @GetMapping("/course/export")
     @PreAuthorize("hasRole('PROFESSOR')")

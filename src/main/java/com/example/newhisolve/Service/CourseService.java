@@ -21,6 +21,8 @@ public interface CourseService {
 
     List<Course> findCoursesByProfessor(User professor);
 
+    List<User> getSortedStudentsByTotalScore(Long courseId);
+
     void deleteCourse(Course course);
 
     void removeStudentFromCourse(Long courseId, Long studentId);
