@@ -145,15 +145,17 @@
         <thead>
         <tr>
           <th>#</th>
+          <th>ID</th>
           <th>Name</th>
           <th>Email</th>
           <th>Total</th> <!-- 추가된 컬럼 -->
-          <th>Remove student</th>
+          <th>Remove</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="student, iterStat : ${students}">
           <td th:text="${iterStat.count}"></td>
+          <td th:text="${student.uniqueId}"></td>
           <td th:text="${student.username}"></td>
           <td th:text="${student.email}"></td>
           <td th:text="${studentTotalScores[student.id]}">0</td> <!-- 총 점수 표시 -->
