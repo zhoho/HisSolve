@@ -2,6 +2,7 @@ package com.example.newhisolve.Service;
 
 import com.example.newhisolve.Model.GradingTestCase;
 import com.example.newhisolve.Model.TestCase;
+import org.springframework.stereotype.Service;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -9,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Service
 public class CompilerServiceImpl implements CompilerService {
 
     @Override

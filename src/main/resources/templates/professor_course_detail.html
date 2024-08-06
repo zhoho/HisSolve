@@ -118,7 +118,7 @@
     <div class="assignment-container">
       <div class="section-header">
         <h2>Assignments</h2>
-        <a th:href="@{/assignment/create(courseId=${course.id})}" class="btn new-assignment-button"><i class="fas fa-plus"></i>문제 생성</a>
+        <a th:href="@{/assignment/create(courseId=${course.id})}" class="btn new-assignment-button"><i class="fas fa-plus"></i>Create</a>
       </div>
       <div class="row">
         <div class="col-lg-6 col-sm-12 my-3" th:each="assignment : ${assignments}">
@@ -144,10 +144,9 @@
       <table class="table table-hover">
         <thead>
         <tr>
-          <th>순위</th>
-          <th>이름</th>
-          <th>학번</th>
-          <th>Email</th>
+          <th>#</th>
+          <th>Name</th>
+          <th>Stu_Id</th>
 <!--          <th>총점</th> &lt;!&ndash; 추가된 컬럼 &ndash;&gt;-->
           <th>Remove student</th>
         </tr>
@@ -160,7 +159,7 @@
           <td th:text="${student.email}"></td>
 <!--          <td th:text="${studentTotalScores[student.id]}">0</td> &lt;!&ndash; 총 점수 표시 &ndash;&gt;-->
           <td>
-            <button type="button" class="btn btn-third" data-toggle="modal" th:data-target="'#deleteUserModal-' + ${student.id}">삭제</button>
+            <button type="button" class="btn btn-third" data-toggle="modal" th:data-target="'#deleteUserModal-' + ${student.id}">Remove</button>
           </td>
         </tr>
         </tbody>
