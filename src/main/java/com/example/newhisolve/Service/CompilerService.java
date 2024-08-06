@@ -1,5 +1,6 @@
 package com.example.newhisolve.Service;
 
+import com.example.newhisolve.Model.GradingTestCase;
 import com.example.newhisolve.Model.TestCase;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
@@ -66,6 +67,69 @@ public class CompilerService {
                 result.put("status", actualOutput.equals(expectedOutput) ? "통과" : "실패");
                 result.put("input", actualInput);
                 result.put("expectedOutput", testCase.getExpectedOutput());
+                result.put("actualOutput", output.toString().trim());
+                results.add(result);
+            }
+            deleteDirectory(tempDir);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return results;
+    }
+
+    public List<Map<String, String>> gradingCompileAndRun(Long assignmentId, String code, String language, List<GradingTestCase> gradingTestCases) {
+        List<Map<String, String>> results = new ArrayList<>();
+        try {
+            File tempDir = new File("tempDir");
+            if (!tempDir.exists()) {
+                tempDir.mkdir();
+            }
+
+            String fileName = "TempCode";
+            String fileExtension = getFileExtension(language);
+            String filePath = tempDir.getAbsolutePath() + "/" + fileName + fileExtension;
+
+            saveCodeToFile(filePath, code);
+            System.out.println("Code saved to file: " + filePath);
+
+            String dockerImage = getDockerImage(language);
+            String command = getDockerCommand(language, fileName + fileExtension, tempDir.getAbsolutePath());
+
+            int testCount = 0;
+            for (GradingTestCase gradingTestCase : gradingTestCases) {
+                testCount++;
+                System.out.println("Executing command: " + command);
+
+                ProcessBuilder processBuilder = new ProcessBuilder("sh", "-c", command);
+                processBuilder.redirectErrorStream(true);
+                Process process = processBuilder.start();
+
+                if (gradingTestCase.getInput() != null) {
+                    try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(process.getOutputStream()))) {
+                        writer.write(gradingTestCase.getInput());
+                        writer.newLine();
+                        writer.flush();
+                    }
+                }
+
+                BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+                StringBuilder output = new StringBuilder();
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    output.append(line).append("\n");
+                }
+                reader.close();
+                process.waitFor();
+
+                String actualInput = gradingTestCase.getInput();
+                String actualOutput = output.toString().trim().replaceAll("\\s+", "");
+                String expectedOutput = gradingTestCase.getExpectedOutput().trim().replaceAll("\\s+", "");
+
+                Map<String, String> result = new HashMap<>();
+                result.put("testNumber", "테스트 " + testCount);
+                result.put("status", actualOutput.equals(expectedOutput) ? "통과" : "실패");
+                result.put("input", actualInput);
+                result.put("expectedOutput", gradingTestCase.getExpectedOutput());
                 result.put("actualOutput", output.toString().trim());
                 results.add(result);
             }

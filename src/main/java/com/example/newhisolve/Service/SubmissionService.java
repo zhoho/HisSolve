@@ -71,7 +71,7 @@ public class SubmissionService {
             throw new IllegalArgumentException("Invalid pass count format");
         }
 
-        int totalTestCases = assignment.getTestCases().size();
+        int totalTestCases = assignment.getGradingTestCases().size();
         int scorePerTestCase = 100 / totalTestCases;
         int totalScore = passCount * scorePerTestCase;
         submission.setScore(totalScore);
@@ -146,5 +146,14 @@ public class SubmissionService {
 
     public List<Submission> findSubmissionsByAssignment(Assignment assignment) {
         return submissionRepository.findByAssignment(assignment);
+    }
+
+    public String getGradingTestcaseCount(Long assignmentId) {
+        Optional<Assignment> assignmentOptional = assignmentRepository.findById(assignmentId);
+        if (assignmentOptional.isPresent()) {
+            return assignmentOptional.get().getGradingTestcaseCount();
+        } else {
+            throw new IllegalArgumentException("Assignment not found");
+        }
     }
 }

@@ -37,6 +37,12 @@ public class AssignmentServiceImpl implements AssignmentService {
     }
 
     @Override
+    public List<GradingTestCase> getGradingTestCasesForAssignment(Long assignmentId) {
+        Assignment assignment = findById(assignmentId);
+        return assignment.getGradingTestCases();
+    }
+
+    @Override
     public Assignment findById(Long id) {
         if (id == null) {
             throw new IllegalArgumentException("The given id must not be null");
