@@ -167,9 +167,9 @@
                 <tr th:each="submission : ${submissions}">
                     <td th:text="${submission.student.username}"></td>
                     <td th:text="${submission.student.email}"></td>
-                    <td th:classappend="${submission.pass_count == assignment.testcaseCount} ? 'pass-bg' : 'fail-bg'"></td>
+                    <td th:classappend="${submission.pass_count == assignment.gradingTestcaseCount} ? 'pass-bg' : 'fail-bg'"></td>
                     <td>
-                        <span th:text="${submission.pass_count} + '/' + ${assignment.testcaseCount}"></span>
+                        <span th:text="${submission.pass_count} + '/' + ${assignment.gradingTestcaseCount}"></span>
                     </td>
                     <td th:text="${#temporals.format(submission.submittedAt, 'yyyy-MM-dd HH:mm:ss')}"></td>
                     <td>
