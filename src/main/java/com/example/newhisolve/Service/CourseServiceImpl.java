@@ -1,6 +1,7 @@
 package com.example.newhisolve.Service;
 import com.example.newhisolve.Model.Assignment;
 import com.example.newhisolve.Model.Course;
+import com.example.newhisolve.Model.Submission;
 import com.example.newhisolve.Model.User;
 import com.example.newhisolve.Repository.AssignmentRepository;
 import com.example.newhisolve.Repository.CourseRepository;
@@ -9,10 +10,7 @@ import com.example.newhisolve.Repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -86,6 +84,29 @@ public class CourseServiceImpl implements CourseService {
                 .sorted(Comparator.comparingInt(student -> getTotalScoreByStudentAndCourse(((User)student).getId(), courseId)).reversed())
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public Map<Long, List<Integer>> getStudentAssignmentScores(Long courseId) {
+        List<User> students = courseRepository.findById(courseId)
+                .orElseThrow(() -> new RuntimeException("Course not found"))
+                .getStudents();
+        List<Assignment> assignments = assignmentRepository.findByCourseId(courseId);
+
+        return students.stream().collect(Collectors.toMap(
+                User::getId,
+                student -> assignments.stream()
+                        .map(assignment -> getScoreByStudentAndAssignment(student.getId(), assignment.getId()))
+                        .collect(Collectors.toList())
+        ));
+    }
+
+    @Override
+    public int getScoreByStudentAndAssignment(Long studentId, Long assignmentId) {
+        return submissionRepository.findByStudentIdAndAssignmentId(studentId, assignmentId)
+                .map(submission -> Optional.ofNullable(submission.getScore()).orElse(0))
+                .orElse(0);
+    }
+
 
     @Override
     public void deleteCourse(Course course) {

@@ -5,6 +5,7 @@ import com.example.newhisolve.Model.Course;
 import com.example.newhisolve.Model.User;
 
 import java.util.List;
+import java.util.Map;
 
 public interface CourseService {
     Course createCourse(Course course, String professorUsername);
@@ -22,6 +23,10 @@ public interface CourseService {
     List<Course> findCoursesByProfessor(User professor);
 
     List<User> getSortedStudentsByTotalScore(Long courseId);
+
+    Map<Long, List<Integer>> getStudentAssignmentScores(Long courseId);
+
+    int getScoreByStudentAndAssignment(Long studentId, Long assignmentId);
 
     void deleteCourse(Course course);
 

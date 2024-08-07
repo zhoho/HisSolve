@@ -21,4 +21,7 @@ public interface SubmissionRepository extends JpaRepository<Submission, Long> {
 
     @Query("SELECT SUM(s.score) FROM Submission s WHERE s.student.id = :studentId AND s.course.id = :courseId")
     Integer findTotalScoreByStudentAndCourse(@Param("studentId") Long studentId, @Param("courseId") Long courseId);
+
+    @Query("SELECT s FROM Submission s WHERE s.student.id = :studentId AND s.assignment.id = :assignmentId")
+    Optional<Submission> findByStudentIdAndAssignmentId(Long studentId, Long assignmentId);
 }

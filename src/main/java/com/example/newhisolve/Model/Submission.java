@@ -40,7 +40,7 @@ public class Submission {
 
     private String language;
 
-    private int score; // 학생별 점수 컬럼 추가
+    private int score;
 
     @Override
     public String toString() {

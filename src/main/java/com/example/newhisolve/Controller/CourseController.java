@@ -121,8 +121,13 @@ public class CourseController {
         }
         model.addAttribute("studentTotalScores", studentTotalScores);
 
+        // 학생별 문제별 점수 리스트 계산
+        Map<Long, List<Integer>> studentAssignmentScores = courseService.getStudentAssignmentScores(id);
+        model.addAttribute("studentAssignmentScores", studentAssignmentScores);
+
         return "rank_dashboard";
     }
+
 
 
 
