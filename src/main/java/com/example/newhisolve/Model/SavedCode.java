@@ -18,7 +18,7 @@ public class SavedCode {
 
     @ManyToOne
     @JoinColumn(name = "assignment_id")
-    private Assignment assignment;
+    private Problem assignment;
 
     @ManyToOne
     @JoinColumn(name = "student_id")

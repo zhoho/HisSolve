@@ -1,7 +1,7 @@
 package com.example.newhisolve.Service;
-import com.example.newhisolve.Model.Assignment;
-import com.example.newhisolve.Model.Course;
-import com.example.newhisolve.Model.Submission;
+import com.example.newhisolve.Model.Contest;
+import com.example.newhisolve.Model.Problem;
+import com.example.newhisolve.Model.Contest;
 import com.example.newhisolve.Model.User;
 import com.example.newhisolve.Repository.AssignmentRepository;
 import com.example.newhisolve.Repository.CourseRepository;
@@ -26,7 +26,7 @@ public class CourseServiceImpl implements CourseService {
     private final SubmissionRepository submissionRepository;
 
     @Override
-    public Course createCourse(Course course, String professorUsername) {
+    public Contest createCourse(Contest course, String professorUsername) {
         User professor = userRepository.findByUsername(professorUsername).orElseThrow(() -> new RuntimeException("Professor not found"));
         course.setProfessor(professor);
         course.setCode(UUID.randomUUID().toString().substring(0, 5));
@@ -35,19 +35,19 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public void joinCourse(String code, String studentUsername) {
-        Course course = courseRepository.findByCode(code).orElseThrow(() -> new RuntimeException("Course not found"));
+        Contest course = courseRepository.findByCode(code).orElseThrow(() -> new RuntimeException("Course not found"));
         User student = userRepository.findByUsername(studentUsername).orElseThrow(() -> new RuntimeException("Student not found"));
         course.getStudents().add(student);
         courseRepository.save(course);
     }
 
     @Override
-    public Course findById(Long id) {
+    public Contest findById(Long id) {
         return courseRepository.findById(id).orElseThrow(() -> new RuntimeException("Course not found"));
     }
 
     @Override
-    public List<Course> findByUser(User user) {
+    public List<Contest> findByUser(User user) {
         if (user.getRole().equals("PROFESSOR")) {
             return courseRepository.findByProfessor(user);
         } else {
@@ -56,14 +56,14 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public List<Assignment> findAssignmentsByCourse(Course course) {
+    public List<Problem> findAssignmentsByCourse(Contest course) {
         return assignmentRepository.findByCourse(course);
     }
 
     @Override
-    public void updateCourse(Course course) {
+    public void updateCourse(Contest course) {
         // 기존 강의를 데이터베이스에서 불러와서 수정사항을 반영
-        Course existingCourse = courseRepository.findById(course.getId())
+        Contest existingCourse = courseRepository.findById(course.getId())
                 .orElseThrow(() -> new RuntimeException("Course not found"));
         existingCourse.setName(course.getName());
         existingCourse.setDescription(course.getDescription());
@@ -71,13 +71,13 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public List<Course> findCoursesByProfessor(User professor) {
+    public List<Contest> findCoursesByProfessor(User professor) {
         return courseRepository.findByProfessor(professor);
     }
 
     @Override
     public List<User> getSortedStudentsByTotalScore(Long courseId) {
-        Course course = findById(courseId);
+        Contest course = findById(courseId);
         List<User> students = course.getStudents();
 
         return students.stream()
@@ -90,7 +90,7 @@ public class CourseServiceImpl implements CourseService {
         List<User> students = courseRepository.findById(courseId)
                 .orElseThrow(() -> new RuntimeException("Course not found"))
                 .getStudents();
-        List<Assignment> assignments = assignmentRepository.findByCourseId(courseId);
+        List<Problem> assignments = assignmentRepository.findByCourseId(courseId);
 
         return students.stream().collect(Collectors.toMap(
                 User::getId,
@@ -109,17 +109,17 @@ public class CourseServiceImpl implements CourseService {
 
 
     @Override
-    public void deleteCourse(Course course) {
+    public void deleteCourse(Contest course) {
         courseRepository.delete(course);
     }
 
     @Override
     public void removeStudentFromCourse(Long courseId, Long studentId) {
-        Optional<Course> courseOptional = courseRepository.findById(courseId);
+        Optional<Contest> courseOptional = courseRepository.findById(courseId);
         Optional<User> studentOptional = userRepository.findById(studentId);
 
         if (courseOptional.isPresent() && studentOptional.isPresent()) {
-            Course course = courseOptional.get();
+            Contest course = courseOptional.get();
             User student = studentOptional.get();
 
             course.getStudents().remove(student);

@@ -1,5 +1,5 @@
 package com.example.newhisolve.Controller;
-import com.example.newhisolve.Model.Assignment;
+import com.example.newhisolve.Model.Problem;
 import com.example.newhisolve.Model.Submission;
 import com.example.newhisolve.Model.User;
 import com.example.newhisolve.Service.AssignmentService;
@@ -30,7 +30,7 @@ public class IndexController {
         User student = userService.getCurrentUser();
         model.addAttribute("language", language);
         model.addAttribute("student", student);
-        Assignment assignment = assignmentService.getAssignmentById(assignmentId);
+        Problem assignment = assignmentService.getAssignmentById(assignmentId);
         model.addAttribute("assignment", assignment);
         List<Submission> submissions = submissionService.findByAssignmentAndStudent(assignmentId, student.getId());
         model.addAttribute("submissions", submissions);

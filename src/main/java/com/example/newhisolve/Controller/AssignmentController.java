@@ -34,15 +34,15 @@ public class AssignmentController {
         if (!user.getRole().equals("PROFESSOR")) {
             return "redirect:/dashboard";
         }
-        Course course = courseService.findById(courseId);
-        model.addAttribute("assignment", new Assignment());
+        Contest course = courseService.findById(courseId);
+        model.addAttribute("assignment", new Problem());
         model.addAttribute("course", course);
         return "create_assignment";
     }
 
     @PostMapping("/assignment/create")
     @PreAuthorize("hasRole('PROFESSOR')")
-    public String createAssignment(@ModelAttribute Assignment assignment,
+    public String createAssignment(@ModelAttribute Problem assignment,
                                    @RequestParam Long courseId,
                                    @RequestParam List<String> inputs,
                                    @RequestParam List<String> outputs,
@@ -96,15 +96,15 @@ public class AssignmentController {
 
     @GetMapping("/assignment/{id}")
     public String SolveAssignment(@PathVariable Long id, Principal principal) {
-        Assignment assignment = assignmentService.findById(id);
-        Course course = assignment.getCourse();
-        return "redirect:/index?assignmentId=" + id + "&language=" + course.getLanguage();
+        Problem assignment = assignmentService.findById(id);
+        Contest contest = assignment.getContest();
+        return "redirect:/index?assignmentId=" + id + "&language=" + contest.getLanguage();
     }
 
     @GetMapping("/professor_assignment/{id}")
     @PreAuthorize("hasRole('PROFESSOR')")
     public String viewAssignment(@PathVariable Long id, Model model, Principal principal) {
-        Assignment assignment = assignmentService.findById(id);
+        Problem assignment = assignmentService.findById(id);
         User user = userService.findByUsername(principal.getName());
         model.addAttribute("assignment", assignment);
         model.addAttribute("user", user);
@@ -120,8 +120,8 @@ public class AssignmentController {
         if(!user.getRole().equals("PROFESSOR")) {
             return "redirect:/dashboard";
         }
-        Assignment assignment = assignmentService.findById(id);
-        Long courseId = assignment.getCourse().getId();
+        Problem assignment = assignmentService.findById(id);
+        Long courseId = assignment.getContest().getId();
         submissionService.deleteSubmissionsByAssignmentId(id);
         assignmentService.deleteAssignmentById(id);
         return "redirect:/professor_course/" + courseId;
@@ -134,9 +134,9 @@ public class AssignmentController {
         if (!user.getRole().equals("PROFESSOR")) {
             return "redirect:/dashboard";
         }
-        Assignment assignment = assignmentService.findById(id);
+        Problem assignment = assignmentService.findById(id);
         model.addAttribute("assignment", assignment);
-        model.addAttribute("course", assignment.getCourse());
+        model.addAttribute("course", assignment.getContest());
         model.addAttribute("testCases", assignment.getTestCases());
         return "edit_assignment";
     }
@@ -144,7 +144,7 @@ public class AssignmentController {
 
     @PostMapping("/assignment/update")
     @PreAuthorize("hasRole('PROFESSOR')")
-    public String updateAssignment(@ModelAttribute Assignment assignment,
+    public String updateAssignment(@ModelAttribute Problem assignment,
                                    @RequestParam Long courseId,
                                    @RequestParam List<String> inputs,
                                    @RequestParam List<String> outputs,
@@ -197,9 +197,9 @@ public class AssignmentController {
     @GetMapping("/professor_assignment_detail/{id}")
     @PreAuthorize("hasRole('PROFESSOR')")
     public String detailAsignment(@PathVariable Long id, Principal principal, Model model) {
-        Assignment assignment = assignmentService.findById(id);
+        Problem assignment = assignmentService.findById(id);
         User user = userService.findByUsername(principal.getName());
-        Course course = assignment.getCourse();
+        Contest course = assignment.getContest();
         model.addAttribute("assignment", assignment);
         model.addAttribute("user", user);
         model.addAttribute("course", course);

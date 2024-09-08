@@ -20,9 +20,9 @@ public class AssignmentServiceImpl implements AssignmentService {
 
 
     @Override
-    public Assignment createAssignment(Assignment assignment, Long courseId) {
-        Course course = courseRepository.findById(courseId).orElseThrow(() -> new RuntimeException("Course not found"));
-        assignment.setCourse(course);
+    public Problem createAssignment(Problem assignment, Long courseId) {
+        Contest course = courseRepository.findById(courseId).orElseThrow(() -> new RuntimeException("Course not found"));
+        assignment.setContest(course);
         assignment.setCreateDate(LocalDateTime.now());
         assignment.setLastModifiedDate(LocalDateTime.now());
         assignment.getDueDate();
@@ -31,24 +31,24 @@ public class AssignmentServiceImpl implements AssignmentService {
     }
     @Override
     public List<TestCase> getTestCasesForAssignment(Long assignmentId) {
-        Assignment assignment = findById(assignmentId);
+        Problem assignment = findById(assignmentId);
         return assignment.getTestCases();
     }
 
     @Override
     public List<GradingTestCase> getGradingTestCasesForAssignment(Long assignmentId) {
-        Assignment assignment = findById(assignmentId);
+        Problem assignment = findById(assignmentId);
         return assignment.getGradingTestCases();
     }
 
     @Override
-    public Assignment findById(Long id) {
+    public Problem findById(Long id) {
         if (id == null) {
             throw new IllegalArgumentException("The given id must not be null");
         }
-        Optional<Assignment> assignment = assignmentRepository.findById(id);
+        Optional<Problem> assignment = assignmentRepository.findById(id);
         if (assignment.isPresent()) {
-            Assignment foundAssignment = assignment.get();
+            Problem foundAssignment = assignment.get();
             // Log assignment and test cases for debugging
             System.out.println("Found Assignment: " + foundAssignment.getId());
             for (TestCase testCase : foundAssignment.getTestCases()) {
@@ -62,8 +62,8 @@ public class AssignmentServiceImpl implements AssignmentService {
 
 
     @Override
-    public Assignment getAssignmentById(Long assignmentId) {
-        Optional<Assignment> assignment = assignmentRepository.findById(assignmentId);
+    public Problem getAssignmentById(Long assignmentId) {
+        Optional<Problem> assignment = assignmentRepository.findById(assignmentId);
         if (assignment.isPresent()) {
             return assignment.get();
         } else {
@@ -79,8 +79,8 @@ public class AssignmentServiceImpl implements AssignmentService {
 
     @Override
     @Transactional
-    public void updateAssignment(Assignment assignment, Long courseId) {
-        Assignment existingAssignment = assignmentRepository.findById(assignment.getId()).orElseThrow();
+    public void updateAssignment(Problem assignment, Long courseId) {
+        Problem existingAssignment = assignmentRepository.findById(assignment.getId()).orElseThrow();
         existingAssignment.setTitle(assignment.getTitle());
         existingAssignment.setDueDate(assignment.getDueDate());
         existingAssignment.setDescription(assignment.getDescription());

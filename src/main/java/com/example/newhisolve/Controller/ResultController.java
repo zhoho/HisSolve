@@ -1,6 +1,6 @@
 package com.example.newhisolve.Controller;
 
-import com.example.newhisolve.Model.Assignment;
+import com.example.newhisolve.Model.Problem;
 import com.example.newhisolve.Model.Submission;
 import com.example.newhisolve.Service.AssignmentService;
 import com.example.newhisolve.Service.SubmissionService;
@@ -30,7 +30,7 @@ public class ResultController {
 
     @GetMapping("/download")
     public ResponseEntity<byte[]> downloadResults(@RequestParam("assignmentId") Long assignmentId) throws IOException {
-        Assignment assignment = assignmentService.getAssignmentById(assignmentId);
+        Problem assignment = assignmentService.getAssignmentById(assignmentId);
         List<Submission> submissions = submissionService.findByAssignmentId(assignmentId);
 
         Workbook workbook = new XSSFWorkbook();

@@ -1,6 +1,7 @@
 package com.example.newhisolve.Controller;
 
-import com.example.newhisolve.Model.Course;
+import com.example.newhisolve.Model.Contest;
+import com.example.newhisolve.Model.Contest;
 import com.example.newhisolve.Model.User;
 import com.example.newhisolve.Service.CourseService;
 import lombok.RequiredArgsConstructor;
@@ -32,13 +33,13 @@ public class CourseController {
     @GetMapping("/course/create")
     @PreAuthorize("hasRole('PROFESSOR')")
     public String showCreateCourseForm(Model model) {
-        model.addAttribute("course", new Course());
+        model.addAttribute("course", new Contest());
         return "create_course";
     }
 
     @PostMapping("/course/create")
     @PreAuthorize("hasRole('PROFESSOR')")
-    public String createCourse(@ModelAttribute Course course, Principal principal) {
+    public String createCourse(@ModelAttribute Contest course, Principal principal) {
         courseService.createCourse(course, principal.getName());
         return "redirect:/dashboard";
     }
@@ -56,7 +57,7 @@ public class CourseController {
 
     @GetMapping("/course/{id}")
     public String viewCourse(@PathVariable Long id, Model model) {
-        Course courseEntity = courseService.findById(id);
+        Contest courseEntity = courseService.findById(id);
         model.addAttribute("course", courseEntity);
         model.addAttribute("assignments", courseService.findAssignmentsByCourse(courseEntity));
         return "course_detail";
@@ -65,7 +66,7 @@ public class CourseController {
     @GetMapping("/professor_course/{id}")
     @PreAuthorize("hasRole('PROFESSOR')")
     public String viewProfessorCourse(@PathVariable Long id, Model model) {
-        Course courseEntity = courseService.findById(id);
+        Contest courseEntity = courseService.findById(id);
         model.addAttribute("course", courseEntity);
         model.addAttribute("students", courseEntity.getStudents());
         model.addAttribute("assignments", courseService.findAssignmentsByCourse(courseEntity));
@@ -82,14 +83,14 @@ public class CourseController {
     @GetMapping("/course/edit")
     @PreAuthorize("hasRole('PROFESSOR')")
     public String editCourse(@RequestParam Long courseId, Model model) {
-        Course courseEntity = courseService.findById(courseId);
+        Contest courseEntity = courseService.findById(courseId);
         model.addAttribute("course", courseEntity);
         return "edit_course";
     }
 
     @PostMapping("/course/edit")
     @PreAuthorize("hasRole('PROFESSOR')")
-    public String updateCourse(@ModelAttribute Course course) {
+    public String updateCourse(@ModelAttribute Contest course) {
         courseService.updateCourse(course);
         return "redirect:/professor_course/" + course.getId();
     }
@@ -97,7 +98,7 @@ public class CourseController {
     @PostMapping("/course/delete")
     @PreAuthorize("hasRole('PROFESSOR')")
     public String deleteCourse(@RequestParam Long courseId) {
-        Course course = courseService.findById(courseId);
+        Contest course = courseService.findById(courseId);
         courseService.deleteCourse(course);
         return "redirect:/dashboard";
     }
@@ -105,7 +106,7 @@ public class CourseController {
     @GetMapping("/professor_course/rankDashboard/{id}")
     @PreAuthorize("hasRole('PROFESSOR')")
     public String viewRankDashboard(@PathVariable Long id, Model model) {
-        Course courseEntity = courseService.findById(id);
+        Contest courseEntity = courseService.findById(id);
         model.addAttribute("course", courseEntity);
 
         List<User> sortedStudents = courseService.getSortedStudentsByTotalScore(id);
@@ -129,7 +130,7 @@ public class CourseController {
     @GetMapping("/course/export")
     @PreAuthorize("hasRole('PROFESSOR')")
     public ResponseEntity<byte[]> exportCourseToExcel(@RequestParam Long courseId) {
-        Course course = courseService.findById(courseId);
+        Contest course = courseService.findById(courseId);
         List<User> students = course.getStudents();
 
         // 학생별 과제 점수 데이터를 가져옴

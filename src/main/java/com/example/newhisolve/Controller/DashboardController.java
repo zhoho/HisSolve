@@ -1,5 +1,5 @@
 package com.example.newhisolve.Controller;
-import com.example.newhisolve.Model.Course;
+import com.example.newhisolve.Model.Contest;
 import com.example.newhisolve.Model.User;
 import com.example.newhisolve.Service.CourseService;
 import com.example.newhisolve.Service.UserService;
@@ -35,7 +35,7 @@ public class DashboardController {
             throw new IllegalArgumentException("User not found: " + username);
         }
 
-        List<Course> courses = courseService.findByUser(user);
+        List<Contest> courses = courseService.findByUser(user);
         model.addAttribute("user", user);
         model.addAttribute("courses", courses);
         return "dashboard";

@@ -1,6 +1,6 @@
 package com.example.newhisolve.Controller;
 
-import com.example.newhisolve.Model.Course;
+import com.example.newhisolve.Model.Contest;
 import com.example.newhisolve.Model.User;
 import com.example.newhisolve.Service.CourseService;
 import com.example.newhisolve.Service.UserService;
@@ -24,7 +24,7 @@ public class SettingController {
     @PreAuthorize("hasRole('PROFESSOR')")
     public String showSettingsPage(Model model, Principal principal) {
         User user = userService.findByUsername(principal.getName());
-        List<Course> courses = courseService.findCoursesByProfessor(user);
+        List<Contest> courses = courseService.findCoursesByProfessor(user);
         model.addAttribute("user", user);
         model.addAttribute("courses", courses);
         return "settings";
@@ -43,7 +43,7 @@ public class SettingController {
     @PostMapping("/updateCourseName")
     @PreAuthorize("hasRole('PROFESSOR')")
     public String updateCourseName(@RequestParam Long courseId, @RequestParam String newName) {
-        Course course = courseService.findById(courseId);
+        Contest course = courseService.findById(courseId);
         course.setName(newName);
         courseService.updateCourse(course);
         return "redirect:/settings";
@@ -52,7 +52,7 @@ public class SettingController {
     @PostMapping("deleteCourseName")
     @PreAuthorize("hasRole('PROFESSOR')")
     public String deleteCourseName(@RequestParam Long courseId) {
-        Course course = courseService.findById(courseId);
+        Contest course = courseService.findById(courseId);
         courseService.deleteCourse(course);
         return "redirect:/settings";
     }

@@ -1,26 +1,27 @@
 package com.example.newhisolve.Service;
 
-import com.example.newhisolve.Model.Assignment;
-import com.example.newhisolve.Model.Course;
+import com.example.newhisolve.Model.Contest;
+import com.example.newhisolve.Model.Problem;
+import com.example.newhisolve.Model.Contest;
 import com.example.newhisolve.Model.User;
 
 import java.util.List;
 import java.util.Map;
 
 public interface CourseService {
-    Course createCourse(Course course, String professorUsername);
+    Contest createCourse(Contest course, String professorUsername);
 
     void joinCourse(String code, String studentUsername);
 
-    Course findById(Long id);
+    Contest findById(Long id);
 
-    List<Course> findByUser(User user);
+    List<Contest> findByUser(User user);
 
-    List<Assignment> findAssignmentsByCourse(Course course);
+    List<Problem> findAssignmentsByCourse(Contest course);
 
-    void updateCourse(Course course);
+    void updateCourse(Contest course);
 
-    List<Course> findCoursesByProfessor(User professor);
+    List<Contest> findCoursesByProfessor(User professor);
 
     List<User> getSortedStudentsByTotalScore(Long courseId);
 
@@ -28,7 +29,7 @@ public interface CourseService {
 
     int getScoreByStudentAndAssignment(Long studentId, Long assignmentId);
 
-    void deleteCourse(Course course);
+    void deleteCourse(Contest course);
 
     void removeStudentFromCourse(Long courseId, Long studentId);
 

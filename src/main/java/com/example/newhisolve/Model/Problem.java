@@ -1,6 +1,5 @@
 package com.example.newhisolve.Model;
 import jakarta.persistence.*;
-import junit.framework.TestResult;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,8 +9,8 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-@Table(name = "assignments")
-public class Assignment {
+@Table(name = "problem")
+public class Problem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,6 +31,6 @@ public class Assignment {
     private List<GradingTestCase> gradingTestCases;
 
     @ManyToOne
-    @JoinColumn(name = "course_id")
-    private Course course;
+    @JoinColumn(name = "contest_id")
+    private Contest contest;
 }

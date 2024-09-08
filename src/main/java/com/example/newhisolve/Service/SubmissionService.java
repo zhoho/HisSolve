@@ -1,5 +1,5 @@
 package com.example.newhisolve.Service;
-import com.example.newhisolve.Model.Assignment;
+import com.example.newhisolve.Model.Problem;
 import com.example.newhisolve.Model.Submission;
 import com.example.newhisolve.Model.SavedCode;
 import com.example.newhisolve.dto.SubmissionDTO;
@@ -28,7 +28,7 @@ public interface SubmissionService {
 
     List<Submission> findByAssignmentAndStudent(Long assignmentId, Long studentId);
 
-    List<Submission> findSubmissionsByAssignment(Assignment assignment);
+    List<Submission> findSubmissionsByAssignment(Problem assignment);
 
     String getGradingTestcaseCount(Long assignmentId);
 }

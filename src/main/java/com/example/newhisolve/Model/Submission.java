@@ -17,16 +17,16 @@ public class Submission {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "assignment_id")
-    private Assignment assignment;
+    @JoinColumn(name = "problem_id")
+    private Problem problem;
 
     @ManyToOne
-    @JoinColumn(name = "student_id")
+    @JoinColumn(name = "user_id")
     private User student;
 
     @ManyToOne
-    @JoinColumn(name = "course_id")
-    private Course course; // Course와의 관계 추가
+    @JoinColumn(name = "contest_id")
+    private Contest contest; // Course와의 관계 추가
 
     @Lob
     @Column(columnDefinition = "LONGTEXT")
@@ -46,9 +46,9 @@ public class Submission {
     public String toString() {
         return "Submission{" +
                 "id=" + id +
-                ", assignment=" + (assignment != null ? assignment.getId() : "null") +
+                ", assignment=" + (problem != null ? problem.getId() : "null") +
                 ", student=" + (student != null ? student.getUsername() : "null") +
-                ", course=" + (course != null ? course.getId() : "null") +
+                ", course=" + (contest != null ? contest.getId() : "null") +
                 ", code='" + code + '\'' +
                 ", result='" + result + '\'' +
                 ", submittedAt=" + submittedAt +

@@ -29,10 +29,10 @@ public class User {
 
     private String uniqueId;
     @OneToMany(mappedBy = "professor")
-    private List<Course> courses;
+    private List<Contest> contest;
 
-    @ManyToMany(mappedBy = "students")
-    private List<Course> enrolledCourses;
+//    @ManyToMany(mappedBy = "students")
+//    private List<Contest> enrolledContest;
 
 
     @Builder
