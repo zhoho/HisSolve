@@ -9,8 +9,9 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
-@Table(name = "saved_code")
-public class SavedCode {
+@Table(name = "saved_code", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"assignment_id", "student_id"})
+})public class SavedCode {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

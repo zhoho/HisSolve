@@ -81,26 +81,26 @@ public class SubmissonServiceImpl implements SubmissionService {
     @Override
     @Transactional
     public SavedCode saveCode(SubmissionDTO submissionDTO) {
-        Optional<Assignment> assignmentOptional = assignmentRepository.findById(submissionDTO.getAssignmentId());
-        Optional<User> studentOptional = userRepository.findById(submissionDTO.getStudentId());
+        Assignment assignment = assignmentRepository.findById(submissionDTO.getAssignmentId())
+                .orElseThrow(() -> new IllegalArgumentException("Assignment not found"));
+        User student = userRepository.findById(submissionDTO.getStudentId())
+                .orElseThrow(() -> new IllegalArgumentException("Student not found"));
 
-        if (!assignmentOptional.isPresent() || !studentOptional.isPresent()) {
-            throw new IllegalArgumentException("Assignment or Student not found");
-        }
-
-        Assignment assignment = assignmentOptional.get();
-        User student = studentOptional.get();
+        // 기존 저장된 코드가 있으면 가져오고, 없으면 새로 생성
         SavedCode savedCode = savedCodeRepository.findByAssignmentAndStudent(assignment, student)
                 .orElse(new SavedCode());
 
+        // 새로운 데이터를 세팅
         savedCode.setAssignment(assignment);
         savedCode.setStudent(student);
         savedCode.setCode(submissionDTO.getCode());
         savedCode.setLanguage(submissionDTO.getLanguage());
-        savedCode.setLastSavedDate(submissionDTO.getLastSavedDate());
+        savedCode.setLastSavedDate(LocalDateTime.now()); // 마지막 저장 시간을 현재 시간으로 설정
 
+        // 저장 또는 업데이트
         return savedCodeRepository.save(savedCode);
     }
+
 
     @Override
     public Optional<SavedCode> getSavedCode(Long assignmentId, Long studentId) {
@@ -114,10 +114,9 @@ public class SubmissonServiceImpl implements SubmissionService {
         Assignment assignment = assignmentOptional.get();
         User student = studentOptional.get();
 
-        Optional<SavedCode> savedCodeOptional = savedCodeRepository.findByAssignmentAndStudent(assignment, student);
-
-        return savedCodeOptional;
+        return savedCodeRepository.findByAssignmentAndStudent(assignment, student);
     }
+
 
     @Override
     public Optional<Submission> getSubmission(Long submissionId) {
