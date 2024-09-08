@@ -114,10 +114,9 @@ public class SubmissonServiceImpl implements SubmissionService {
         Problem assignment = assignmentOptional.get();
         User student = studentOptional.get();
 
-        Optional<SavedCode> savedCodeOptional = savedCodeRepository.findByAssignmentAndStudent(assignment, student);
-
-        return savedCodeOptional;
+        return savedCodeRepository.findByAssignmentAndStudent(assignment, student);
     }
+
 
     @Override
     public Optional<Submission> getSubmission(Long submissionId) {
