@@ -10,20 +10,21 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Table(name = "saved_code", uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"assignment_id", "student_id"})
-})public class SavedCode {
+        @UniqueConstraint(columnNames = {"problem_id", "user_id"})
+})
+public class SavedCode {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "assignment_id")
-    private Problem assignment;
+    @JoinColumn(name = "problem_id")
+    private Problem problem;
 
     @ManyToOne
-    @JoinColumn(name = "student_id")
-    private User student;
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @Lob
     @Column(columnDefinition = "LONGTEXT")
@@ -38,8 +39,8 @@ import java.time.LocalDateTime;
     public String toString() {
         return "SavedCode{" +
                 "id=" + id +
-                ", assignment=" + (assignment != null ? assignment.getId() : "null") +
-                ", student=" + (student != null ? student.getUsername() : "null") +
+                ", problem=" + (problem != null ? problem.getId() : "null") +
+                ", user=" + (user != null ? user.getUsername() : "null") +
                 ", code='" + code + '\'' +
                 ", lastSavedDate=" + lastSavedDate +
                 ", language='" + language + '\'' +

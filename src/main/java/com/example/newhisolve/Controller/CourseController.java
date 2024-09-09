@@ -1,9 +1,8 @@
 package com.example.newhisolve.Controller;
 
 import com.example.newhisolve.Model.Contest;
-import com.example.newhisolve.Model.Contest;
 import com.example.newhisolve.Model.User;
-import com.example.newhisolve.Service.CourseService;
+import com.example.newhisolve.Service.ContestService;
 import lombok.RequiredArgsConstructor;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -28,7 +27,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class CourseController {
 
-    private final CourseService courseService;
+    private final ContestService courseService;
 
     @GetMapping("/course/create")
     @PreAuthorize("hasRole('PROFESSOR')")

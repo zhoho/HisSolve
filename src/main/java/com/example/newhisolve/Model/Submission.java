@@ -22,11 +22,11 @@ public class Submission {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User student;
+    private User user;
 
     @ManyToOne
     @JoinColumn(name = "contest_id")
-    private Contest contest; // Course와의 관계 추가
+    private Contest contest;
 
     @Lob
     @Column(columnDefinition = "LONGTEXT")
@@ -46,9 +46,9 @@ public class Submission {
     public String toString() {
         return "Submission{" +
                 "id=" + id +
-                ", assignment=" + (problem != null ? problem.getId() : "null") +
-                ", student=" + (student != null ? student.getUsername() : "null") +
-                ", course=" + (contest != null ? contest.getId() : "null") +
+                ", problem=" + (problem != null ? problem.getId() : "null") +
+                ", user=" + (user != null ? user.getUsername() : "null") +  // student를 user로 변경
+                ", contest=" + (contest != null ? contest.getId() : "null") +  // course를 contest로 변경
                 ", code='" + code + '\'' +
                 ", result='" + result + '\'' +
                 ", submittedAt=" + submittedAt +

@@ -1,7 +1,6 @@
 package com.example.newhisolve.Controller;
 
 import com.example.newhisolve.Model.Submission;
-import com.example.newhisolve.Service.SubmissionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

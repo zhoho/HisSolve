@@ -17,18 +17,18 @@ public interface SubmissionService {
     @Transactional
     SavedCode saveCode(SubmissionDTO submissionDTO);
 
-    Optional<SavedCode> getSavedCode(Long assignmentId, Long studentId);
+    Optional<SavedCode> getSavedCode(Long problemId, Long userId);
 
     Optional<Submission> getSubmission(Long submissionId);
 
-    List<Submission> findByAssignmentId(Long assignmentId);
+    List<Submission> findByProblemId(Long problemId);
 
     @Transactional
-    void deleteSubmissionsByAssignmentId(Long assignmentId);
+    void deleteSubmissionsByProblemId(Long problemId);
 
-    List<Submission> findByAssignmentAndStudent(Long assignmentId, Long studentId);
+    List<Submission> findByProblemAndUser(Long problemId, Long userId);
 
-    List<Submission> findSubmissionsByAssignment(Problem assignment);
+    List<Submission> findSubmissionsByProblem(Problem problem);
 
-    String getGradingTestcaseCount(Long assignmentId);
+    String getGradingTestcaseCount(Long problemId);
 }

@@ -4,12 +4,12 @@ import lombok.Getter;
 
 @Getter
 public class CompileRequest {
-    private Long assignmentId;
+    private Long problemId;
     private String code;
     private String language;
 
-    public void setAssignmentId(Long assignmentId) {
-        this.assignmentId = assignmentId;
+    public void setProblemId(Long problemId) {
+        this.problemId = problemId;
     }
 
     public void setCode(String code) {
@@ -23,7 +23,7 @@ public class CompileRequest {
     @Override
     public String toString() {
         return "CompileRequest{" +
-                "assignmentId=" + assignmentId +
+                "problemId=" + problemId +
                 ", code='" + code + '\'' +
                 ", language='" + language + '\'' +
                 '}';

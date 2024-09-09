@@ -26,14 +26,13 @@ public class User {
     private String email;
     private String department;
 
-
     private String uniqueId;
-    @OneToMany(mappedBy = "professor")
+
+    @OneToMany(mappedBy = "admin")
     private List<Contest> contest;
 
-//    @ManyToMany(mappedBy = "students")
-//    private List<Contest> enrolledContest;
-
+    @ManyToMany(mappedBy = "users")
+    private List<Contest> enrolledContest;
 
     @Builder
     public User(String username, String password, String role, String hisnetToken, String uniqueId, String email, String department) {

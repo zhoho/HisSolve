@@ -2,7 +2,7 @@ package com.example.newhisolve.Controller;
 
 import com.example.newhisolve.Model.Contest;
 import com.example.newhisolve.Model.User;
-import com.example.newhisolve.Service.CourseService;
+import com.example.newhisolve.Service.ContestService;
 import com.example.newhisolve.Service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -18,7 +18,7 @@ import java.util.List;
 public class SettingController {
 
     private final UserService userService;
-    private final CourseService courseService;
+    private final ContestService courseService;
 
     @GetMapping("/settings")
     @PreAuthorize("hasRole('PROFESSOR')")

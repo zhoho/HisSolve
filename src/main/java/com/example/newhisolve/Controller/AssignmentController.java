@@ -1,9 +1,8 @@
 package com.example.newhisolve.Controller;
 
 import com.example.newhisolve.Model.*;
-import com.example.newhisolve.Service.AssignmentService;
-import com.example.newhisolve.Service.CourseService;
-import com.example.newhisolve.Service.SubmissionService;
+import com.example.newhisolve.Service.ProblemService;
+import com.example.newhisolve.Service.ContestService;
 import com.example.newhisolve.Service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -22,9 +21,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AssignmentController {
 
-    private final AssignmentService assignmentService;
+    private final ProblemService assignmentService;
     private final UserService userService;
-    private final CourseService courseService;
+    private final ContestService courseService;
     private final SubmissionService submissionService;
 
     @GetMapping("/assignment/create")

@@ -2,7 +2,7 @@ package com.example.newhisolve.Controller;
 import com.example.newhisolve.Model.GradingTestCase;
 import com.example.newhisolve.Request.CompileRequest;
 import com.example.newhisolve.Model.TestCase;
-import com.example.newhisolve.Service.AssignmentService;
+import com.example.newhisolve.Service.ProblemService;
 import com.example.newhisolve.Service.CompilerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +16,7 @@ import java.util.Map;
 public class CompilerController {
 
     private final CompilerService compilerService;
-    private final AssignmentService assignmentService;
+    private final ProblemService assignmentService;
 
     @PostMapping("/compile")
     public ResponseEntity<List<Map<String, String>>> compileCode(@RequestBody CompileRequest request) {

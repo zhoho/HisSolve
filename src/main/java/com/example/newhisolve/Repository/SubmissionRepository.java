@@ -13,15 +13,15 @@ import java.util.Optional;
 
 @Repository
 public interface SubmissionRepository extends JpaRepository<Submission, Long> {
-    Optional<Submission> findByAssignmentAndStudent(Problem assignment, User student);
-    List<Submission> findByAssignmentId(Long assignmentId);
-    void deleteByAssignmentId(Long assignmentId);
-    List<Submission> findByAssignmentIdAndStudentId(Long assignmentId, Long studentId);
-    List<Submission> findByAssignment(Problem assignment);
+    Optional<Submission> findByProblemAndUser(Problem problem, User user);
+    List<Submission> findByProblemId(Long problemId);
+    void deleteByProblemId(Long problemId);
+    List<Submission> findByProblemIdAndUserId(Long problemId, Long userId);
+    List<Submission> findByProblem(Problem problem);
 
-    @Query("SELECT SUM(s.score) FROM Submission s WHERE s.student.id = :studentId AND s.course.id = :courseId")
-    Integer findTotalScoreByStudentAndCourse(@Param("studentId") Long studentId, @Param("courseId") Long courseId);
+    @Query("SELECT SUM(s.score) FROM Submission s WHERE s.user.id = :userId AND s.contest.id = :contestId")
+    Integer findTotalScoreByUserAndContest(@Param("userId") Long userId, @Param("contestId") Long contestId);
 
-    @Query("SELECT s FROM Submission s WHERE s.student.id = :studentId AND s.assignment.id = :assignmentId")
-    Optional<Submission> findByStudentIdAndAssignmentId(Long studentId, Long assignmentId);
+    @Query("SELECT s FROM Submission s WHERE s.user.id = :userId AND s.problem.id = :problemId")
+    Optional<Submission> findByUserIdAndProblemId(Long userId, Long problemId);
 }

@@ -2,8 +2,7 @@ package com.example.newhisolve.Controller;
 
 import com.example.newhisolve.Model.Problem;
 import com.example.newhisolve.Model.Submission;
-import com.example.newhisolve.Service.AssignmentService;
-import com.example.newhisolve.Service.SubmissionService;
+import com.example.newhisolve.Service.ProblemService;
 import lombok.RequiredArgsConstructor;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -26,7 +25,7 @@ import java.util.List;
 public class ResultController {
 
     private final SubmissionService submissionService;
-    private final AssignmentService assignmentService;
+    private final ProblemService assignmentService;
 
     @GetMapping("/download")
     public ResponseEntity<byte[]> downloadResults(@RequestParam("assignmentId") Long assignmentId) throws IOException {

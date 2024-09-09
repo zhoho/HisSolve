@@ -5,7 +5,7 @@ import com.example.newhisolve.Model.Contest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
-public interface AssignmentRepository extends JpaRepository<Problem, Long> {
-    List<Problem> findByCourse(Contest course);
-    List<Problem> findByCourseId(Long courseId);
+public interface ProblemRepository extends JpaRepository<Problem, Long> {
+    List<Problem> findByContest(Contest contest);
+    List<Problem> findByContestId(Long contestId);
 }

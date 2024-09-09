@@ -7,8 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 import java.util.Optional;
 
-public interface CourseRepository extends JpaRepository<Contest, Long> {
+public interface ContestRepository extends JpaRepository<Contest, Long> {
     Optional<Contest> findByCode(String code);
-    List<Contest> findByProfessor(User professor);
-    List<Contest> findByStudentsContaining(User student);
+    List<Contest> findByAdmin(User admin);
+    List<Contest> findByUsersContaining(User user);
 }
