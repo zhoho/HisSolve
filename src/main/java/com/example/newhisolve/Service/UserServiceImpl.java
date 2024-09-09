@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public User register(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRole("PROFESSOR");
+        user.setRole("ADMIN");
         return userRepository.save(user);
     }
 

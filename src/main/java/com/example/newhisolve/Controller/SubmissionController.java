@@ -1,4 +1,5 @@
 package com.example.newhisolve.Controller;
+import com.example.newhisolve.Service.SubmissionService;
 import com.example.newhisolve.dto.SubmissionDTO;
 import com.example.newhisolve.Model.Submission;
 import com.example.newhisolve.Model.SavedCode; // 추가

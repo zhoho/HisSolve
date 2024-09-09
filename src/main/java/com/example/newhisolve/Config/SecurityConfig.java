@@ -32,12 +32,12 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
-                                .requestMatchers("/","/register", "/professorLogin", "/login", "/auth/**", "/api/compile", "/img/**", "/css/**", "/js/**").permitAll()
+                                .requestMatchers("/","/register", "/adminLogin", "/login", "/auth/**", "/api/compile", "/img/**", "/css/**", "/js/**").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .formLogin(formLogin ->
                         formLogin
-                                .loginPage("/professorLogin")
+                                .loginPage("/adminLogin")
                                 .loginProcessingUrl("/login")
                                 .defaultSuccessUrl("/dashboard")
                                 .permitAll()
