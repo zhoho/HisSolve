@@ -2,7 +2,7 @@ package com.example.newhisolve.Controller;
 
 import com.example.newhisolve.Model.Contest;
 import com.example.newhisolve.Model.User;
-import com.example.newhisolve.Service.CourseService;
+import com.example.newhisolve.Service.ContestService;
 import com.example.newhisolve.Service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -18,20 +18,20 @@ import java.util.List;
 public class SettingController {
 
     private final UserService userService;
-    private final CourseService courseService;
+    private final ContestService contestService;
 
     @GetMapping("/settings")
-    @PreAuthorize("hasRole('PROFESSOR')")
+    @PreAuthorize("hasRole('ADMIN')")
     public String showSettingsPage(Model model, Principal principal) {
         User user = userService.findByUsername(principal.getName());
-        List<Contest> courses = courseService.findCoursesByProfessor(user);
+        List<Contest> contests = contestService.findContestsByAdmin(user);
         model.addAttribute("user", user);
-        model.addAttribute("courses", courses);
+        model.addAttribute("contests", contests);
         return "settings";
     }
 
     @PostMapping("/updateProfile")
-    @PreAuthorize("hasRole('PROFESSOR')")
+    @PreAuthorize("hasRole('ADMIN')")
     public String updateProfile(@ModelAttribute User user, Principal principal) {
         User currentUser = userService.findByUsername(principal.getName());
         currentUser.setEmail(user.getEmail());
@@ -40,20 +40,20 @@ public class SettingController {
         return "redirect:/settings";
     }
 
-    @PostMapping("/updateCourseName")
-    @PreAuthorize("hasRole('PROFESSOR')")
-    public String updateCourseName(@RequestParam Long courseId, @RequestParam String newName) {
-        Contest course = courseService.findById(courseId);
-        course.setName(newName);
-        courseService.updateCourse(course);
+    @PostMapping("/updateContestName")
+    @PreAuthorize("hasRole('ADMIN')")
+    public String updateContestName(@RequestParam Long contestId, @RequestParam String newName) {
+        Contest contest = contestService.findById(contestId);
+        contest.setName(newName);
+        contestService.updateContest(contest);
         return "redirect:/settings";
     }
 
-    @PostMapping("deleteCourseName")
-    @PreAuthorize("hasRole('PROFESSOR')")
-    public String deleteCourseName(@RequestParam Long courseId) {
-        Contest course = courseService.findById(courseId);
-        courseService.deleteCourse(course);
+    @PostMapping("/deleteContest")
+    @PreAuthorize("hasRole('ADMIN')")
+    public String deleteContest(@RequestParam Long contestId) {
+        Contest contest = contestService.findById(contestId);
+        contestService.deleteContest(contest);
         return "redirect:/settings";
     }
 }

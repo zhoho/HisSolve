@@ -263,11 +263,11 @@
 <body>
 <div th:replace="~{fragments :: nav}"></div>
 <div class="basic-container">
-    <div class="course-banner">
-        <div class="course-header">
-            <h1 th:text="${assignment.title}"></h1>
-            <div class="course-code">
-                <p>Due: <span id="due-date" th:text="${#temporals.format(assignment.dueDate, 'yyyy-MM-dd HH:mm:ss')}"></span></p>
+    <div class="contest-banner">
+        <div class="contest-header">
+            <h1 th:text="${problem.title}"></h1>
+            <div class="contest-code">
+                <p>Due: <span id="due-date" th:text="${#temporals.format(problem.dueDate, 'yyyy-MM-dd HH:mm:ss')}"></span></p>
                 <p>남은 시간: <span id="time-remaining"></span></p>
             </div>
         </div>
@@ -305,17 +305,17 @@
                     <input type="text" id="input-line" onkeypress="handleKeyPress(event)">
                 </div>
                 <div id="problem-statement" class="flex-grow-1" style="display: block;">
-                    <h1 class="my-4"><span th:text="${assignment.title}"></span></h1>
-                    <div id="description" th:attr="data-description=${assignment.description}"></div>
+                    <h1 class="my-4"><span th:text="${problem.title}"></span></h1>
+                    <div id="description" th:attr="data-description=${problem.description}"></div>
                     <div class="test-case-container">
-                        <div th:each="testCase, iterStat : ${assignment.testCases}">
+                        <div th:each="testCase, submitStat : ${problem.testCases}">
                             <div class="flex-container">
                                 <div class="flex-item">
-                                    <div class="test-case-title" th:text="'예제 입력 ' + ${iterStat.index + 1} + ':'"></div>
+                                    <div class="test-case-title" th:text="'예제 입력 ' + ${submitStat.submit + 1} + ':'"></div>
                                     <pre th:text="${testCase.input}"></pre>
                                 </div>
                                 <div class="flex-item">
-                                    <div class="test-case-title" th:text="'예제 출력 ' + ${iterStat.index + 1} + ':'"></div>
+                                    <div class="test-case-title" th:text="'예제 출력 ' + ${submitStat.submit + 1} + ':'"></div>
                                     <pre th:text="${testCase.expectedOutput}"></pre>
                                 </div>
                             </div>
@@ -350,6 +350,7 @@
         </div>
     </div>
 </div>
+
 
 <script th:inline="javascript">
     let inputs = []; // 전역으로 inputs 변수 정의

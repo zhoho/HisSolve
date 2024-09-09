@@ -77,7 +77,7 @@
             background-color: #EBECED;
             overflow: auto;
         }
-        .course-banner {
+        .contest-banner {
             background: linear-gradient(to right, #37517e, #000000);
             color: white;
             padding: 30px;
@@ -87,13 +87,13 @@
             margin-top: -10px;
             margin-bottom: 35px;
         }
-        .course-header {
+        .contest-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             width: 100%;
         }
-        .course-header h1, .course-header .course-code {
+        .contest-header h1, .contest-header .contest-code {
             font-size: 1.5rem;
             font-weight: bold;
         }
@@ -308,15 +308,14 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/components/prism-javascript.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.30.1/min/vs/loader.js"></script>
 </head>
-<body th:attr="data-student-id=${student.id}, data-course-id=${assignment.course.id}">
+<body th:attr="data-user-id=${user.id}, data-contest-id=${problem.contest.id}">
 <div th:replace="~{fragments :: nav}"></div>
 <div class="basic-container">
-    <div class="course-banner">
-        <div class="course-header">
-            <h1 th:text="${assignment.title}"></h1>
-            <div class="course-code">
-<!--                <p th:text="'Due: ' + ${#temporals.format(assignment.dueDate, 'yyyy-MM-dd HH:mm:ss')}"></p>-->
-                <p>Due: <span id="due-date" th:text="${#temporals.format(assignment.dueDate, 'yyyy-MM-dd HH:mm:ss')}"></span></p>
+    <div class="contest-banner">
+        <div class="contest-header">
+            <h1 th:text="${problem.title}"></h1>
+            <div class="contest-code">
+                <p>Due: <span id="due-date" th:text="${#temporals.format(problem.dueDate, 'yyyy-MM-dd HH:mm:ss')}"></span></p>
                 <p>남은 시간: <span id="time-remaining"></span></p>
             </div>
         </div>
@@ -356,10 +355,10 @@
                     <input type="text" id="input-line" onkeypress="handleKeyPress(event)">
                 </div>
                 <div id="problem-statement" class="flex-grow-1">
-                    <h1 class="my-4"><span th:text="${assignment.title}"></span></h1>
-                    <div id="description" th:attr="data-description=${assignment.description}"></div>
+                    <h1 class="my-4"><span th:text="${problem.title}"></span></h1>
+                    <div id="description" th:attr="data-description=${problem.description}"></div>
                     <div class="test-case-container">
-                        <div th:each="testCase, iterStat : ${assignment.testCases}">
+                        <div th:each="testCase, iterStat : ${problem.testCases}">
                             <div class="flex-container">
                                 <div class="flex-item">
                                     <div class="test-case-title" th:text="'예제 입력 ' + ${iterStat.index + 1} + ':'"></div>
@@ -400,15 +399,14 @@
                         <button style="border: none; background-color: #ffffff" onclick="showDetails(this)"
                                 th:data-id="${submission.id}"
                                 th:data-code="${submission.code}"
-                                th:data-student="${submission.student.username}"
+                                th:data-user="${submission.user.username}"
                                 th:data-result="${submission.result}"
                                 th:data-submittedat="${#temporals.format(submission.submittedAt, 'yyyy-MM-dd HH:mm:ss')}"
                                 th:data-passcount="${submission.pass_count}"
-                                th:data-totalcount="${assignment.testcaseCount}">
+                                th:data-totalcount="${problem.testcaseCount}">
                             <i class="fas fa-external-link-alt" aria-hidden="true"></i>
                         </button>
                     </td>
-
                 </tr>
                 </tbody>
             </table>
@@ -426,7 +424,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <p><strong>이름:</strong> <span id="studentName"></span></p>
+                <p><strong>이름:</strong> <span id="userName"></span></p>
                 <p><strong>결과:</strong> <span id="result"></span></p>
                 <p><strong>실행 결과:</strong> <span id="testCase"></span></p>
                 <p><strong>제출일:</strong> <span id="submittedAt"></span></p>
@@ -443,7 +441,7 @@
     const urlParams = new URLSearchParams(window.location.search);
     const assignmentId = urlParams.get('assignmentId');
     let language = urlParams.get('language');
-    const studentId = document.body.getAttribute('data-student-id');
+    const userId = document.body.getAttribute('data-user-id');
     const baseCode = `#include <stdio.h>\n\nint main() {\n    printf("Hello, World!");\n    return 0;\n}`;
 
     require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.30.1/min/vs' }});
@@ -594,7 +592,7 @@
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     assignmentId: assignmentId,
-                    studentId: studentId,
+                    userId: userId,
                     code: code,
                     language: language,
                     lastSavedDate: lastSavedDateUTC.toISOString()
@@ -625,7 +623,7 @@
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     assignmentId: assignmentId,
-                    studentId: studentId,
+                    userId: userId,
                     code: code,
                     language: language,
                     lastSavedDate: lastSavedDateUTC.toISOString()
@@ -654,7 +652,7 @@
 
     async function getSavedCode() {
         try {
-            const response = await fetch(`/api/getSavedCode?assignmentId=${assignmentId}&studentId=${studentId}`);
+            const response = await fetch(`/api/getSavedCode?assignmentId=${assignmentId}&userId=${userId}`);
             const text = await response.text();
 
             if (text === 'No saved code found') {
@@ -731,7 +729,7 @@
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     assignmentId: assignmentId,
-                    studentId: studentId,
+                    userId: userId,
                     code: code,
                     language: language,
                     passCount: gradingPassCount,
@@ -839,7 +837,7 @@
     let detailsEditor; // 전역으로 detailsEditor 선언
 
     async function showDetails(button) {
-        const student = button.getAttribute('data-student');
+        const user = button.getAttribute('data-user');
         const result = button.getAttribute('data-result');
         const submittedAt = button.getAttribute('data-submittedat');
         const code = button.getAttribute('data-code');
@@ -859,7 +857,7 @@
             totalCount = 0;
         }
 
-        document.getElementById('studentName').innerText = student;
+        document.getElementById('userName').innerText = user;
         document.getElementById('result').innerText = result;
         document.getElementById('submittedAt').innerText = formatDate(submittedAt);
         document.getElementById('testCase').textContent = passCount + "/" + totalCount;

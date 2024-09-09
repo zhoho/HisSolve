@@ -2,7 +2,7 @@ package com.example.newhisolve.Controller;
 import com.example.newhisolve.Model.GradingTestCase;
 import com.example.newhisolve.Request.CompileRequest;
 import com.example.newhisolve.Model.TestCase;
-import com.example.newhisolve.Service.AssignmentService;
+import com.example.newhisolve.Service.ProblemService;
 import com.example.newhisolve.Service.CompilerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,27 +16,27 @@ import java.util.Map;
 public class CompilerController {
 
     private final CompilerService compilerService;
-    private final AssignmentService assignmentService;
+    private final ProblemService problemService;
 
     @PostMapping("/compile")
     public ResponseEntity<List<Map<String, String>>> compileCode(@RequestBody CompileRequest request) {
-        Long assignmentId = request.getAssignmentId();
-        if (assignmentId == null) {
+        Long problemId = request.getProblemId();
+        if (problemId == null) {
             throw new IllegalArgumentException("The given id must not be null");
         }
-        List<TestCase> testCases = assignmentService.getTestCasesForAssignment(assignmentId);
-        List<Map<String, String>> output = compilerService.compileAndRun(assignmentId, request.getCode(), request.getLanguage(), testCases);
+        List<TestCase> testCases = problemService.getTestCasesForProblem(problemId);
+        List<Map<String, String>> output = compilerService.compileAndRun(problemId, request.getCode(), request.getLanguage(), testCases);
         return ResponseEntity.ok(output);
     }
 
     @PostMapping("/gradingCompile")
     public ResponseEntity<List<Map<String, String>>> gradingCompileCode(@RequestBody CompileRequest request) {
-        Long assignmentId = request.getAssignmentId();
-        if (assignmentId == null) {
+        Long problemId = request.getProblemId();
+        if (problemId == null) {
             throw new IllegalArgumentException("The given id must not be null");
         }
-        List<GradingTestCase> gradingTestCases = assignmentService.getGradingTestCasesForAssignment(assignmentId);
-        List<Map<String, String>> output = compilerService.gradingCompileAndRun(assignmentId, request.getCode(), request.getLanguage(), gradingTestCases);
+        List<GradingTestCase> gradingTestCases = problemService.getGradingTestCasesForProblem(problemId);
+        List<Map<String, String>> output = compilerService.gradingCompileAndRun(problemId, request.getCode(), request.getLanguage(), gradingTestCases);
         return ResponseEntity.ok(output);
     }
 

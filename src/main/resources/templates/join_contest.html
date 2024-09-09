@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title>Join Course</title>
+  <title>Join Contest</title>
   <!-- Bootstrap CSS -->
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;700&display=swap" rel="stylesheet">
@@ -38,14 +38,14 @@
 
 <!-- Main Content -->
 <div class="container">
-  <h1 class="my-4 text-center">수업 참여 하기</h1>
-  <form th:action="@{/course/join}" method="post" class="p-4 rounded">
+  <h1 class="my-4 text-center">대회 참여 하기</h1>
+  <form th:action="@{/contest/join}" method="post" class="p-4 rounded">
     <div class="card card-custom mb-4">
-      <div class="card-header">과목 코드</div>
+      <div class="card-header">대회 코드</div>
       <div class="card-body">
         <div class="form-group">
-          <label for="code">과목 코드 입력:</label>
-          <input type="text" id="code" name="code" class="form-control" placeholder="과목 코드를 입력해주세요" />
+          <label for="code">대회 코드 입력:</label>
+          <input type="text" id="code" name="code" class="form-control" placeholder="대회 코드를 입력해주세요" />
         </div>
       </div>
     </div>

@@ -1,25 +1,25 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title th:text="${assignment.title}">Assignment Details</title>
+  <title th:text="${problem.title}">Problem Details</title>
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;700&display=swap" rel="stylesheet">
   <link th:href="@{/css/styles.css}" rel="stylesheet">
   <style>
-    .assignment-header {
+    .problem-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
-    .assignment-description {
+    .problem-description {
       background-color: #2b2d42;
       color: #edf2f4;
       padding: 1.5rem;
       border-radius: 0.5rem;
       font-size: 1.1rem; /* 텍스트 크기 축소 */
     }
-    .assignment-description pre,
-    .assignment-description code {
+    .problem-description pre,
+    .problem-description code {
       color: #edf2f4; /* 코드 블록 텍스트 색상 변경 */
       background-color: inherit; /* 배경색 상속 */
       border: none;
@@ -50,36 +50,36 @@
 <div th:replace="~{fragments :: nav}"></div>
 
 <div class="container">
-  <div class="assignment-header">
-    <h1 class="my-4" th:text="${assignment.title}">Assignment Title</h1>
+  <div class="problem-header">
+    <h1 class="my-4" th:text="${problem.title}">Problem Title</h1>
     <div class="button-group">
-      <form action="#" th:action="@{/submission_view/{assignmentId}(assignmentId=${assignment.id})}" method="get">
+      <form action="#" th:action="@{/submission_view/{problemId}(problemId=${problem.id})}" method="get">
         <button type="submit" class="btn btn-primary">제출자 보기</button>
       </form>
-      <form th:action="@{/assignment/edit/{id}(id=${assignment.id})}" method="get">
-        <button type="submit" class="btn btn-secondary">과제 수정</button>
+      <form th:action="@{/problem/edit/{id}(id=${problem.id})}" method="get">
+        <button type="submit" class="btn btn-secondary">문제 수정</button>
       </form>
-      <form th:action="@{/assignment/delete/{id}(id=${assignment.id})}" method="post">
-        <button type="submit" class="btn btn-danger">과제 삭제</button>
+      <form th:action="@{/problem/delete/{id}(id=${problem.id})}" method="post">
+        <button type="submit" class="btn btn-danger">문제 삭제</button>
       </form>
     </div>
   </div>
-  <div class="assignment-description" th:attr="data-description=${assignment.description}"></div>
+  <div class="problem-description" th:attr="data-description=${problem.description}"></div>
 
-<script>
-  const urlParams = new URLSearchParams(window.location.search);
-  const assignmentId = urlParams.get('assignmentId');
-</script>
-<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const descriptions = document.querySelectorAll('.assignment-description');
-    descriptions.forEach(description => {
-      const markdown = description.getAttribute('data-description');
-      description.innerHTML = marked.parse(markdown);
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const problemId = urlParams.get('problemId');
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const descriptions = document.querySelectorAll('.problem-description');
+      descriptions.forEach(description => {
+        const markdown = description.getAttribute('data-description');
+        description.innerHTML = marked.parse(markdown);
+      });
     });
-  });
-</script>
+  </script>
 </div>
 <div th:replace="~{fragments :: footer}"></div>
 <div th:replace="~{fragments :: scripts}"></div>

@@ -12,7 +12,7 @@
     body {
       background-color: #edf2f4;
     }
-    .course-banner {
+    .contest-banner {
       background: linear-gradient(to right, #37517e, #000000);
       color: white;
       padding: 30px;
@@ -21,17 +21,17 @@
       flex-direction: column;
       margin-top: -10px;
     }
-    .course-header {
+    .contest-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
       width: 100%;
     }
-    .course-header h1, .course-header .course-code {
+    .contest-header h1, .contest-header .contest-code {
       font-size: 1.5rem;
       font-weight: bold;
     }
-    .course-description {
+    .contest-description {
       margin-top: 10px;
     }
     .btn-lightblue {
@@ -58,7 +58,7 @@
       margin-top: 20px;
       border-radius: 10px;
     }
-    .assignment-card, .student-card, .co-teacher-card {
+    .problem-card, .student-card, .co-teacher-card {
       background-color: white;
       border: none;
       border-radius: 10px;
@@ -113,14 +113,14 @@
 <div th:replace="~{fragments :: nav}"></div>
 
 <div class="container mt-1">
-  <div class="course-banner">
-    <div class="course-header">
+  <div class="contest-banner">
+    <div class="contest-header">
       <h1>Create New Problem</h1>
     </div>
   </div>
 
   <div class="main-container">
-    <form th:action="@{/assignment/create}" method="post" onsubmit="convertToUTC()">
+    <form th:action="@{/problem/create}" method="post" onsubmit="convertToUTC()">
       <div class="form-group">
         <label for="title" class="font-weight-bold">Name:</label>
         <input type="text" class="form-control" id="title" name="title" required>
@@ -186,7 +186,7 @@
         <label for="dueDate" class="font-weight-bold">Due-Date</label>
         <input type="datetime-local" class="form-control" id="dueDate" name="dueDate" required>
       </div>
-      <input type="hidden" name="courseId" th:value="${course.id}" /> <!-- courseId를 동적으로 설정 -->
+      <input type="hidden" name="contestId" th:value="${contest.id}" /> <!-- contestId를 동적으로 설정 -->
       <button type="submit" class="btn btn-lightblue">Create</button>
       <a href="/dashboard" class="btn btn-lightblue">Cancel</a>
     </form>

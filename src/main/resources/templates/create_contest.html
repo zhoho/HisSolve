@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Create Course</title>
+    <title>Create Contest</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
@@ -10,7 +10,7 @@
         body {
             background-color: #edf2f4;
         }
-        .course-banner {
+        .contest-banner {
             background: linear-gradient(to right, #37517e, #000000);
             color: white;
             padding: 30px;
@@ -19,13 +19,13 @@
             flex-direction: column;
             margin-top: -10px;
         }
-        .course-header {
+        .contest-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             width: 100%;
         }
-        .course-header h1 {
+        .contest-header h1 {
             font-size: 1.5rem;
             font-weight: bold;
         }
@@ -76,19 +76,19 @@
 <div th:replace="~{fragments :: nav}"></div>
 
 <div class="container mt-1">
-    <div class="course-banner">
-        <div class="course-header">
-            <h1>Create Course</h1>
+    <div class="contest-banner">
+        <div class="contest-header">
+            <h1>Create Contest</h1>
         </div>
     </div>
 
     <div class="main-container">
-        <form th:action="@{/course/create}" th:object="${course}" method="post">
+        <form th:action="@{/contest/create}" th:object="${contest}" method="post">
             <div class="card card-custom mb-4">
                 <div class="card-body card-body-custom">
                     <div class="form-group">
                         <label for="name">Name:</label>
-                        <input type="text" id="name" th:field="*{name}" class="form-control" placeholder="Enter course name" />
+                        <input type="text" id="name" th:field="*{name}" class="form-control" placeholder="Enter contest name" />
                     </div>
                     <div class="form-group">
                         <label for="language">Language (C, Java, Python):</label>
@@ -100,12 +100,12 @@
                     </div>
                     <div class="form-group">
                         <label for="description">Description:</label>
-                        <textarea id="description" th:field="*{description}" class="form-control" rows="5" placeholder="Enter course description"></textarea>
+                        <textarea id="description" th:field="*{description}" class="form-control" rows="5" placeholder="Enter contest description"></textarea>
                     </div>
                 </div>
             </div>
             <div class="text-center">
-                <button type="submit" class="btn btn-lightblue">Create Course</button>
+                <button type="submit" class="btn btn-lightblue">Create Contest</button>
             </div>
         </form>
     </div>
@@ -115,22 +115,22 @@
 <div th:replace="~{fragments :: scripts}"></div>
 <script>
     document.getElementById('name').addEventListener('input', function() {
-        var courseName = this.value;
+        var contestName = this.value;
         var language = document.getElementById('language').value;
-        var courseCode = generateCourseCode(courseName, language);
-        document.getElementById('code').value = courseCode;
+        var contestCode = generateContestCode(contestName, language);
+        document.getElementById('code').value = contestCode;
     });
 
     document.getElementById('language').addEventListener('change', function() {
-        var courseName = document.getElementById('name').value;
+        var contestName = document.getElementById('name').value;
         var language = this.value;
-        var courseCode = generateCourseCode(courseName, language);
-        document.getElementById('code').value = courseCode;
+        var contestCode = generateContestCode(contestName, language);
+        document.getElementById('code').value = contestCode;
     });
 
-    function generateCourseCode(courseName, language) {
+    function generateContestCode(contestName, language) {
         var prefix = language.substring(0, 3).toUpperCase();
-        var namePart = courseName.replace(/\s+/g, '').substring(0, 5).toUpperCase();
+        var namePart = contestName.replace(/\s+/g, '').substring(0, 5).toUpperCase();
         var randomPart = Math.floor(1000 + Math.random() * 9000);
         return prefix + namePart + randomPart;
     }

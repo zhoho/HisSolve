@@ -11,17 +11,16 @@
 <div th:replace="~{fragments :: nav}"></div>
 
 <div class="container mt-3">
-  <div class="course-banner">
-    <div class="course-header">
-      <h1 th:text="${course.name} + ' - Rank Dashboard'"></h1>
+  <div class="contest-banner">
+    <div class="contest-header">
+      <h1 th:text="${contest.name} + ' - Rank Dashboard'"></h1>
     </div>
   </div>
 
   <!-- 엑셀 다운로드 버튼 -->
   <div class="text-right mb-3">
-    <a class="btn btn-success" th:href="@{/course/export(courseId=${course.id})}" role="button">엑셀 다운로드</a>
+    <a class="btn btn-success" th:href="@{/contest/export(contestId=${contest.id})}" role="button">엑셀 다운로드</a>
   </div>
-
 
   <div class="main-container">
     <table class="table table-hover">
@@ -35,14 +34,14 @@
       </tr>
       </thead>
       <tbody>
-      <tr th:each="student, iterStat : ${students}">
+      <tr th:each="user, iterStat : ${users}">
         <td th:text="${iterStat.count}"></td>
-        <td th:text="${student.username}"></td>
-        <td th:text="${student.email}"></td>
+        <td th:text="${user.username}"></td>
+        <td th:text="${user.email}"></td>
         <td>
-          <span th:each="score : ${studentAssignmentScores[student.id]}" th:text="${score} + ' '"></span>
+          <span th:each="score : ${userAssignmentScores[user.id]}" th:text="${score} + ' '"></span>
         </td>
-        <td th:text="${studentTotalScores[student.id]}"></td>
+        <td th:text="${userTotalScores[user.id]}"></td>
       </tr>
       </tbody>
     </table>

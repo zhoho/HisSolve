@@ -98,40 +98,40 @@
 <div th:replace="~{fragments :: nav}"></div>
 
 <div class="container mt-1">
-  <div class="course-banner">
-    <div class="course-header">
-      <h1 th:text="${course.name}"></h1>
-      <div class="course-code">
-        <p>Class code: <span th:text="${course.code}"></span></p>
+  <div class="contest-banner">
+    <div class="contest-header">
+      <h1 th:text="${contest.name}"></h1>
+      <div class="contest-code">
+        <p>Class code: <span th:text="${contest.code}"></span></p>
       </div>
     </div>
-    <div class="course-description">
-      <p th:text="${course.description}"></p>
+    <div class="contest-description">
+      <p th:text="${contest.description}"></p>
     </div>
   </div>
   <div class="d-flex justify-content-between">
     <a href="/dashboard" class="btn back-button"><i class="fas fa-arrow-left"></i> Back to dashboard</a>
-    <a th:href="@{/course/edit(courseId=${course.id})}" class="btn edit-button"><i class="fas fa-edit"></i> Edit Contest</a>
+    <a th:href="@{/contest/edit(contestId=${contest.id})}" class="btn edit-button"><i class="fas fa-edit"></i> Edit Contest</a>
   </div>
 
   <div class="main-container">
-    <div class="assignment-container">
+    <div class="problem-container">
       <div class="section-header">
-        <h2>Assignments</h2>
-        <a th:href="@{/assignment/create(courseId=${course.id})}" class="btn new-assignment-button"><i class="fas fa-plus"></i>Create</a>
+        <h2>Problems</h2>
+        <a th:href="@{/problem/create(contestId=${contest.id})}" class="btn new-problem-button"><i class="fas fa-plus"></i>Create</a>
       </div>
       <div class="row">
-        <div class="col-lg-6 col-sm-12 my-3" th:each="assignment : ${assignments}">
-          <div class="card assignment-card">
+        <div class="col-lg-6 col-sm-12 my-3" th:each="problem : ${problems}">
+          <div class="card problem-card">
             <div class="card-body">
               <div class="card-image">
                 <i class="fas fa-file-code card-icon"></i>
               </div>
               <div class="card-content">
                 <h5 class="card-title">
-                  <a th:href="@{/professor_assignment_detail/{id}(id=${assignment.id})}" th:text="${assignment.title}" style="color: #37517e;"></a>
+                  <a th:href="@{/admin_problem_detail/{id}(id=${problem.id})}" th:text="${problem.title}" style="color: #37517e;"></a>
                 </h5>
-                <p class="card-text" th:data-duedate="${assignment.dueDate}"></p>
+                <p class="card-text" th:data-duedate="${problem.dueDate}"></p>
               </div>
             </div>
           </div>
@@ -139,27 +139,26 @@
       </div>
     </div>
 
-    <div class="students-container">
-      <h2>Students</h2>
+    <div class="users-container">
+      <h2>Users</h2>
       <table class="table table-hover">
         <thead>
         <tr>
           <th>#</th>
           <th>Name</th>
-          <th>Stu_Id</th>
-<!--          <th>총점</th> &lt;!&ndash; 추가된 컬럼 &ndash;&gt;-->
-          <th>Remove student</th>
+          <th>User_Id</th>
+          <th>Email</th>
+          <th>Remove User</th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="student, iterStat : ${students}">
+        <tr th:each="user, iterStat : ${users}">
           <td th:text="${iterStat.count}"></td>
-          <td th:text="${student.username}"></td>
-          <td th:text="${student.uniqueId}"></td>
-          <td th:text="${student.email}"></td>
-<!--          <td th:text="${studentTotalScores[student.id]}">0</td> &lt;!&ndash; 총 점수 표시 &ndash;&gt;-->
+          <td th:text="${user.username}"></td>
+          <td th:text="${user.uniqueId}"></td>
+          <td th:text="${user.email}"></td>
           <td>
-            <button type="button" class="btn btn-third" data-toggle="modal" th:data-target="'#deleteUserModal-' + ${student.id}">Remove</button>
+            <button type="button" class="btn btn-third" data-toggle="modal" th:data-target="'#deleteUserModal-' + ${user.id}">Remove</button>
           </td>
         </tr>
         </tbody>
@@ -167,28 +166,28 @@
     </div>
 
     <div class="summary-container text-center">
-      <a th:href="@{/professor_course/rankDashboard/{id}(id=${course.id})}" class="btn ranking-dashboard-button"><i class="fas fa-chart-bar"></i> Ranking Dashboard</a>
-      <a th:href="@{/course/export(courseId=${course.id})}" class="btn btn-success"><i class="fas fa-download"></i> Download results</a>
+      <a th:href="@{/admin_contest/rankDashboard/{id}(id=${contest.id})}" class="btn ranking-dashboard-button"><i class="fas fa-chart-bar"></i> Ranking Dashboard</a>
+      <a th:href="@{/contest/export(contestId=${contest.id})}" class="btn btn-success"><i class="fas fa-download"></i> Download results</a>
     </div>
   </div>
 </div>
 
-<div th:each="student : ${students}">
-  <div class="modal fade" th:id="'deleteUserModal-' + ${student.id}" tabindex="-1" role="dialog" aria-labelledby="deleteCourseModalLabel" aria-hidden="true">
+<div th:each="user : ${users}">
+  <div class="modal fade" th:id="'deleteUserModal-' + ${user.id}" tabindex="-1" role="dialog" aria-labelledby="deleteUserModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="deleteUserModalLabel">학생 삭제</h5>
+          <h5 class="modal-title" id="deleteUserModalLabel">사용자 삭제</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <form th:action="@{/course/removeStudent}" method="post">
+        <form th:action="@{/contest/removeUser}" method="post">
           <div class="modal-body">
-            <input type="hidden" name="courseId" th:value="${course.id}" />
-            <input type="hidden" name="studentId" th:value="${student.id}" />
+            <input type="hidden" name="contestId" th:value="${contest.id}" />
+            <input type="hidden" name="userId" th:value="${user.id}" />
             <div class="form-group">
-              <label>학생을 정말 삭제 하시겠습니까?</label>
+              <label>사용자를 정말 삭제 하시겠습니까?</label>
             </div>
           </div>
           <div class="modal-footer">
@@ -200,6 +199,7 @@
     </div>
   </div>
 </div>
+
 
 <!-- Footer -->
 <div th:replace="~{fragments :: footer}"></div>

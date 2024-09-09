@@ -12,8 +12,8 @@
         }
         .user-info {
             background-color: white;
-            padding: 20px 30px; /* 좌우 padding 조정 */
-            margin-top: 0;  /* 상단바와 바로 붙도록 설정 */
+            padding: 20px 30px;
+            margin-top: 0;
         }
         .welcome-text {
             font-size: 1.5rem;
@@ -75,10 +75,10 @@
         }
         .card-text {
             font-size: 1rem;
-            white-space: nowrap;         /* 텍스트를 한 줄로 표시 */
-            overflow: hidden;            /* 넘친 텍스트를 감춤 */
-            text-overflow: ellipsis;     /* 넘친 부분을 ...으로 표시 */
-            max-width: 200px;            /* 텍스트가 넘칠 최대 너비 설정 */
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 200px;
         }
         .btn-primary {
             background-color: #47b2e4;
@@ -109,7 +109,7 @@
 <div class="container-fluid user-info">
     <div class="row">
         <div class="col-md-8">
-            <p class="welcome-text">Welcome, <span th:text="${user.username}"></span> <span th:if="${user.role == 'STUDENT'}">학부생</span>!</p>
+            <p class="welcome-text">Welcome, <span th:text="${user.username}"></span> <span th:if="${user.role == 'USER'}">사용자</span>!</p>
             <p class="email-text" th:text="${user.email}"></p>
         </div>
         <div class="col-md-4 edit-btn">
@@ -123,15 +123,15 @@
             <h2>대회 목록</h2>
         </div>
         <div class="col-md-4 text-right">
-            <form th:if="${user.role == 'STUDENT'}" class="form-inline" th:action="@{/course/join}" method="post">
+            <form th:if="${user.role == 'USER'}" class="form-inline" th:action="@{/contest/join}" method="post">
                 <input class="form-control mr-2" type="text" placeholder="Enter Contest code" name="code" required>
                 <button class="btn btn-primary" type="submit">Enter</button>
             </form>
-            <a class="btn btn-primary" th:if="${user.role == 'PROFESSOR'}" th:href="@{/course/create}"> Create</a>
+            <a class="btn btn-primary" th:if="${user.role == 'ADMIN'}" th:href="@{/contest/create}"> Create</a>
         </div>
     </div>
     <div class="row">
-        <div class="col-lg-6 col-sm-12 my-3" th:if="${user.role == 'STUDENT'}" th:each="course : ${courses}">
+        <div class="col-lg-6 col-sm-12 my-3" th:if="${user.role == 'USER'}" th:each="contest : ${contests}">
             <div class="card shadow-sm p-3">
                 <div class="card-body">
                     <div class="card-image">
@@ -139,14 +139,14 @@
                     </div>
                     <div class="card-content">
                         <h5 class="card-title">
-                            <a th:href="@{/course/{id}(id=${course.id})}" class="text-primary" th:text="${course.name}" style="color: #37517e;"></a>
+                            <a th:href="@{/contest/{id}(id=${contest.id})}" class="text-primary" th:text="${contest.name}" style="color: #37517e;"></a>
                         </h5>
-                        <p class="card-text text-muted" th:text="${course.description}">Description</p>
+                        <p class="card-text text-muted" th:text="${contest.description}">Description</p>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-lg-6 col-sm-12 my-3" th:if="${user.role == 'PROFESSOR'}" th:each="course : ${courses}">
+        <div class="col-lg-6 col-sm-12 my-3" th:if="${user.role == 'ADMIN'}" th:each="contest : ${contests}">
             <div class="card shadow-sm p-3">
                 <div class="card-body">
                     <div class="card-image">
@@ -154,9 +154,9 @@
                     </div>
                     <div class="card-content">
                         <h5 class="card-title">
-                            <a th:href="@{/professor_course/{id}(id=${course.id})}" class="text-primary" th:text="${course.name}" style="color: #37517e;"></a>
+                            <a th:href="@{/admin_contest/{id}(id=${contest.id})}" class="text-primary" th:text="${contest.name}" style="color: #37517e;"></a>
                         </h5>
-                        <p class="card-text text-muted" th:text="${course.description}">Description</p>
+                        <p class="card-text text-muted" th:text="${contest.description}">Description</p>
                     </div>
                 </div>
             </div>

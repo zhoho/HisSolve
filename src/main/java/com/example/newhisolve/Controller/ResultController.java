@@ -2,7 +2,7 @@ package com.example.newhisolve.Controller;
 
 import com.example.newhisolve.Model.Problem;
 import com.example.newhisolve.Model.Submission;
-import com.example.newhisolve.Service.AssignmentService;
+import com.example.newhisolve.Service.ProblemService;
 import com.example.newhisolve.Service.SubmissionService;
 import lombok.RequiredArgsConstructor;
 import org.apache.poi.ss.usermodel.*;
@@ -26,12 +26,12 @@ import java.util.List;
 public class ResultController {
 
     private final SubmissionService submissionService;
-    private final AssignmentService assignmentService;
+    private final ProblemService problemService;
 
     @GetMapping("/download")
-    public ResponseEntity<byte[]> downloadResults(@RequestParam("assignmentId") Long assignmentId) throws IOException {
-        Problem assignment = assignmentService.getAssignmentById(assignmentId);
-        List<Submission> submissions = submissionService.findByAssignmentId(assignmentId);
+    public ResponseEntity<byte[]> downloadResults(@RequestParam("problemId") Long problemId) throws IOException {
+        Problem problem = problemService.getProblemById(problemId);
+        List<Submission> submissions = submissionService.findByProblemId(problemId);
 
         Workbook workbook = new XSSFWorkbook();
         Sheet sheet = workbook.createSheet("Submissions");
@@ -58,17 +58,17 @@ public class ResultController {
         int rowNum = 1;
         for (Submission submission : submissions) {
             Row row = sheet.createRow(rowNum++);
-            row.createCell(0).setCellValue(submission.getStudent().getUsername());
-            row.createCell(1).setCellValue(submission.getStudent().getEmail());
+            row.createCell(0).setCellValue(submission.getUser().getUsername());
+            row.createCell(1).setCellValue(submission.getUser().getEmail());
             Cell pfCell = row.createCell(2);
-            if (submission.getPass_count().equals(String.valueOf(assignment.getTestCases().size()))) {
+            if (submission.getPass_count().equals(String.valueOf(problem.getTestCases().size()))) {
                 pfCell.setCellValue("성공");
                 pfCell.setCellStyle(passStyle);
             } else {
                 pfCell.setCellValue("실패");
                 pfCell.setCellStyle(failStyle);
             }
-            row.createCell(3).setCellValue(submission.getPass_count() + "/" + assignment.getTestCases().size());
+            row.createCell(3).setCellValue(submission.getPass_count() + "/" + problem.getTestCases().size());
             row.createCell(4).setCellValue(submission.getSubmittedAt().format(formatter));
         }
 

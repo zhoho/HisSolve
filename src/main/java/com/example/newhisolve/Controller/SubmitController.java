@@ -2,7 +2,7 @@ package com.example.newhisolve.Controller;
 import com.example.newhisolve.Model.Problem;
 import com.example.newhisolve.Model.Submission;
 import com.example.newhisolve.Model.User;
-import com.example.newhisolve.Service.AssignmentService;
+import com.example.newhisolve.Service.ProblemService;
 import com.example.newhisolve.Service.SubmissionService;
 import com.example.newhisolve.Service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -16,25 +16,25 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
-public class IndexController {
+public class SubmitController {
 
-    private final AssignmentService assignmentService;
+    private final ProblemService problemService;
     private final UserService userService;
     private final SubmissionService submissionService;
 
-    @GetMapping("/index")
-    @PreAuthorize("hasRole('STUDENT')")
-    public String showIndexPage(@RequestParam("assignmentId") Long assignmentId,
-                                @RequestParam("language") String language,
-                                Model model) {
-        User student = userService.getCurrentUser();
+    @GetMapping("/submit")
+    @PreAuthorize("hasRole('USER')")
+    public String showSubmitPage(@RequestParam("problemId") Long problemId,
+                                 @RequestParam("language") String language,
+                                 Model model) {
+        User user = userService.getCurrentUser();
         model.addAttribute("language", language);
-        model.addAttribute("student", student);
-        Problem assignment = assignmentService.getAssignmentById(assignmentId);
-        model.addAttribute("assignment", assignment);
-        List<Submission> submissions = submissionService.findByAssignmentAndStudent(assignmentId, student.getId());
+        model.addAttribute("user", user);
+        Problem problem = problemService.getProblemById(problemId);
+        model.addAttribute("problem", problem);
+        List<Submission> submissions = submissionService.findByProblemAndUser(problemId, user.getId());
         model.addAttribute("submissions", submissions);
 
-        return "index";
+        return "submit";
     }
 }

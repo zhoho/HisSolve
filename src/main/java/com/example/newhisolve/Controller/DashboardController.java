@@ -1,7 +1,7 @@
 package com.example.newhisolve.Controller;
 import com.example.newhisolve.Model.Contest;
 import com.example.newhisolve.Model.User;
-import com.example.newhisolve.Service.CourseService;
+import com.example.newhisolve.Service.ContestService;
 import com.example.newhisolve.Service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -16,7 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class DashboardController {
 
-    private final CourseService courseService;
+    private final ContestService contestService;
     private final UserService userService;
 
     @GetMapping("/dashboard")
@@ -35,9 +35,9 @@ public class DashboardController {
             throw new IllegalArgumentException("User not found: " + username);
         }
 
-        List<Contest> courses = courseService.findByUser(user);
+        List<Contest> contests = contestService.findByUser(user);
         model.addAttribute("user", user);
-        model.addAttribute("courses", courses);
+        model.addAttribute("contests", contests);
         return "dashboard";
     }
 }
