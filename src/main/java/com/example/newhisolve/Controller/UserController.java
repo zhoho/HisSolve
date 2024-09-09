@@ -23,9 +23,15 @@ public class UserController {
 
     @PostMapping("/register")
     public String registerUser(@ModelAttribute User user) {
+        if (user == null) {
+            throw new IllegalArgumentException("User cannot be null");
+        }
+
+        System.out.println("Registering user: " + user.getUsername());  // 디버깅용 로그
         userService.register(user);
         return "redirect:/adminLogin";
     }
+
 
     @GetMapping("/adminLogin")
     public String showLoginForm() {

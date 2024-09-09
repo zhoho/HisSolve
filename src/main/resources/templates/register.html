@@ -16,22 +16,24 @@
 <!-- Main Content -->
 <div class="container">
   <h1 class="my-4">Sign Up</h1>
-  <form th:action="@{/register}" method="post">
+
+  <!-- `th:object`로 User 객체 매핑 -->
+  <form th:action="@{/register}" th:object="${user}" method="post">
     <div class="form-group">
       <label for="username">Username</label>
-      <input type="text" class="form-control" id="username" name="username" required>
+      <input type="text" class="form-control" th:field="*{username}" id="username" required>
     </div>
     <div class="form-group">
       <label for="email">Email</label>
-      <input type="email" class="form-control" id="email" name="email" required>
+      <input type="email" class="form-control" th:field="*{email}" id="email" required>
     </div>
     <div class="form-group">
       <label for="password">Password</label>
-      <input type="password" class="form-control" id="password" name="password" required>
+      <input type="password" class="form-control" th:field="*{password}" id="password" required>
     </div>
     <div class="form-group">
       <label for="department">Department</label>
-      <input type="text" class="form-control" id="department" name="department" required>
+      <input type="text" class="form-control" th:field="*{department}" id="department" required>
     </div>
     <button type="submit" class="btn btn-primary">Sign Up</button>
   </form>
