@@ -59,7 +59,7 @@ public class HisnetLoginService {
                     .uniqueId(uniqueId)
                     .email(email)
                     .department(department)
-                    .role("STUDENT")
+                    .role("USER")
                     .password("12345")
                     .hisnetToken(token)
                     .build();

@@ -45,6 +45,7 @@
         }
         .card {
             transition: transform 0.2s ease, box-shadow 0.2s ease;
+            min-height: 150px;
         }
         .card:hover {
             transform: translateY(-10px);
@@ -72,7 +73,12 @@
         .card-title {
             font-size: 1.5rem;
             color: #37517e;
+            white-space: nowrap; /* 한 줄로 유지 */
+            overflow: hidden; /* 넘치는 부분 숨기기 */
+            text-overflow: ellipsis; /* 넘치는 부분을 ...으로 표시 */
+            max-width: 250px;
         }
+
         .card-text {
             font-size: 1rem;
             white-space: nowrap;
@@ -169,5 +175,18 @@
 
 <!-- Bootstrap JS and dependencies -->
 <div th:replace="~{fragments :: scripts}"></div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const titles = document.querySelectorAll('.card-title a');
+        titles.forEach(function (title) {
+            const maxLength = 22; // 최대 19자 제한
+            if (title.textContent.length > maxLength) {
+                title.textContent = title.textContent.substring(0, maxLength) + '...';
+            }
+        });
+    });
+</script>
+
 </body>
 </html>
