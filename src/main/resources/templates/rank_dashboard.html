@@ -39,7 +39,7 @@
         <td th:text="${user.username}"></td>
         <td th:text="${user.email}"></td>
         <td>
-          <span th:each="score : ${userAssignmentScores[user.id]}" th:text="${score} + ' '"></span>
+          <span th:each="score : ${userProblemScores[user.id]}" th:text="${score} + ' '"></span>
         </td>
         <td th:text="${userTotalScores[user.id]}"></td>
       </tr>

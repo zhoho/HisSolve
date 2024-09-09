@@ -78,18 +78,14 @@ public class SubmissonServiceImpl implements SubmissionService {
         return submissionRepository.save(submission);
     }
 
+
     @Override
     @Transactional
     public SavedCode saveCode(SubmissionDTO submissionDTO) {
-        Optional<Problem> problemOptional = problemRepository.findById(submissionDTO.getProblemId());
-        Optional<User> userOptional = userRepository.findById(submissionDTO.getUserId());
-
-        if (!problemOptional.isPresent() || !userOptional.isPresent()) {
-            throw new IllegalArgumentException("Problem or User not found");
-        }
-
-        Problem problem = problemOptional.get();
-        User user = userOptional.get();
+        Problem problem = problemRepository.findById(submissionDTO.getProblemId())
+                .orElseThrow(() -> new IllegalArgumentException("Assignment not found"));
+        User user = userRepository.findById(submissionDTO.getUserId())
+                .orElseThrow(() -> new IllegalArgumentException("Student not found"));
         SavedCode savedCode = savedCodeRepository.findByProblemAndUser(problem, user)
                 .orElse(new SavedCode());
 
@@ -97,7 +93,7 @@ public class SubmissonServiceImpl implements SubmissionService {
         savedCode.setUser(user);
         savedCode.setCode(submissionDTO.getCode());
         savedCode.setLanguage(submissionDTO.getLanguage());
-        savedCode.setLastSavedDate(submissionDTO.getLastSavedDate());
+        savedCode.setLastSavedDate(LocalDateTime.now());
 
         return savedCodeRepository.save(savedCode);
     }

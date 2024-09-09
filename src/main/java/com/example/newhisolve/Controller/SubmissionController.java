@@ -39,8 +39,8 @@ public class SubmissionController {
 
     @GetMapping("/getSavedCode")
     @ResponseBody
-    public ResponseEntity<String> getSavedCode(@RequestParam Long assignmentId, @RequestParam Long studentId) {
-        Optional<SavedCode> savedCodeOptional = submissionService.getSavedCode(assignmentId, studentId);
+    public ResponseEntity<String> getSavedCode(@RequestParam Long problemId, @RequestParam Long userId) {
+        Optional<SavedCode> savedCodeOptional = submissionService.getSavedCode(problemId, userId);
         if (savedCodeOptional.isPresent()) {
             SavedCode savedCode = savedCodeOptional.get();
             return ResponseEntity.ok(savedCode.getCode());

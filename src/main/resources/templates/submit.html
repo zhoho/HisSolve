@@ -439,7 +439,7 @@
 </div>
 <script>
     const urlParams = new URLSearchParams(window.location.search);
-    const assignmentId = urlParams.get('assignmentId');
+    const problemId = urlParams.get('problemId');
     let language = urlParams.get('language');
     const userId = document.body.getAttribute('data-user-id');
     const baseCode = `#include <stdio.h>\n\nint main() {\n    printf("Hello, World!");\n    return 0;\n}`;
@@ -469,7 +469,7 @@
             const response = await fetch('/api/compile', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ assignmentId: assignmentId, code: code, language: language })
+                body: JSON.stringify({ problemId: problemId, code: code, language: language })
             });
             if (!response.ok) {
                 const text = await response.text();
@@ -591,7 +591,7 @@
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    assignmentId: assignmentId,
+                    problemId: problemId,
                     userId: userId,
                     code: code,
                     language: language,
@@ -622,7 +622,7 @@
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    assignmentId: assignmentId,
+                    problemId: problemId,
                     userId: userId,
                     code: code,
                     language: language,
@@ -652,7 +652,7 @@
 
     async function getSavedCode() {
         try {
-            const response = await fetch(`/api/getSavedCode?assignmentId=${assignmentId}&userId=${userId}`);
+            const response = await fetch(`/api/getSavedCode?problemId=${problemId}&userId=${userId}`);
             const text = await response.text();
 
             if (text === 'No saved code found') {
@@ -702,7 +702,7 @@
             const response = await fetch('/api/gradingCompile', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ assignmentId: assignmentId, code: code, language: language })
+                body: JSON.stringify({ problemId: problemId, code: code, language: language })
             });
 
             if (!response.ok) {
@@ -728,7 +728,7 @@
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    assignmentId: assignmentId,
+                    problemId: problemId,
                     userId: userId,
                     code: code,
                     language: language,
@@ -847,7 +847,7 @@
 
         let totalCount;
         try {
-            const response = await fetch(`/api/gradingTestcaseCount?assignmentId=${assignmentId}`);
+            const response = await fetch(`/api/gradingTestcaseCount?problemId=${problemId}`);
             if (!response.ok) {
                 throw new Error('Failed to fetch total grading test case count');
             }
