@@ -1,7 +1,7 @@
 package com.example.newhisolve.Service;
 
 import com.example.newhisolve.Model.*;
-import com.example.newhisolve.Repository.AssignmentRepository;
+import com.example.newhisolve.Repository.ProblemRepository;
 import com.example.newhisolve.Repository.SavedCodeRepository;
 import com.example.newhisolve.Repository.SubmissionRepository;
 import com.example.newhisolve.Repository.UserRepository;
@@ -23,7 +23,7 @@ public class SubmissonServiceImpl implements SubmissionService {
 
     private final SubmissionRepository submissionRepository;
 
-    private final AssignmentRepository assignmentRepository;
+    private final ProblemRepository problemRepository;
 
     private final UserRepository userRepository;
 
@@ -32,27 +32,27 @@ public class SubmissonServiceImpl implements SubmissionService {
     @Override
     @Transactional
     public Submission saveSubmission(SubmissionDTO submissionDTO) {
-        Optional<Problem> assignmentOptional = assignmentRepository.findById(submissionDTO.getAssignmentId());
-        Optional<User> studentOptional = userRepository.findById(submissionDTO.getStudentId());
+        Optional<Problem> problemOptional = problemRepository.findById(submissionDTO.getProblemId());
+        Optional<User> userOptional = userRepository.findById(submissionDTO.getUserId());
 
-        if (!assignmentOptional.isPresent() || !studentOptional.isPresent()) {
-            throw new IllegalArgumentException("Assignment or Student not found");
+        if (!problemOptional.isPresent() || !userOptional.isPresent()) {
+            throw new IllegalArgumentException("Problem or User not found");
         }
 
-        Problem assignment = assignmentOptional.get();
-        User student = studentOptional.get();
-        Contest course = assignment.getContest(); // assignment로부터 course 가져오기
+        Problem problem = problemOptional.get();
+        User user = userOptional.get();
+        Contest contest = problem.getContest(); // problem로부터 contest 가져오기
 
-        Optional<Submission> submissionOptional = submissionRepository.findByAssignmentAndStudent(assignment, student);
+        Optional<Submission> submissionOptional = submissionRepository.findByProblemAndUser(problem, user);
 
         Submission submission;
         if (submissionOptional.isPresent()) {
             submission = submissionOptional.get(); // 기존 제출물 업데이트
         } else {
             submission = new Submission(); // 새로운 제출물 생성
-            submission.setProblem(assignment);
-            submission.setStudent(student);
-            submission.setContest(course); // Course 설정
+            submission.setProblem(problem);
+            submission.setUser(user);
+            submission.setContest(contest); // Contest 설정
         }
 
         submission.setCode(submissionDTO.getCode());
@@ -67,7 +67,7 @@ public class SubmissonServiceImpl implements SubmissionService {
             throw new IllegalArgumentException("Invalid pass count format");
         }
 
-        int totalTestCases = assignment.getGradingTestCases().size();
+        int totalTestCases = problem.getGradingTestCases().size();
         int scorePerTestCase = 100 / totalTestCases;
         int totalScore = passCount * scorePerTestCase;
         submission.setScore(totalScore);
@@ -81,20 +81,20 @@ public class SubmissonServiceImpl implements SubmissionService {
     @Override
     @Transactional
     public SavedCode saveCode(SubmissionDTO submissionDTO) {
-        Optional<Problem> assignmentOptional = assignmentRepository.findById(submissionDTO.getAssignmentId());
-        Optional<User> studentOptional = userRepository.findById(submissionDTO.getStudentId());
+        Optional<Problem> problemOptional = problemRepository.findById(submissionDTO.getProblemId());
+        Optional<User> userOptional = userRepository.findById(submissionDTO.getUserId());
 
-        if (!assignmentOptional.isPresent() || !studentOptional.isPresent()) {
-            throw new IllegalArgumentException("Assignment or Student not found");
+        if (!problemOptional.isPresent() || !userOptional.isPresent()) {
+            throw new IllegalArgumentException("Problem or User not found");
         }
 
-        Problem assignment = assignmentOptional.get();
-        User student = studentOptional.get();
-        SavedCode savedCode = savedCodeRepository.findByAssignmentAndStudent(assignment, student)
+        Problem problem = problemOptional.get();
+        User user = userOptional.get();
+        SavedCode savedCode = savedCodeRepository.findByProblemAndUser(problem, user)
                 .orElse(new SavedCode());
 
-        savedCode.setAssignment(assignment);
-        savedCode.setStudent(student);
+        savedCode.setProblem(problem);
+        savedCode.setUser(user);
         savedCode.setCode(submissionDTO.getCode());
         savedCode.setLanguage(submissionDTO.getLanguage());
         savedCode.setLastSavedDate(submissionDTO.getLastSavedDate());
@@ -103,18 +103,18 @@ public class SubmissonServiceImpl implements SubmissionService {
     }
 
     @Override
-    public Optional<SavedCode> getSavedCode(Long assignmentId, Long studentId) {
-        Optional<Problem> assignmentOptional = assignmentRepository.findById(assignmentId);
-        Optional<User> studentOptional = userRepository.findById(studentId);
+    public Optional<SavedCode> getSavedCode(Long problemId, Long userId) {
+        Optional<Problem> problemOptional = problemRepository.findById(problemId);
+        Optional<User> userOptional = userRepository.findById(userId);
 
-        if (!assignmentOptional.isPresent() || !studentOptional.isPresent()) {
-            throw new IllegalArgumentException("Assignment or Student not found");
+        if (!problemOptional.isPresent() || !userOptional.isPresent()) {
+            throw new IllegalArgumentException("Problem or User not found");
         }
 
-        Problem assignment = assignmentOptional.get();
-        User student = studentOptional.get();
+        Problem problem = problemOptional.get();
+        User user = userOptional.get();
 
-        return savedCodeRepository.findByAssignmentAndStudent(assignment, student);
+        return savedCodeRepository.findByProblemAndUser(problem, user);
     }
 
 
@@ -128,35 +128,35 @@ public class SubmissonServiceImpl implements SubmissionService {
     }
 
     @Override
-    public List<Submission> findByAssignmentId(Long assignmentId) {
-        List<Submission> submissions = submissionRepository.findByAssignmentId(assignmentId);
+    public List<Submission> findByProblemId(Long problemId) {
+        List<Submission> submissions = submissionRepository.findByProblemId(problemId);
         submissions.forEach(submission -> logger.info(submission.toString()));
         return submissions;
     }
 
     @Override
     @Transactional
-    public void deleteSubmissionsByAssignmentId(Long assignmentId) {
-        submissionRepository.deleteByAssignmentId(assignmentId);
+    public void deleteSubmissionsByProblemId(Long problemId) {
+        submissionRepository.deleteByProblemId(problemId);
     }
 
     @Override
-    public List<Submission> findByAssignmentAndStudent(Long assignmentId, Long studentId) {
-        return submissionRepository.findByAssignmentIdAndStudentId(assignmentId, studentId);
+    public List<Submission> findByProblemAndUser(Long problemId, Long userId) {
+        return submissionRepository.findByProblemIdAndUserId(problemId, userId);
     }
 
     @Override
-    public List<Submission> findSubmissionsByAssignment(Problem assignment) {
-        return submissionRepository.findByAssignment(assignment);
+    public List<Submission> findSubmissionsByProblem(Problem problem) {
+        return submissionRepository.findByProblem(problem);
     }
 
     @Override
-    public String getGradingTestcaseCount(Long assignmentId) {
-        Optional<Problem> assignmentOptional = assignmentRepository.findById(assignmentId);
-        if (assignmentOptional.isPresent()) {
-            return assignmentOptional.get().getGradingTestcaseCount();
+    public String getGradingTestcaseCount(Long problemId) {
+        Optional<Problem> problemOptional = problemRepository.findById(problemId);
+        if (problemOptional.isPresent()) {
+            return problemOptional.get().getGradingTestcaseCount();
         } else {
-            throw new IllegalArgumentException("Assignment not found");
+            throw new IllegalArgumentException("Problem not found");
         }
     }
 }

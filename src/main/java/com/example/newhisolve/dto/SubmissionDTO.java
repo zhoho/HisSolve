@@ -10,8 +10,8 @@ import java.time.LocalDateTime;
 @Setter
 @Data
 public class SubmissionDTO {
-    private Long assignmentId;
-    private Long studentId;
+    private Long problemId;
+    private Long userId;
     private String code;
     private LocalDateTime lastSavedDate;
     private String language;

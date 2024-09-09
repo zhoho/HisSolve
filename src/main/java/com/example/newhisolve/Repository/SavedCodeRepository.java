@@ -8,5 +8,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface SavedCodeRepository extends JpaRepository<SavedCode, Long> {
-    Optional<SavedCode> findByAssignmentAndStudent(Problem assignment, User student);
+    Optional<SavedCode> findByProblemAndStudent(Problem problem, User student);
 }

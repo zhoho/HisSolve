@@ -24,18 +24,17 @@ public class Contest {
 
     @ManyToOne
     @JoinColumn(name = "admin_id")
-    private User professor;
-
+    private User admin;
     // ContestUser와의 관계 설정 (OneToMany)
     @OneToMany(mappedBy = "contest", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ContestUser> contestUsers = new ArrayList<>();
 
-    // getStudents 메소드 추가
-    public List<User> getStudents() {
-        List<User> students = new ArrayList<>();
+    // getUsers 메소드 추가
+    public List<User> getUsers() {  // 메소드명과 변수명 변경
+        List<User> users = new ArrayList<>();
         for (ContestUser contestUser : contestUsers) {
-            students.add(contestUser.getUser());
+            users.add(contestUser.getUser());
         }
-        return students;
+        return users;
     }
 }
