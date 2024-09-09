@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title th:text="${course.name}">Professor Course Details</title>
+  <title th:text="${contest.name}">Admin Contest Details</title>
   <!-- Bootstrap CSS -->
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
   <!-- Google Fonts -->
@@ -12,7 +12,7 @@
     body {
       background-color: #edf2f4;
     }
-    .course-banner {
+    .contest-banner {
       background: linear-gradient(to right, #37517e, #000000);
       color: white;
       padding: 30px;
@@ -21,20 +21,20 @@
       flex-direction: column;
       margin-top: -10px;
     }
-    .course-header {
+    .contest-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
       width: 100%;
     }
-    .course-header h1, .course-header .course-code {
+    .contest-header h1, .contest-header .contest-code {
       font-size: 1.5rem;
       font-weight: bold;
     }
-    .course-description {
+    .contest-description {
       margin-top: 10px;
     }
-    .back-button, .edit-button, .new-assignment-button, .ranking-dashboard-button {
+    .back-button, .edit-button, .new-problem-button, .ranking-dashboard-button {
       background-color: #47b2e4;
       border: 0;
       color: #fff;
@@ -44,7 +44,7 @@
       font-size: 1rem;
       margin: 20px 0;
     }
-    .back-button:hover, .edit-button:hover, .new-assignment-button:hover, .ranking-dashboard-button:hover {
+    .back-button:hover, .edit-button:hover, .new-problem-button:hover, .ranking-dashboard-button:hover {
       background-color: #138496;
       text-decoration: none;
       color: white;
@@ -61,7 +61,7 @@
       margin-top: 20px;
       border-radius: 10px;
     }
-    .assignment-card, .student-card, .co-teacher-card {
+    .problem-card, .student-card, .co-teacher-card {
       background-color: white;
       border: none;
       border-radius: 10px;
@@ -78,7 +78,7 @@
     }
     .card-text {
       margin-bottom: 0;
-      color: black; /* 기본 검정색 */
+      color: black;
     }
     .card-icon {
       font-size: 3rem;

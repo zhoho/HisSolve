@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title th:text="${course.name}">Course Details</title>
+  <title th:text="${contest.name}">Contest Details</title> <!-- 수정: course.name -> contest.name -->
   <!-- Bootstrap CSS -->
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
   <!-- Google Fonts -->
@@ -11,7 +11,7 @@
     body {
       background-color: #edf2f4;
     }
-    .course-banner {
+    .contest-banner { /* 수정: course-banner -> contest-banner */
       background: linear-gradient(to right, #37517e, #000000);
       color: white;
       padding: 30px;
@@ -20,17 +20,17 @@
       flex-direction: column;
       margin-top: -10px;
     }
-    .course-header {
+    .contest-header { /* 수정: course-header -> contest-header */
       display: flex;
       justify-content: space-between;
       align-items: center;
       width: 100%;
     }
-    .course-header h1, .course-header .course-code {
+    .contest-header h1, .contest-header .contest-code { /* 수정: course-code -> contest-code */
       font-size: 1.5rem;
       font-weight: bold;
     }
-    .course-description {
+    .contest-description { /* 수정: course-description -> contest-description */
       margin-top: 10px;
     }
     .back-button {
@@ -48,28 +48,28 @@
       text-decoration: none;
       color: white;
     }
-    .assignment-container {
+    .problem-container { /* 수정: assignment-container -> problem-container */
       background-color: #f3f5fa;
       border: 1px solid #dfdfff;
       padding: 20px;
       margin-top: 20px;
       border-radius: 10px;
     }
-    .assignment-container h2 {
+    .problem-container h2 { /* 수정: assignment-container h2 -> problem-container h2 */
       margin-bottom: 30px;
     }
-    .assignment-card {
+    .problem-card { /* 수정: assignment-card -> problem-card */
       background-color: white;
       border: none;
       border-radius: 10px;
       margin-bottom: 20px;
       box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
     }
-    .assignment-card h5 {
+    .problem-card h5 { /* 수정: assignment-card h5 -> problem-card h5 */
       color: #37517e;
       font-weight: bold;
     }
-    .assignment-card p {
+    .problem-card p { /* 수정: assignment-card p -> problem-card p */
       margin-bottom: 0;
     }
     .due-date {
@@ -85,23 +85,23 @@
 <div th:replace="~{fragments :: nav}"></div>
 
 <div class="container mt-1">
-  <div class="contest-banner">
-    <div class="contest-header">
+  <div class="contest-banner"> <!-- 수정: course-banner -> contest-banner -->
+    <div class="contest-header"> <!-- 수정: course-header -> contest-header -->
       <h1 th:text="${contest.name}"></h1>
-      <div class="contest-code">
+      <div class="contest-code"> <!-- 수정: course-code -> contest-code -->
         <p>Class code: <span th:text="${contest.code}"></span></p>
       </div>
     </div>
-    <div class="contest-description">
+    <div class="contest-description"> <!-- 수정: course-description -> contest-description -->
       <p th:text="${contest.description}"></p>
     </div>
   </div>
   <a href="/dashboard" class="btn back-button"><i class="bi bi-arrow-left"></i> Back to dashboard</a>
-  <div class="problem-container">
-    <h2>문제 목록</h2>
+  <div class="problem-container"> <!-- 수정: assignment-container -> problem-container -->
+    <h2>문제 목록</h2> <!-- 수정: assignment 목록에서 문제 목록으로 -->
     <div class="row">
       <div class="col-lg-6 col-sm-12 my-3" th:each="problem : ${problems}">
-        <div class="card problem-card">
+        <div class="card problem-card"> <!-- 수정: assignment-card -> problem-card -->
           <div class="card-body">
             <div class="card-image">
               <i class="fas fa-file-code card-icon"></i>
@@ -118,7 +118,6 @@
     </div>
   </div>
 </div>
-
 
 <!-- Footer -->
 <div th:replace="~{fragments :: footer}"></div>
