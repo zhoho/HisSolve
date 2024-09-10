@@ -23,7 +23,7 @@ public class SubmissionDetailController {
             model.addAttribute("submissions", submission);
             model.addAttribute("submissionCode", submission.getCode());
             model.addAttribute("submissionLanguage", language);
-            model.addAttribute("assignment", submission.getProblem());
+            model.addAttribute("problem", submission.getProblem());
             return "submission_detail";
         }
         return "error";

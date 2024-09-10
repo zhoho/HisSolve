@@ -311,11 +311,11 @@
                         <div th:each="testCase, submitStat : ${problem.testCases}">
                             <div class="flex-container">
                                 <div class="flex-item">
-                                    <div class="test-case-title" th:text="'예제 입력 ' + ${submitStat.submit + 1} + ':'"></div>
+                                    <div class="test-case-title" th:text="'예제 입력 ' + ${submitStat.index + 1} + ':'"></div>
                                     <pre th:text="${testCase.input}"></pre>
                                 </div>
                                 <div class="flex-item">
-                                    <div class="test-case-title" th:text="'예제 출력 ' + ${submitStat.submit + 1} + ':'"></div>
+                                    <div class="test-case-title" th:text="'예제 출력 ' + ${submitStat.index + 1} + ':'"></div>
                                     <pre th:text="${testCase.expectedOutput}"></pre>
                                 </div>
                             </div>
@@ -356,7 +356,7 @@
     let inputs = []; // 전역으로 inputs 변수 정의
     const submissionCode = /*<![CDATA[*/ [[${submissionCode}]] /*]]*/;
     const submissionLanguage = /*<![CDATA[*/ [[${submissionLanguage}]] /*]]*/;
-    const assignmentId = /*[[${assignment.id}]]*/ 'defaultAssignmentId'; // assignmentId 변수 초기화
+    const problemId = /*[[${problem.id}]]*/ 'defaultProblemId'; // assignmentId 변수 초기화
     const language = submissionLanguage;
 </script>
 
@@ -418,7 +418,7 @@
             const response = await fetch('/api/compile', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ assignmentId: assignmentId, code: code, language: language })
+                body: JSON.stringify({ problemId: problemId, code: code, language: language })
             });
             if (!response.ok) {
                 const text = await response.text();
