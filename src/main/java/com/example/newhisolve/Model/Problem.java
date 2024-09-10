@@ -17,6 +17,8 @@ public class Problem {
     private Long id;
 
     private String title;
+    @Lob
+    @Column(columnDefinition = "TEXT")
     private String description;
     private LocalDateTime createDate;
     private LocalDateTime dueDate;

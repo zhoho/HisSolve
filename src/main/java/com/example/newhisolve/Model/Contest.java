@@ -18,8 +18,12 @@ public class Contest {
     private Long id;
 
     private String name;
+    @Lob
+    @Column(columnDefinition = "LONGTEXT")
     private String code;
     private String language;
+    @Lob
+    @Column(columnDefinition = "TEXT")
     private String description;
     private String problemCount;
 
