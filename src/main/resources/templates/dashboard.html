@@ -108,6 +108,18 @@
             border: 1px solid #ced4da;
             border-radius: .25rem;
         }
+        .text-info {
+            color: blue;
+        }
+
+        .text-danger {
+            color: red;
+        }
+
+        .text-success {
+            color: green;
+        }
+
     </style>
 </head>
 <body>
@@ -145,13 +157,16 @@
                     </div>
                     <div class="card-content">
                         <h5 class="card-title">
-                            <a th:href="@{/contest/{id}(id=${contest.id})}" class="text-primary" th:text="${contest.name}" style="color: #37517e;"></a>
+                            <a th:href="@{/contest/{id}(id=${contest.id})}" class="text-primary" th:text="${contest.name}"></a>
                         </h5>
-                        <p class="card-text text-muted" th:text="${contest.description}">Description</p>
+                        <p class="card-text text-muted" th:text="${contest.description}"></p>
+                        <p class="card-text" th:text="${contest.status}"></p>
                     </div>
+
                 </div>
             </div>
         </div>
+
         <div class="col-lg-6 col-sm-12 my-3" th:if="${user.role == 'ADMIN'}" th:each="contest : ${contests}">
             <div class="card shadow-sm p-3">
                 <div class="card-body">
