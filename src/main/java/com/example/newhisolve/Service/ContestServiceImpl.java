@@ -133,4 +133,10 @@ public class ContestServiceImpl implements ContestService {
         Integer totalScore = submissionRepository.findTotalScoreByUserAndContest(userId, contestId);
         return totalScore != null ? totalScore : 0;
     }
+
+    @Override
+    public List<Contest> searchContestsByName(String searchQuery) {
+        return contestRepository.findByNameContainingIgnoreCase(searchQuery);
+    }
 }
+

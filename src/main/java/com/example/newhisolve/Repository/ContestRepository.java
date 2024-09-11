@@ -11,4 +11,5 @@ public interface ContestRepository extends JpaRepository<Contest, Long> {
     Optional<Contest> findByCode(String code);
     List<Contest> findByAdmin(User admin);
     List<Contest> findByUsersContaining(User user);
+    List<Contest> findByNameContainingIgnoreCase(String name);
 }

@@ -200,4 +200,16 @@ public class ContestController {
         }
     }
 
+    @GetMapping("/contest/search")
+    @ResponseBody
+    public List<Contest> searchContests(@RequestParam("searchQuery") String searchQuery) {
+        return contestService.searchContestsByName(searchQuery);
+    }
+
+    @GetMapping("/contest/autocomplete")
+    @ResponseBody
+    public List<Contest> autocompleteContests(@RequestParam("searchQuery") String searchQuery) {
+        return contestService.searchContestsByName(searchQuery);
+    }
+
 }
