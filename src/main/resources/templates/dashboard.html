@@ -115,7 +115,7 @@
 <div class="container-fluid user-info">
     <div class="row">
         <div class="col-md-8">
-            <p class="welcome-text">Welcome, <span th:text="${user.username}"></span> <span th:if="${user.role == 'USER'}">사용자</span>!</p>
+            <p class="welcome-text">Welcome, <span th:text="${user.username}"></span> <span th:if="${user.role == 'USER'}">님</span>!</p>
             <p class="email-text" th:text="${user.email}"></p>
         </div>
         <div class="col-md-4 edit-btn">
