@@ -43,9 +43,20 @@
             text-decoration: none;
             color: white;
         }
+        .btn-primary {
+            background-color: #47b2e4;
+            border: 0;
+            color: #fff;
+            transition: 0.4s;
+            border-radius: 50px;
+        }
+        .btn-primary:hover {
+            background-color: #138496;
+        }
         .card {
+            position: relative;
             transition: transform 0.2s ease, box-shadow 0.2s ease;
-            min-height: 150px;
+            min-height: 200px;
         }
         .card:hover {
             transform: translateY(-10px);
@@ -73,40 +84,82 @@
         .card-title {
             font-size: 1.5rem;
             color: #37517e;
-            white-space: nowrap; /* 한 줄로 유지 */
-            overflow: hidden; /* 넘치는 부분 숨기기 */
-            text-overflow: ellipsis; /* 넘치는 부분을 ...으로 표시 */
-            max-width: 250px;
+            white-space: normal;
+            overflow: visible;
         }
-
         .card-text {
             font-size: 1rem;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            max-width: 200px;
+            max-width: 250px;
         }
-        .btn-primary {
-            background-color: #47b2e4;
-            border: 0;
-            color: #fff;
-            transition: 0.4s;
-            border-radius: 50px;
-        }
-        .btn-primary:hover {
-            background-color: #138496;
-        }
+
+        /* 컨테스트 코드 입력란과 검색 입력란을 같은 라인에 배치 */
         .form-control {
-            height: calc(1.5em + .75rem + 2px);
-            padding: .375rem .75rem;
-            font-size: 1rem;
-            font-weight: 400;
-            line-height: 1.5;
-            color: #495057;
+            width: 100%;
+        }
+
+        .form-inline {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .search-form {
+            width: 60%; /* 검색란의 너비를 조정 */
+        }
+
+        .contest-form {
+            width: 38%; /* 코드 입력란의 너비를 조정 */
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .search-form input,
+        .contest-form input {
+            width: 100%;
+        }
+
+        /* 팝업 스타일 */
+        .popup {
+            position: absolute;
+            z-index: 10;
             background-color: #fff;
-            background-clip: padding-box;
-            border: 1px solid #ced4da;
-            border-radius: .25rem;
+            border: 1px solid #ddd;
+            padding: 10px;
+            width: 300px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            display: none;
+        }
+        .card:hover .popup {
+            display: block;
+        }
+        .popup-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+        .popup-description {
+            font-size: 1rem;
+        }
+
+        /* 자동완성 목록 */
+        .autocomplete-results {
+            background-color: white;
+            max-height: 200px;
+            overflow-y: auto;
+            width: 100%;
+        }
+
+        .autocomplete-item {
+            padding: 8px;
+            cursor: pointer;
+            text-align: left;
+        }
+
+        .autocomplete-item:hover {
+            background-color: #f0f0f0;
         }
     </style>
 </head>
@@ -125,18 +178,36 @@
 </div>
 <div class="container mt-4">
     <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-12">
             <h2>대회 목록</h2>
         </div>
-        <div class="col-md-4 text-right">
-            <form th:if="${user.role == 'USER'}" class="form-inline" th:action="@{/contest/join}" method="post">
-                <input class="form-control mr-2" type="text" placeholder="Enter Contest code" name="code" required>
+    </div>
+
+    <div class="row mt-3 form-inline">
+        <!-- 검색 폼 -->
+        <div class="search-form">
+            <form id="searchForm">
+                <input id="searchQuery" class="form-control mr-2" type="text" placeholder="Search Contest" required>
+                <button type="submit" class="btn btn-primary">Search</button>
+            </form>
+        </div>
+
+        <!-- 코드 입력란 -->
+        <div class="contest-form">
+            <form th:if="${user.role == 'USER'}" th:action="@{/contest/join}" method="post">
+                <input class="form-control" type="text" placeholder="Enter Contest code" name="code" required>
                 <button class="btn btn-primary" type="submit">Enter</button>
             </form>
-            <a class="btn btn-primary" th:if="${user.role == 'ADMIN'}" th:href="@{/contest/create}"> Create</a>
         </div>
     </div>
-    <div class="row">
+
+    <div id="searchResults" class="row mt-4">
+        <!-- 검색 결과가 여기에 동적으로 렌더링됩니다 -->
+    </div>
+    <div id="backButtonContainer" class="text-center mt-3" style="display: none;">
+        <button id="backButton" class="btn btn-secondary">Back</button>
+    </div>
+    <div class="row" id="contestCards">
         <div class="col-lg-6 col-sm-12 my-3" th:if="${user.role == 'USER'}" th:each="contest : ${contests}">
             <div class="card shadow-sm p-3">
                 <div class="card-body">
@@ -148,6 +219,11 @@
                             <a th:href="@{/contest/{id}(id=${contest.id})}" class="text-primary" th:text="${contest.name}" style="color: #37517e;"></a>
                         </h5>
                         <p class="card-text text-muted" th:text="${contest.description}">Description</p>
+                    </div>
+                    <!-- 팝업으로 이름과 설명 표시 -->
+                    <div class="popup">
+                        <div class="popup-title" th:text="${contest.name}"></div>
+                        <div class="popup-description" th:text="${contest.description}"></div>
                     </div>
                 </div>
             </div>
@@ -164,29 +240,126 @@
                         </h5>
                         <p class="card-text text-muted" th:text="${contest.description}">Description</p>
                     </div>
+                    <!-- 팝업으로 이름과 설명 표시 -->
+                    <div class="popup">
+                        <div class="popup-title" th:text="${contest.name}"></div>
+                        <div class="popup-description" th:text="${contest.description}"></div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
+<script>
+    // 검색 폼 제출 시 AJAX로 검색 요청 보내기
+    document.getElementById('searchForm').addEventListener('submit', function(event) {
+        event.preventDefault(); // 폼의 기본 제출 동작을 막음
+        const searchQuery = document.getElementById('searchQuery').value;
+
+        // 자동완성 목록 숨기기
+        document.getElementById('autocompleteResults').innerHTML = '';
+
+        // 설치 버튼 색상 복원
+        const installButton = document.querySelector('.btn-primary');
+        installButton.style.backgroundColor = '#47b2e4'; // 원래 색상으로 변경
+        installButton.style.color = '#fff'; // 글자 색상도 원래대로
+
+        // AJAX 요청
+        fetch(`/contest/search?searchQuery=${encodeURIComponent(searchQuery)}`)
+            .then(response => response.json())  // JSON 형식으로 데이터를 받아옴
+            .then(data => {
+                const searchResultsDiv = document.getElementById('searchResults');
+                const contestCardsDiv = document.getElementById('contestCards');
+                searchResultsDiv.innerHTML = '';
+                contestCardsDiv.style.display = 'none'; // 원래 카드 숨기기
+
+                // 검색 결과를 동적으로 생성
+                if (data.length === 0) {
+                    searchResultsDiv.innerHTML = '<p>No contests found.</p>';
+                } else {
+                    data.forEach(contest => {
+                        const contestCard = `
+                        <div class="col-lg-6 col-sm-12 my-3">
+                            <div class="card shadow-sm p-3">
+                                <div class="card-body">
+                                    <div class="card-image">
+                                        <i class="fas fa-chalkboard-teacher card-icon"></i>
+                                    </div>
+                                    <div class="card-content">
+                                        <h5 class="card-title">
+                                            <a href="/contest/${contest.id}" class="text-primary">${contest.name}</a>
+                                        </h5>
+                                        <p class="card-text text-muted">${contest.description}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                        searchResultsDiv.innerHTML += contestCard;
+                    });
+                }
+
+                document.getElementById('backButtonContainer').style.display = 'block'; // 뒤로 가기 버튼 표시
+            })
+            .catch(error => console.error('Error:', error));
+    });
+
+    // 뒤로 가기 버튼 클릭 시 원래 상태로 복원
+    document.getElementById('backButton').addEventListener('click', function() {
+        // 검색 결과 숨기기
+        document.getElementById('searchResults').innerHTML = '';
+        // 원래 카드 다시 표시
+        document.getElementById('contestCards').style.display = 'flex';
+        // 뒤로 가기 버튼 숨기기
+        document.getElementById('backButtonContainer').style.display = 'none';
+        // 검색어 입력란 초기화
+        document.getElementById('searchQuery').value = '';
+        // 자동완성 목록 숨기기
+        document.getElementById('autocompleteResults').innerHTML = '';
+    });
+
+    document.getElementById('searchQuery').addEventListener('input', function(event) {
+        const searchQuery = event.target.value;
+
+        // 최소 입력 길이를 확인 (예: 2글자 이상일 때만 자동완성 실행)
+        if (searchQuery.length >= 2) {
+            // AJAX 요청
+            fetch(`/contest/autocomplete?searchQuery=${encodeURIComponent(searchQuery)}`)
+                .then(response => response.json())
+                .then(data => {
+                    // 자동완성 목록을 렌더링할 div 요소
+                    const autocompleteDiv = document.getElementById('autocompleteResults');
+                    autocompleteDiv.innerHTML = ''; // 기존 목록 초기화
+
+                    // 자동완성 결과가 있을 경우 렌더링
+                    if (data.length > 0) {
+                        // 자동완성 목록 생성 부분
+                        data.forEach(contest => {
+                            const suggestion = document.createElement('div');
+                            suggestion.textContent = contest.name;
+                            suggestion.classList.add('autocomplete-item'); // 스타일을 위한 클래스
+                            suggestion.addEventListener('click', () => {
+                                document.getElementById('searchQuery').value = contest.name; // 검색창에 클릭한 항목 입력
+                                document.getElementById('autocompleteResults').innerHTML = ''; // 자동완성 목록 제거
+                            });
+                            autocompleteDiv.appendChild(suggestion); // 자동완성 항목 추가
+                        });
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        }
+    });
+
+</script>
+
 <!-- Footer -->
 <div th:replace="~{fragments :: footer}"></div>
 
-<!-- Bootstrap JS and dependencies -->
-<div th:replace="~{fragments :: scripts}"></div>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const titles = document.querySelectorAll('.card-title a');
-        titles.forEach(function (title) {
-            const maxLength = 22; // 최대 19자 제한
-            if (title.textContent.length > maxLength) {
-                title.textContent = title.textContent.substring(0, maxLength) + '...';
-            }
-        });
-    });
-</script>
+<!-- Bootstrap JS 및 jQuery -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 </body>
 </html>

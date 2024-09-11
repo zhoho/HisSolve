@@ -33,4 +33,7 @@ public interface ContestService {
     void removeUserFromContest(Long contestId, Long userId);
 
     int getTotalScoreByUserAndContest(Long userId, Long contestId);
+
+    List<Contest> searchContestsByName(String searchQuery);
 }
+
