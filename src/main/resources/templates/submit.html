@@ -359,14 +359,16 @@
                     <div id="description" th:attr="data-description=${problem.description}"></div>
                     <div class="test-case-container">
                         <div th:each="testCase, iterStat : ${problem.testCases}">
-                            <div class="flex-container">
-                                <div class="flex-item">
-                                    <div class="test-case-title" th:text="'예제 입력 ' + ${iterStat.index + 1} + ':'"></div>
-                                    <pre th:text="${testCase.input}"></pre>
-                                </div>
-                                <div class="flex-item">
-                                    <div class="test-case-title" th:text="'예제 출력 ' + ${iterStat.index + 1} + ':'"></div>
-                                    <pre th:text="${testCase.expectedOutput}"></pre>
+                            <div th:if="${!testCase.isHidden}">
+                                <div class="flex-container">
+                                    <div class="flex-item">
+                                        <div class="test-case-title" th:text="'예제 입력 ' + ${iterStat.index + 1} + ':'"></div>
+                                        <pre th:text="${testCase.input}"></pre>
+                                    </div>
+                                    <div class="flex-item">
+                                        <div class="test-case-title" th:text="'예제 출력 ' + ${iterStat.index + 1} + ':'"></div>
+                                        <pre th:text="${testCase.expectedOutput}"></pre>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -679,61 +681,27 @@
     }
 
     async function submitCode() {
-        const now = new Date();
-        const dueDateText = document.getElementById('due-date').innerText;
-        const dueDate = new Date(dueDateText);
-        const courseId = document.body.getAttribute('data-course-id'); // courseId 가져오기
-
-        if (now > dueDate) {
-            alert('마감 시간이 지났습니다.');
-            return;
-        }
-
         const code = window.editor.getValue();
+        await saveCode(); // 코드 저장
 
-        // 코드 저장
-        await saveCode();
+        // 일반 테스트 케이스
+        let passCount = 0;
+        let totalTestCases = 0;
 
-        // Grading Test Cases 컴파일 및 실행
+        // 히든 테스트 케이스 처리
         let gradingPassCount = 0;
         let totalGradingTestCases = 0;
 
         try {
-            const response = await fetch('/api/gradingCompile', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ problemId: problemId, code: code, language: language })
-            });
-
-            if (!response.ok) {
-                const text = await response.text();
-                throw new Error(text);
-            }
-
-            const gradingResults = await response.json();
-
-            console.log('Grading Results:', gradingResults);
-
-            gradingPassCount = gradingResults.filter(result => result.status === '통과').length;
-            totalGradingTestCases = gradingResults.length;
-        } catch (error) {
-            console.error('Error compiling grading test cases:', error);
-            alert('Grading test cases compilation failed!\n' + error.message);
-            return;
-        }
-
-        // 제출 API 호출
-        try {
-            const response = await fetch('/api/submit', {
+            // 모든 테스트 케이스 실행 및 채점
+            const response = await fetch('/api/submitWithHidden', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     problemId: problemId,
                     userId: userId,
                     code: code,
-                    language: language,
-                    passCount: gradingPassCount,
-                    totalScore: gradingPassCount * 100 / totalGradingTestCases // 총점 계산
+                    language: language
                 })
             });
 
@@ -744,14 +712,18 @@
 
             const data = await response.json();
 
-            showModal('제출 성공!', '확인', function() {
-                location.reload();
-            });
+            passCount = data.passCount;
+            totalTestCases = data.totalTestCases;
+            gradingPassCount = data.gradingPassCount;
+            totalGradingTestCases = data.totalGradingTestCases;
+
+            alert(`총 통과: ${passCount}/${totalTestCases}, 히든 통과: ${gradingPassCount}/${totalGradingTestCases}`);
         } catch (error) {
             console.error('Error submitting code:', error);
             alert('제출 실패!\n' + error.message);
         }
     }
+
 
 
 

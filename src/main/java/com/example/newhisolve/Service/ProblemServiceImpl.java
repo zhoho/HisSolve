@@ -15,32 +15,28 @@ import java.util.Optional;
 public class ProblemServiceImpl implements ProblemService {
 
     private final ProblemRepository problemRepository;
-
     private final ContestRepository contestRepository;
 
+    // 문제 생성
     @Override
     public Problem createProblem(Problem problem, Long contestId) {
-        Contest contest = contestRepository.findById(contestId).orElseThrow(() -> new RuntimeException("Contest not found"));
+        Contest contest = contestRepository.findById(contestId)
+                .orElseThrow(() -> new RuntimeException("Contest not found"));
         problem.setContest(contest);
         problem.setCreateDate(LocalDateTime.now());
         problem.setLastModifiedDate(LocalDateTime.now());
-        problem.getDueDate();
-        problemRepository.save(problem);
-        return problemRepository.save(problem);
+        problemRepository.save(problem); // 문제 저장
+        return problem;
     }
 
+    // 문제에 대한 모든 테스트케이스 가져오기
     @Override
     public List<TestCase> getTestCasesForProblem(Long problemId) {
         Problem problem = findById(problemId);
         return problem.getTestCases();
     }
 
-    @Override
-    public List<GradingTestCase> getGradingTestCasesForProblem(Long problemId) {
-        Problem problem = findById(problemId);
-        return problem.getGradingTestCases();
-    }
-
+    // 특정 문제 찾기
     @Override
     public Problem findById(Long id) {
         if (id == null) {
@@ -49,7 +45,7 @@ public class ProblemServiceImpl implements ProblemService {
         Optional<Problem> problem = problemRepository.findById(id);
         if (problem.isPresent()) {
             Problem foundProblem = problem.get();
-            // Log problem and test cases for debugging
+            // 로그를 통해 문제 및 테스트케이스 출력
             System.out.println("Found Problem: " + foundProblem.getId());
             for (TestCase testCase : foundProblem.getTestCases()) {
                 System.out.println("Test Case - Input: " + testCase.getInput() + ", Expected Output: " + testCase.getExpectedOutput());
@@ -60,6 +56,7 @@ public class ProblemServiceImpl implements ProblemService {
         }
     }
 
+    // 문제 ID로 문제 가져오기
     @Override
     public Problem getProblemById(Long problemId) {
         Optional<Problem> problem = problemRepository.findById(problemId);
@@ -70,25 +67,27 @@ public class ProblemServiceImpl implements ProblemService {
         }
     }
 
+    // 문제 삭제
     @Transactional
     @Override
     public void deleteProblemById(Long id) {
         problemRepository.deleteById(id);
     }
 
+    // 문제 업데이트
     @Override
     @Transactional
     public void updateProblem(Problem problem, Long contestId) {
-        Problem existingProblem = problemRepository.findById(problem.getId()).orElseThrow();
+        Problem existingProblem = problemRepository.findById(problem.getId())
+                .orElseThrow(() -> new RuntimeException("Problem not found"));
+
+        // 문제 정보 업데이트
         existingProblem.setTitle(problem.getTitle());
         existingProblem.setDueDate(problem.getDueDate());
         existingProblem.setDescription(problem.getDescription());
-        existingProblem.setTestCases(problem.getTestCases());
-        existingProblem.setLastModifiedDate(problem.getLastModifiedDate());
-        existingProblem.setGradingTestcaseCount(problem.getGradingTestcaseCount());
-        existingProblem.setGradingTestCases(problem.getGradingTestCases());
-        existingProblem.setLastModifiedDate(problem.getLastModifiedDate());
+        existingProblem.setTestCases(problem.getTestCases()); // 히든 테스트케이스도 함께 관리
+        existingProblem.setLastModifiedDate(LocalDateTime.now());
 
-        problemRepository.save(existingProblem);
+        problemRepository.save(existingProblem); // 변경사항 저장
     }
 }

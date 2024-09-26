@@ -148,6 +148,7 @@
           <th>Name</th>
           <th>User_Id</th>
           <th>Email</th>
+          <th>Status</th>
           <th>Remove User</th>
         </tr>
         </thead>
@@ -157,6 +158,10 @@
           <td th:text="${user.username}"></td>
           <td th:text="${user.uniqueId}"></td>
           <td th:text="${user.email}"></td>
+          <td>
+            <!-- 활동 중이면 초록색, 그렇지 않으면 회색 원 -->
+            <i class="fas fa-circle" th:classappend="${user.active ? 'text-success' : 'text-secondary'}"></i>
+          </td>
           <td>
             <button type="button" class="btn btn-third" data-toggle="modal" th:data-target="'#deleteUserModal-' + ${user.id}">Remove</button>
           </td>

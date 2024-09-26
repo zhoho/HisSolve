@@ -35,5 +35,10 @@ public interface ContestService {
     int getTotalScoreByUserAndContest(Long userId, Long contestId);
 
     List<Contest> searchContestsByName(String searchQuery);
+    Map<Long, List<Integer>> getUserTestCasesPassed(Long contestId);
+    Map<Long, List<Boolean>> getUserProblemSolvedStatus(Long contestId);
+
+    Map<Long, List<String>> getUserSubmissionTimes(Long contestId);
+
 }
 

@@ -28,6 +28,9 @@ public class User {
 
     private String uniqueId;
 
+    // 새로 추가된 필드: 활동 상태 (활동 중이면 true, 아니면 false)
+    private boolean active;
+
     @OneToMany(mappedBy = "admin")
     private List<Contest> contest;
 

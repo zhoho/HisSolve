@@ -144,6 +144,9 @@
                             <div class="test-case-title" th:text="'예제 출력 ' + ${iterStat.index + 1} + ':'"></div>
                             <pre th:text="${testCase.expectedOutput}"></pre>
                         </div>
+                        <div th:if="${testCase.hidden}" class="flex-item">
+                            <span class="badge badge-warning">Hidden</span> <!-- 히든 테스트케이스 여부를 표시 -->
+                        </div>
                     </div>
                 </div>
             </div>

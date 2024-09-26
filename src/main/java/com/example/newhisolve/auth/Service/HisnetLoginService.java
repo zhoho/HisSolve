@@ -1,8 +1,10 @@
 package com.example.newhisolve.auth.Service;
 
 import com.example.newhisolve.Model.User;
+import com.example.newhisolve.Service.UserService;  // UserService를 사용하여 활동 상태 업데이트
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
@@ -20,6 +22,13 @@ public class HisnetLoginService {
 
     @Value("${hisnet.access-key}")
     private String accessKey;
+
+    private final UserService userService;  // UserService 의존성 추가
+
+    @Autowired
+    public HisnetLoginService(UserService userService) {
+        this.userService = userService;
+    }
 
     public User callHisnetLoginApi(String token) {
         Map<String, Object> requestBody = new HashMap<>();
@@ -54,7 +63,8 @@ public class HisnetLoginService {
                 throw new IllegalArgumentException("응답 결과에 필요한 값이 없습니다.");
             }
 
-            return User.builder()
+            // 새로운 사용자 객체 생성
+            User user = User.builder()
                     .username(name)
                     .uniqueId(uniqueId)
                     .email(email)
@@ -63,6 +73,11 @@ public class HisnetLoginService {
                     .password("12345")
                     .hisnetToken(token)
                     .build();
+
+            // 활동 상태를 true로 업데이트
+            userService.updateUserActiveStatus(user.getUsername(), true);
+
+            return user;
         } catch (HttpStatusCodeException e) {
             Map<String, Object> result = new HashMap<>();
             try {

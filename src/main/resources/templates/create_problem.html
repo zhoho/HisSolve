@@ -132,12 +132,12 @@
             <a class="nav-link active" id="problem-statement-tab" data-toggle="tab" href="#problem-statement" role="tab" aria-controls="problem-statement" aria-selected="true">Problem Statement</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" id="preview-tab" data-toggle="tab" href="#preview" role="tab" aria-controls="preview" aria-selected="false">미리 보기</a>
+            <a class="nav-link" id="preview-tab" data-toggle="tab" href="#preview" role="tab" aria-controls="preview" aria-selected="false">Preview</a>
           </li>
         </ul>
         <div class="tab-content" id="myTabContent">
           <div class="tab-pane fade show active" id="problem-statement" role="tabpanel" aria-labelledby="problem-statement-tab">
-            <textarea class="form-control mt-3" rows="10" name="description" id="problemStatement" placeholder="마크다운 문법을 적용시킬 수 있습니다..."></textarea>
+            <textarea class="form-control mt-3" rows="10" name="description" id="problemStatement" placeholder="You can use markdown syntax..."></textarea>
           </div>
           <div class="tab-pane fade" id="preview" role="tabpanel" aria-labelledby="preview-tab">
             <div class="mt-3" id="previewContent"></div>
@@ -156,32 +156,18 @@
               <label class="font-weight-bold">Output Cases</label>
               <textarea class="form-control" name="outputs[]" placeholder="Output case"></textarea>
             </div>
-            <div class="col-md-2 text-center">
+            <div class="col-md-1">
+              <input type="hidden" name="isHidden[]" value="false"> <!-- 기본값 false 추가 -->
+              <input type="checkbox" name="isHidden[]" class="form-check-input" value="true"> Hidden
+            </div>
+            <div class="col-md-1 text-center">
               <button type="button" class="delete-btn" onclick="removeTestCase(this)"><i class="fas fa-trash-alt"></i></button>
             </div>
           </div>
         </div>
         <button type="button" class="btn btn-lightblue mt-3" id="addCaseBtn">Add case</button>
       </div>
-      <div class="form-group grading-testcase-container">
-        <label class="font-weight-bold">Grading Test Cases</label>
-        <div id="gradingTestCasesContainer">
-          <div class="form-group row align-items-center">
-            <div class="col-md-5">
-              <label class="font-weight-bold">Input Cases</label>
-              <textarea class="form-control" name="gradingInputs[]" placeholder="Input case"></textarea>
-            </div>
-            <div class="col-md-5">
-              <label class="font-weight-bold">Output Cases</label>
-              <textarea class="form-control" name="gradingOutputs[]" placeholder="Output case"></textarea>
-            </div>
-            <div class="col-md-2 text-center">
-              <button type="button" class="delete-btn" onclick="removeTestCase(this)"><i class="fas fa-trash-alt"></i></button>
-            </div>
-          </div>
-        </div>
-        <button type="button" class="btn btn-lightblue mt-3" id="addGradingCaseBtn">Add grading case</button>
-      </div>
+
       <div class="form-group">
         <label for="dueDate" class="font-weight-bold">Due-Date</label>
         <input type="datetime-local" class="form-control" id="dueDate" name="dueDate" required>
@@ -237,28 +223,16 @@
         <div class="col-md-5">
           <textarea class="form-control" name="outputs[]" placeholder="Output case"></textarea>
         </div>
-        <div class="col-md-2 text-center">
+        <div class="col-md-1">
+
+  <input type="checkbox" name="isHidden[]" class="form-check-input" value="true"> Hidden
+</div>
+
+        <div class="col-md-1 text-center">
           <button type="button" class="delete-btn" onclick="removeTestCase(this)"><i class="fas fa-trash-alt"></i></button>
         </div>
       `;
       document.getElementById('testCasesContainer').appendChild(testCaseDiv);
-    });
-
-    document.getElementById('addGradingCaseBtn').addEventListener('click', function () {
-      const gradingTestCaseDiv = document.createElement('div');
-      gradingTestCaseDiv.className = 'form-group row align-items-center';
-      gradingTestCaseDiv.innerHTML = `
-        <div class="col-md-5">
-          <textarea class="form-control" name="gradingInputs[]" placeholder="Input case"></textarea>
-        </div>
-        <div class="col-md-5">
-          <textarea class="form-control" name="gradingOutputs[]" placeholder="Output case"></textarea>
-        </div>
-        <div class="col-md-2 text-center">
-          <button type="button" class="delete-btn" onclick="removeTestCase(this)"><i class="fas fa-trash-alt"></i></button>
-        </div>
-      `;
-      document.getElementById('gradingTestCasesContainer').appendChild(gradingTestCaseDiv);
     });
   });
 

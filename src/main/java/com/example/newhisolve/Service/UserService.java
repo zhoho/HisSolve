@@ -10,5 +10,6 @@ public interface UserService {
     UserDetails loadUserByuniqueId(String uniqueId) throws UsernameNotFoundException;
     void updateUser(User user);
     User getCurrentUser();
+    void updateUserActiveStatus(String username, boolean isActive);
 }
 

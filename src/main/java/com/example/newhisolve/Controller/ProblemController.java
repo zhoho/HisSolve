@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Controller
@@ -46,50 +47,40 @@ public class ProblemController {
                                 @RequestParam Long contestId,
                                 @RequestParam List<String> inputs,
                                 @RequestParam List<String> outputs,
-                                @RequestParam(required = false) List<String> gradingInputs,
-                                @RequestParam(required = false) List<String> gradingOutputs,
+                                @RequestParam(required = false) List<Boolean> isHidden,
                                 @RequestParam("dueDate") String dueDate,
                                 Principal principal) {
-        User user = userService.findByUsername(principal.getName());
-        if (!user.getRole().equals("ADMIN")) {
-            return "redirect:/dashboard";
+
+        if (isHidden == null) {
+            isHidden = new ArrayList<>(Collections.nCopies(inputs.size(), false));
+        }
+
+        if (inputs.size() != outputs.size() || inputs.size() != isHidden.size()) {
+            throw new IllegalArgumentException("입력, 출력, 히든 리스트의 크기가 일치하지 않습니다.");
         }
 
         LocalDateTime localDateTime = LocalDateTime.parse(dueDate);
         problem.setDueDate(localDateTime);
 
-        // Process regular test cases
         List<TestCase> testCases = new ArrayList<>();
         for (int i = 0; i < inputs.size(); i++) {
             TestCase testCase = new TestCase();
             testCase.setInput(inputs.get(i));
             testCase.setExpectedOutput(outputs.get(i));
+            testCase.setHidden(isHidden.get(i));
             testCases.add(testCase);
         }
 
-        problem.setTestcaseCount(String.valueOf(inputs.size()));
         problem.setTestCases(testCases);
-
-        // Process grading test cases
-        if (gradingInputs != null && gradingOutputs != null) {
-            List<GradingTestCase> gradingTestCases = new ArrayList<>();
-            for (int i = 0; i < gradingInputs.size(); i++) {
-                GradingTestCase gradingTestCase = new GradingTestCase();
-                gradingTestCase.setInput(gradingInputs.get(i));
-                gradingTestCase.setExpectedOutput(gradingOutputs.get(i));
-                gradingTestCases.add(gradingTestCase);
-            }
-
-            problem.setGradingTestcaseCount(String.valueOf(gradingInputs.size()));
-            problem.setGradingTestCases(gradingTestCases);
-        } else {
-            problem.setGradingTestcaseCount(String.valueOf(0));
-        }
+        problem.setTestcaseCount(testCases.size());  // 테스트 케이스의 개수를 설정
 
         problemService.createProblem(problem, contestId);
 
         return "redirect:/admin_contest/" + contestId;
     }
+
+
+
 
     @GetMapping("/problem/{id}")
     public String solveProblem(@PathVariable Long id, Principal principal) {
@@ -138,57 +129,7 @@ public class ProblemController {
         return "edit_problem";
     }
 
-    @PostMapping("/problem/update")
-    @PreAuthorize("hasRole('ADMIN')")
-    public String updateProblem(@ModelAttribute Problem problem,
-                                @RequestParam Long contestId,
-                                @RequestParam List<String> inputs,
-                                @RequestParam List<String> outputs,
-                                @RequestParam(required = false) List<String> gradingInputs,
-                                @RequestParam(required = false) List<String> gradingOutputs,
-                                @RequestParam("dueDate") String dueDate,
-                                Principal principal) {
-        User user = userService.findByUsername(principal.getName());
-        if (!user.getRole().equals("ADMIN")) {
-            return "redirect:/dashboard";
-        }
-
-        LocalDateTime localDateTime = LocalDateTime.parse(dueDate);
-        ZonedDateTime zonedDateTime = localDateTime.atZone(ZoneId.of("Asia/Seoul")).withZoneSameInstant(ZoneId.of("UTC"));
-        problem.setDueDate(zonedDateTime.toLocalDateTime());
-        problem.setLastModifiedDate(LocalDateTime.now());
-
-        List<TestCase> testCases = new ArrayList<>();
-        for (int i = 0; i < inputs.size(); i++) {
-            TestCase testCase = new TestCase();
-            testCase.setInput(inputs.get(i));
-            testCase.setExpectedOutput(outputs.get(i));
-            testCases.add(testCase);
-        }
-
-        problem.setTestcaseCount(String.valueOf(inputs.size()));
-        problem.setTestCases(testCases);
-
-        if (gradingInputs != null && gradingOutputs != null) {
-            List<GradingTestCase> gradingTestCases = new ArrayList<>();
-            for (int i = 0; i < gradingInputs.size(); i++) {
-                GradingTestCase gradingTestCase = new GradingTestCase();
-                gradingTestCase.setInput(gradingInputs.get(i));
-                gradingTestCase.setExpectedOutput(gradingOutputs.get(i));
-                gradingTestCases.add(gradingTestCase);
-            }
-
-            problem.setGradingTestcaseCount(String.valueOf(gradingInputs.size()));
-            problem.setGradingTestCases(gradingTestCases);
-        } else {
-            problem.setGradingTestcaseCount(String.valueOf(0));
-        }
-
-        problemService.updateProblem(problem, contestId);
-
-        return "redirect:/admin_contest/" + contestId;
-    }
-
+//    \
     @GetMapping("/admin_problem_detail/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public String detailProblem(@PathVariable Long id, Principal principal, Model model) {

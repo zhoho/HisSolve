@@ -31,9 +31,6 @@
       font-size: 1.5rem;
       font-weight: bold;
     }
-    .contest-description {
-      margin-top: 10px;
-    }
     .btn-lightblue {
       background-color: #47b2e4;
       border: 0;
@@ -46,18 +43,6 @@
       text-decoration: none;
       color: white;
     }
-    .btn-danger {
-      background-color: #e74c3c;
-      border: 0;
-      color: #fff;
-      transition: 0.4s;
-      border-radius: 50px;
-    }
-    .btn-danger:hover {
-      background-color: #c0392b;
-      text-decoration: none;
-      color: white;
-    }
     .main-container {
       background-color: #f3f5fa;
       border: 1px solid #dfdfff;
@@ -65,54 +50,16 @@
       margin-top: 20px;
       border-radius: 10px;
     }
-    .problem-card, .student-card, .co-teacher-card {
-      background-color: white;
-      border: none;
-      border-radius: 10px;
-      margin-bottom: 20px;
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-    }
-    .card-body {
-      display: flex;
-      align-items: center;
-    }
-    .card-title {
-      color: #37517e;
-      font-weight: bold;
-    }
-    .card-text {
-      margin-bottom: 0;
-    }
-    .card-icon {
-      font-size: 3rem;
-      margin-right: 20px;
-    }
-    .summary-container {
-      margin-top: 20px;
-      text-align: left;
-      padding-left: 15px;
+    .grading-testcase-container {
+      margin-top: 40px;
+      border-top: 2px solid #37517e;
+      padding-top: 20px;
     }
     .delete-btn {
       background: none;
       border: none;
       color: red;
       font-size: 1.0rem;
-    }
-    .nav-link.active {
-      background-color: #ffffff !important;
-      border: 1px solid #dee2e6 !important;
-      border-bottom-color: transparent !important;
-    }
-    .tab-content {
-      border: 1px solid #dee2e6;
-      border-top: none;
-      padding: 10px;
-      background-color: #ffffff;
-    }
-    .grading-testcase-container {
-      margin-top: 40px;
-      border-top: 2px solid #37517e;
-      padding-top: 20px;
     }
   </style>
 </head>
@@ -166,7 +113,10 @@
                 <label class="font-weight-bold">Output Cases</label>
                 <textarea class="form-control" name="outputs[]" placeholder="Output case" th:text="${testCase.expectedOutput}"></textarea>
               </div>
-              <div class="col-md-2 text-center">
+              <div class="col-md-1">
+                <input type="checkbox" name="isHidden[]" class="form-check-input" th:checked="${testCase.isHidden}"> Hidden
+              </div>
+              <div class="col-md-1 text-center">
                 <button type="button" class="delete-btn" onclick="removeTestCase(this)"><i class="fas fa-trash-alt"></i></button>
               </div>
             </div>
@@ -187,7 +137,10 @@
                 <label class="font-weight-bold">Output Cases</label>
                 <textarea class="form-control" name="gradingOutputs[]" placeholder="Output case" th:text="${gradingTestCase.expectedOutput}"></textarea>
               </div>
-              <div class="col-md-2 text-center">
+              <div class="col-md-1">
+                <input type="checkbox" name="isHidden[]" class="form-check-input" th:checked="${gradingTestCase.isHidden}"> Hidden
+              </div>
+              <div class="col-md-1 text-center">
                 <button type="button" class="delete-btn" onclick="removeTestCase(this)"><i class="fas fa-trash-alt"></i></button>
               </div>
             </div>
@@ -215,15 +168,22 @@
 <script>
   function deleteProblem() {
     if (confirm('Are you sure you want to delete this problem?')) {
-      fetch('/problem/delete/' + [[${problem.id}]], {
+      var problemId = /*[[${problem.id}]]*/ '0';
+      var contestId = /*[[${problem.contest.id}]]*/ '0';
+
+      fetch('/problem/delete/' + problemId, {
         method: 'POST',
       })
               .then(response => {
                 if (response.ok) {
-                  window.location.href = '/admin_contest/' + [[${problem.contest.id}]];
+                  window.location.href = '/admin_contest/' + contestId;
                 } else {
                   alert('Failed to delete the problem.');
                 }
+              })
+              .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while deleting the problem.');
               });
     }
   }
@@ -250,8 +210,8 @@
       });
     });
 
-    let caseCount = [[${problem.testCases.size()}]];
-    let gradingCaseCount = [[${problem.gradingTestCases.size()}]];
+    let caseCount = /*[[${problem.testCases.size()}]]*/ 0;
+    let gradingCaseCount = /*[[${problem.gradingTestCases.size()}]]*/ 0;
 
     document.getElementById('addCaseBtn').addEventListener('click', function () {
       caseCount++;
@@ -264,7 +224,10 @@
         <div class="col-md-5">
           <textarea class="form-control" name="outputs[]" placeholder="Output case"></textarea>
         </div>
-        <div class="col-md-2 text-center">
+        <div class="col-md-1">
+          <input type="checkbox" name="isHidden[]" class="form-check-input"> Hidden
+        </div>
+        <div class="col-md-1 text-center">
           <button type="button" class="delete-btn" onclick="removeTestCase(this)"><i class="fas fa-trash-alt"></i></button>
         </div>
       `;
@@ -282,7 +245,10 @@
         <div class="col-md-5">
           <textarea class="form-control" name="gradingOutputs[]" placeholder="Output case"></textarea>
         </div>
-        <div class="col-md-2 text-center">
+        <div class="col-md-1">
+          <input type="checkbox" name="isHidden[]" class="form-check-input"> Hidden
+        </div>
+        <div class="col-md-1 text-center">
           <button type="button" class="delete-btn" onclick="removeTestCase(this)"><i class="fas fa-trash-alt"></i></button>
         </div>
       `;

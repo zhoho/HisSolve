@@ -134,6 +134,9 @@ public class ContestController {
 
         // 유저별 문제 점수 데이터를 가져옴
         Map<Long, List<Integer>> userProblemScores = contestService.getUserProblemScores(contestId);
+        Map<Long, List<Integer>> testCasesPassed = contestService.getUserTestCasesPassed(contestId);
+        Map<Long, List<Boolean>> problemSolvedStatus = contestService.getUserProblemSolvedStatus(contestId);
+        Map<Long, List<String>> submissionTimes = contestService.getUserSubmissionTimes(contestId);
 
         // 문제의 최대 개수를 동적으로 계산
         int maxProblems = userProblemScores.values().stream()
@@ -144,8 +147,12 @@ public class ContestController {
         try (Workbook workbook = new XSSFWorkbook()) {
             Sheet sheet = workbook.createSheet("Users");
 
+            // Contest Name at the top of the sheet
+            Row contestNameRow = sheet.createRow(0);
+            contestNameRow.createCell(0).setCellValue("Contest Name: " + contest.getName());
+
             // Header
-            Row headerRow = sheet.createRow(0);
+            Row headerRow = sheet.createRow(1);
             headerRow.createCell(0).setCellValue("Serial No.");
             headerRow.createCell(1).setCellValue("Name");
             headerRow.createCell(2).setCellValue("Email");
@@ -153,28 +160,38 @@ public class ContestController {
             // 문제 세부 정보 헤더 추가 (예: 문제 1, 문제 2, ... 문제 N)
             for (int i = 1; i <= maxProblems; i++) {
                 headerRow.createCell(2 + i).setCellValue("문제 " + i);
+                headerRow.createCell(2 + maxProblems + i).setCellValue("통과한 테스트케이스 수 (문제 " + i + ")");
+                headerRow.createCell(2 + maxProblems * 2 + i).setCellValue("문제 해결 여부 (문제 " + i + ")");
+                headerRow.createCell(2 + maxProblems * 3 + i).setCellValue("제출 시간 (문제 " + i + ")");
             }
 
-            headerRow.createCell(3 + maxProblems).setCellValue("Total Score");
+            headerRow.createCell(3 + maxProblems * 4).setCellValue("Total Score");
 
             // Body
-            int rowNum = 1;
+            int rowNum = 2;
             for (User user : users) {
                 Row row = sheet.createRow(rowNum);
-                row.createCell(0).setCellValue(rowNum); // 일련번호
+                row.createCell(0).setCellValue(rowNum - 1); // 일련번호
                 row.createCell(1).setCellValue(user.getUsername());
                 row.createCell(2).setCellValue(user.getEmail());
 
                 // 유저의 각 문제 점수 가져오기
                 List<Integer> scores = userProblemScores.get(user.getId());
+                List<Integer> testCases = testCasesPassed.get(user.getId());
+                List<Boolean> solved = problemSolvedStatus.get(user.getId());
+                List<String> submissionTime = submissionTimes.get(user.getId());
+
                 if (scores != null) {
                     for (int i = 0; i < scores.size(); i++) {
                         row.createCell(3 + i).setCellValue(scores.get(i)); // 점수 저장
+                        row.createCell(3 + maxProblems + i).setCellValue(testCases.get(i)); // 통과한 테스트케이스 수
+                        row.createCell(3 + maxProblems * 2 + i).setCellValue(solved.get(i) ? "해결" : "미해결"); // 문제 해결 여부
+                        row.createCell(3 + maxProblems * 3 + i).setCellValue(submissionTime.get(i)); // 제출 시간
                     }
                 }
 
                 int totalScore = contestService.getTotalScoreByUserAndContest(user.getId(), contestId);
-                row.createCell(3 + maxProblems).setCellValue(totalScore);
+                row.createCell(3 + maxProblems * 4).setCellValue(totalScore);
 
                 rowNum++;
             }
@@ -199,6 +216,7 @@ public class ContestController {
             throw new RuntimeException("Failed to export data to Excel file", e);
         }
     }
+
 
     @GetMapping("/contest/search")
     @ResponseBody
