@@ -14,9 +14,9 @@ services:
       context: .
       dockerfile: Dockerfile
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://walab.handong.edu:3306/p231_21900766?serverTimezone=UTC
-      SPRING_DATASOURCE_USERNAME: p231_21900766
-      SPRING_DATASOURCE_PASSWORD: kioG7u
+      SPRING_DATASOURCE_URL: jdbc:mysql://walab.handong.edu:3306/hissolve?serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: hissolve
+      SPRING_DATASOURCE_PASSWORD: EMsORysrjxLwTHUE
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock

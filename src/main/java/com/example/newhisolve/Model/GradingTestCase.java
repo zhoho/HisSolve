@@ -1,8 +1,8 @@
 package com.example.newhisolve.Model;
 
-import jakarta.persistence.Embeddable;
 import lombok.Getter;
 import lombok.Setter;
+import javax.persistence.Embeddable;
 
 @Getter
 @Setter

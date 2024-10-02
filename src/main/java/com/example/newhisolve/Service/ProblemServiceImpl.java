@@ -2,10 +2,10 @@ package com.example.newhisolve.Service;
 
 import com.example.newhisolve.Model.*;
 import com.example.newhisolve.Repository.*;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -76,19 +76,33 @@ public class ProblemServiceImpl implements ProblemService {
         problemRepository.deleteById(id);
     }
 
-    @Override
     @Transactional
+    @Override
     public void updateProblem(Problem problem, Long contestId) {
-        Problem existingProblem = problemRepository.findById(problem.getId()).orElseThrow();
+        // 기존 문제를 조회, 존재하지 않으면 예외 발생
+        Problem existingProblem = problemRepository.findById(problem.getId())
+                .orElseThrow(() -> new RuntimeException("Problem not found with id: " + problem.getId()));
+
+        // 컨테스트 ID가 주어졌다면 해당 문제의 컨테스트를 업데이트
+        if (contestId != null) {
+            Contest contest = contestRepository.findById(contestId)
+                    .orElseThrow(() -> new RuntimeException("Contest not found with id: " + contestId));
+            existingProblem.setContest(contest);
+        }
+
+        // 문제의 필드들을 업데이트
         existingProblem.setTitle(problem.getTitle());
         existingProblem.setDueDate(problem.getDueDate());
         existingProblem.setDescription(problem.getDescription());
         existingProblem.setTestCases(problem.getTestCases());
-        existingProblem.setLastModifiedDate(problem.getLastModifiedDate());
         existingProblem.setGradingTestcaseCount(problem.getGradingTestcaseCount());
         existingProblem.setGradingTestCases(problem.getGradingTestCases());
-        existingProblem.setLastModifiedDate(problem.getLastModifiedDate());
 
+        // 마지막 수정 날짜 업데이트
+        existingProblem.setLastModifiedDate(LocalDateTime.now());
+
+        // 업데이트된 문제를 저장
         problemRepository.save(existingProblem);
     }
+
 }

@@ -1,7 +1,6 @@
 package com.example.newhisolve.Config;
 
 import com.example.newhisolve.Service.UserServiceImpl;
-import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,6 +11,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.context.request.RequestContextListener;
+
+import javax.annotation.PostConstruct;
 
 @Configuration
 @EnableWebSecurity
@@ -30,9 +31,9 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .authorizeHttpRequests(authorizeRequests ->
+                .authorizeRequests(authorizeRequests ->
                         authorizeRequests
-                                .requestMatchers("/","/register", "/adminLogin", "/login", "/auth/**", "/api/compile", "/img/**", "/css/**", "/js/**").permitAll()
+                                .antMatchers("/", "/register", "/adminLogin", "/login", "/auth/**", "/api/compile", "/img/**", "/css/**", "/js/**").permitAll() // antMatchers로 변경
                                 .anyRequest().authenticated()
                 )
                 .formLogin(formLogin ->
@@ -48,7 +49,7 @@ public class SecurityConfig {
                                 .logoutSuccessUrl("/welcome")
                                 .permitAll()
                 )
-                .csrf(csrf -> csrf.disable());
+                .csrf().disable();
 
         return http.build();
     }

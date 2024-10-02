@@ -1,12 +1,21 @@
 plugins {
-    id 'org.springframework.boot' version '3.3.1'
+    id 'org.springframework.boot' version '2.7.13'
     id 'io.spring.dependency-management' version '1.0.14.RELEASE'
     id 'java'
+    id 'war'
 }
+
+war {
+    manifest {
+        attributes 'Main-Class': 'com.example.newhisolve.NewHisolveApplication'
+    }
+}
+
 
 group = 'com.example'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '17'
+sourceCompatibility = '1.8'
+targetCompatibility = '1.8'
 
 repositories {
     mavenCentral()
@@ -23,13 +32,16 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 
     // MySQL Connector
-    implementation 'mysql:mysql-connector-java'
+    implementation 'mysql:mysql-connector-java:8.0.27'
 
     // Spring Boot Starter Security
     implementation 'org.springframework.boot:spring-boot-starter-security'
-    implementation 'junit:junit:3.8.2'
 
-    // Spring Boot Starter Test
+    // JUnit 5 (JUnit Jupiter)
+    testImplementation 'org.junit.jupiter:junit-jupiter-api'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+
+    // Spring Boot Starter Test (JUnit 5 포함)
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
     // Spring Security Test
@@ -38,16 +50,14 @@ dependencies {
     // BCrypt Password Encoder
     implementation 'org.springframework.security:spring-security-crypto'
 
-    implementation 'mysql:mysql-connector-java:8.0.27'
-
-
     // Lombok
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
 
-    // Swagger
-    implementation 'io.springfox:springfox-boot-starter:3.0.0'
+    // SpringDoc OpenAPI (Swagger 대체)
+    implementation 'org.springdoc:springdoc-openapi-ui:1.6.14'
 
+    // Apache POI for Excel handling
     implementation 'org.apache.poi:poi-ooxml:5.2.2'
 }
 

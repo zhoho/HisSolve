@@ -36,7 +36,7 @@ public class HisnetLoginService {
         UriComponents uri = UriComponentsBuilder.fromHttpUrl(url).build();
 
         try {
-            ParameterizedTypeReference<Map<String, Object>> typeRef = new ParameterizedTypeReference<>() {};
+            ParameterizedTypeReference<Map<String, Object>> typeRef = new ParameterizedTypeReference<Map<String, Object>>() {};
             ResponseEntity<Map<String, Object>> resultMap = restTemplate.exchange(uri.toString(), HttpMethod.POST, entity, typeRef);
             Map<String, Object> result = resultMap.getBody();
             if (result == null) {
@@ -66,7 +66,7 @@ public class HisnetLoginService {
         } catch (HttpStatusCodeException e) {
             Map<String, Object> result = new HashMap<>();
             try {
-                result = new ObjectMapper().readValue(e.getResponseBodyAsString(), new TypeReference<>() {});
+                result = new ObjectMapper().readValue(e.getResponseBodyAsString(), new TypeReference<Map<String, Object>>() {});
             } catch (Exception ex) {
                 throw new IllegalArgumentException("Hisnet login failed");
             }

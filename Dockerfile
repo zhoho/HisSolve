@@ -10,10 +10,10 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy the current directory contents into the container at /app
-COPY build/libs/NewHisolve-0.0.1-SNAPSHOT.jar /app/app.jar
+COPY build/libs/NewHisolve-0.0.1-SNAPSHOT.war /app/app.war
 
 # Make port 8080 available to the world outside this container
 EXPOSE 8080
 
 # Run the jar file
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-jar", "app.war"]

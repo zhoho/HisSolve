@@ -185,7 +185,7 @@ public class ContestController {
             byte[] bytes = out.toByteArray();
 
             // 파일 이름에 contest.name과 오늘 날짜를 포함
-            String fileName = URLEncoder.encode(contest.getName() + "_" + LocalDate.now() + ".xlsx", StandardCharsets.UTF_8);
+            String fileName = URLEncoder.encode(contest.getName() + "_" + LocalDate.now() + ".xlsx", StandardCharsets.UTF_8.name());
             fileName = fileName.replaceAll("\\+", "%20"); // 공백을 %20으로 변경
 
             HttpHeaders headers = new HttpHeaders();

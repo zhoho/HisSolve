@@ -7,6 +7,8 @@ import com.example.newhisolve.Service.CompilerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -43,7 +45,9 @@ public class CompilerController {
     @PostMapping("/run")
     public Map<String, String> runCode(@RequestBody CompileRequest request) {
         String output = compilerService.runCode(request.getCode(), request.getLanguage());
-        return Map.of("output", output);
+        Map<String, String> resultMap = new HashMap<>();
+        resultMap.put("output", output);
+        return resultMap;
     }
 
     @PostMapping("/runWithInput")
@@ -52,6 +56,8 @@ public class CompilerController {
         String language = (String) request.get("language");
         List<String> inputs = (List<String>) request.get("inputs");
         String output = compilerService.runCodeWithInput(code, language, inputs);
-        return Map.of("output", output);
+        Map<String, String> resultMap = new HashMap<>();
+        resultMap.put("output", output);
+        return resultMap;
     }
 }

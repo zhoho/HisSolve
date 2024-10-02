@@ -3,8 +3,8 @@ package com.example.newhisolve.Service;
 import com.example.newhisolve.Model.Problem;
 import com.example.newhisolve.Model.GradingTestCase;
 import com.example.newhisolve.Model.TestCase;
-import jakarta.transaction.Transactional;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 public interface ProblemService {

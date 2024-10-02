@@ -4,7 +4,6 @@ import com.example.newhisolve.Model.User;
 import com.example.newhisolve.Service.UserService;
 import com.example.newhisolve.auth.Service.AuthService;
 import com.example.newhisolve.auth.Service.HisnetLoginService;
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import javax.servlet.http.HttpSession;
 
 @Controller
 @RequiredArgsConstructor
