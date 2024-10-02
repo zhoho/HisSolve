@@ -72,6 +72,7 @@ public class SubmissonServiceImpl implements SubmissionService {
         // 각 테스트케이스당 점수 계산
         int scorePerTestCase = 100 / totalTestCases;
         int totalScore = passCount * scorePerTestCase;
+        submission.setPass_count(String.valueOf(passCount));
         submission.setScore(totalScore);
 
         // 모든 테스트케이스를 통과했는지 확인

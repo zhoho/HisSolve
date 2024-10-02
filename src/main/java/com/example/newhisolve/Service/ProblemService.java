@@ -26,4 +26,6 @@ public interface ProblemService {
     // 문제 업데이트
     @Transactional
     void updateProblem(Problem problem, Long contestId);
+
+    int getProblemCountById(Long id);
 }

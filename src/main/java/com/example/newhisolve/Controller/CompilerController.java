@@ -1,5 +1,6 @@
 package com.example.newhisolve.Controller;
 
+import com.example.newhisolve.Model.GradingTestCase;
 import com.example.newhisolve.Request.CompileRequest;
 import com.example.newhisolve.Model.TestCase;
 import com.example.newhisolve.Service.ProblemService;
@@ -32,6 +33,17 @@ public class CompilerController {
 
         // 코드 컴파일 및 실행
         List<Map<String, String>> output = compilerService.compileAndRun(problemId, request.getCode(), request.getLanguage(), testCases);
+        return ResponseEntity.ok(output);
+    }
+
+    @PostMapping("/submitWithHidden")
+    public ResponseEntity<List<Map<String, String>>> gradingCompileCode(@RequestBody CompileRequest request) {
+        Long problemId = request.getProblemId();
+        if (problemId == null) {
+            throw new IllegalArgumentException("The given id must not be null");
+        }
+        List<TestCase> gradingTestCases = problemService.getTestCasesForProblem(problemId);
+        List<Map<String, String>> output = compilerService.gradingCompileAndRun(problemId, request.getCode(), request.getLanguage(), gradingTestCases);
         return ResponseEntity.ok(output);
     }
 

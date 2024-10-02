@@ -13,7 +13,7 @@ public interface CompilerService {
 
     List<Map<String, String>> compileAndRun(Long assignmentId, String code, String language, List<TestCase> testCases);
 
-    List<Map<String, String>> gradingCompileAndRun(Long assignmentId, String code, String language, List<GradingTestCase> gradingTestCases);
+    List<Map<String, String>> gradingCompileAndRun(Long assignmentId, String code, String language, List<TestCase> testCases);
 
     String runCode(String code, String language);
 

@@ -712,12 +712,41 @@
 
             const data = await response.json();
 
-            passCount = data.passCount;
-            totalTestCases = data.totalTestCases;
-            gradingPassCount = data.gradingPassCount;
-            totalGradingTestCases = data.totalGradingTestCases;
+            console.log(data);
 
-            alert(`총 통과: ${passCount}/${totalTestCases}, 히든 통과: ${gradingPassCount}/${totalGradingTestCases}`);
+            passCount = data.filter(result => result.status === '통과').length;
+            totalTestCases = data.length;
+            // passCount = data.passCount;
+            // totalTestCases = data.totalTestCases;
+            // gradingPassCount = data.gradingPassCount;
+            // totalGradingTestCases = data.totalGradingTestCases;
+            // alert(`총 통과: ${passCount}/${totalTestCases}, 히든 통과: ${gradingPassCount}/${totalGradingTestCases}`);
+        } catch (error) {
+            console.error('Error submitting code:', error);
+            alert('제출 실패!\n' + error.message);
+        }
+        try {
+            const response = await fetch('/api/submit', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    problemId: problemId,
+                    userId: userId,
+                    code: code,
+                    language: language,
+                    passCount: passCount,
+                    totalScore: passCount * 100 / totalTestCases, // 총점 계산
+                })
+            });
+
+            if (!response.ok) {
+                const text = await response.text();
+                throw new Error(text);
+            }
+
+            showModal('제출 성공!', '확인', function() {
+                location.reload();
+            });
         } catch (error) {
             console.error('Error submitting code:', error);
             alert('제출 실패!\n' + error.message);
@@ -819,7 +848,7 @@
 
         let totalCount;
         try {
-            const response = await fetch(`/api/gradingTestcaseCount?problemId=${problemId}`);
+            const response = await fetch(`/api/TestcaseCount?problemId=${problemId}`);
             if (!response.ok) {
                 throw new Error('Failed to fetch total grading test case count');
             }

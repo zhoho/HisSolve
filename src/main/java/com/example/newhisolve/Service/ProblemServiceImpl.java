@@ -90,4 +90,9 @@ public class ProblemServiceImpl implements ProblemService {
 
         problemRepository.save(existingProblem); // 변경사항 저장
     }
+
+    @Override
+    public int getProblemCountById(Long id) {
+        return problemRepository.findTestcaseCountById(id);
+    }
 }

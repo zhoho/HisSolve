@@ -1,6 +1,7 @@
 package com.example.newhisolve.Controller;
 
 import com.example.newhisolve.Model.TestCase;
+import com.example.newhisolve.Service.ProblemService;
 import com.example.newhisolve.Service.SubmissionService;
 import com.example.newhisolve.dto.SubmissionDTO;
 import com.example.newhisolve.Model.Submission;
@@ -21,6 +22,7 @@ import java.util.Optional;
 public class SubmissionController {
 
     private final SubmissionService submissionService;
+    private final ProblemService problemService;
 
     // 코드 저장
     @PostMapping("/saveCode")
@@ -54,28 +56,20 @@ public class SubmissionController {
         }
     }
 
+    @GetMapping("/TestcaseCount")
+    @ResponseBody
+    public int TestcaseCount(@RequestParam("problemId") Long id) {
+        return problemService.getProblemCountById(id);
+    }
+
     // 코드 제출 및 채점
     @PostMapping("/submit")
     public ResponseEntity<?> submit(@RequestBody SubmissionDTO submissionDTO) {
-        try {
-            // 문제의 모든 테스트케이스 가져오기 (히든 포함)
-            List<TestCase> allTestCases = submissionService.getTestCases(submissionDTO.getProblemId());
+        int passCount = Integer.parseInt(submissionDTO.getPassCount());
+        List<TestCase> allTestCases = submissionService.getTestCases(submissionDTO.getProblemId());
+        int totalTestCases = allTestCases.size(); // 전체 테스트케이스 개수
 
-            int passCount = 0; // 통과한 테스트케이스 개수
-            int totalTestCases = allTestCases.size(); // 전체 테스트케이스 개수
-
-            // 각 테스트케이스에 대해 코드 실행 및 채점
-            for (TestCase testCase : allTestCases) {
-                String result = submissionService.executeCode(
-                        submissionDTO.getCode(),
-                        testCase.getInput(),
-                        submissionDTO.getLanguage()
-                );
-                if (testCase.getExpectedOutput().equals(result)) {
-                    passCount++;
-                }
-            }
-
+            submissionDTO.setPassCount(String.valueOf(passCount));
             // 제출 결과 저장
             Submission savedSubmission = submissionService.saveSubmission(submissionDTO);
 
@@ -87,13 +81,5 @@ public class SubmissionController {
             response.put("message", "Submission successful!");
 
             return ResponseEntity.ok(response);
-        } catch (Exception e) {
-            e.printStackTrace();
-            Map<String, Object> errorResponse = new HashMap<>();
-            errorResponse.put("error", e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
         }
-    }
-
-    // `getGradingTestcaseCount` 메서드 삭제
 }

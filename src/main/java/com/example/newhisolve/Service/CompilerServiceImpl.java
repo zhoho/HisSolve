@@ -78,7 +78,7 @@ public class CompilerServiceImpl implements CompilerService {
     }
 
     @Override
-    public List<Map<String, String>> gradingCompileAndRun(Long assignmentId, String code, String language, List<GradingTestCase> gradingTestCases) {
+    public List<Map<String, String>> gradingCompileAndRun(Long assignmentId, String code, String language, List<TestCase> gradingTestCases) {
         List<Map<String, String>> results = new ArrayList<>();
         try {
             File tempDir = new File("tempDir");
@@ -97,7 +97,7 @@ public class CompilerServiceImpl implements CompilerService {
             String command = getDockerCommand(language, fileName + fileExtension, tempDir.getAbsolutePath());
 
             int testCount = 0;
-            for (GradingTestCase gradingTestCase : gradingTestCases) {
+            for (TestCase gradingTestCase : gradingTestCases) {
                 testCount++;
                 System.out.println("Executing command: " + command);
 
