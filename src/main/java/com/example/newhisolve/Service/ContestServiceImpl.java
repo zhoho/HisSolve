@@ -247,4 +247,10 @@ public class ContestServiceImpl implements ContestService {
 
         return userSubmissionTimesMap;
     }
+    @Override
+    public long getParticipantCount(Long contestId) {
+        return contestRepository.findById(contestId)
+                .map(contest -> contest.getUsers().size())
+                .orElse(0);
+    }
 }

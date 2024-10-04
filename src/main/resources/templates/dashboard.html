@@ -238,6 +238,7 @@
                         <h5 class="card-title" th:text="${contest.name}"></h5>
                         <p class="card-text" th:text="${contest.description}">Description</p>
                         <p class="card-text text-black" th:text="${contest.duration}"></p> <!-- 대회 기간 추가 -->
+                        <p class="card-text">참여자 수: <span th:text="${participantCounts[contest.id]}"></span></p>
                     </div>
                 </div>
             </a>
@@ -253,6 +254,7 @@
                         <h5 class="card-title" th:text="${contest.name}"></h5>
                         <p class="card-text" th:text="${contest.description}">Description</p>
                         <p class="card-text text-black" th:text="${contest.duration}"></p> <!-- 대회 기간 추가 -->
+                        <p class="card-text text-black">참여자 수: <span th:text="${participantCounts[contest.id]}"></span></p>
                     </div>
                 </div>
             </a>

@@ -10,7 +10,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -39,12 +41,15 @@ public class DashboardController {
         model.addAttribute("user", user);
         model.addAttribute("contests", contests);
 
-        // 대회 상태 추가
-        contests.forEach(contest -> {
-            String status = contest.getStatus();
-            model.addAttribute("contestStatus_" + contest.getId(), status); // 각 대회 상태 추가
-        });
+        // 대회 상태 및 참여자 수를 Map에 추가
+        Map<Long, Long> participantCounts = new HashMap<>();
+        for (Contest contest : contests) {
+            long participantCount = contestService.getParticipantCount(contest.getId());
+            participantCounts.put(contest.getId(), participantCount);
+        }
+        model.addAttribute("participantCounts", participantCounts); // 모델에 참여자 수 추가
 
         return "dashboard";
     }
+
 }

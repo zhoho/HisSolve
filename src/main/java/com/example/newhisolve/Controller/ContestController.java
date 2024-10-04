@@ -230,4 +230,5 @@ public class ContestController {
         return contestService.searchContestsByName(searchQuery);
     }
 
+
 }
