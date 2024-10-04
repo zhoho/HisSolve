@@ -149,7 +149,7 @@ public class SecurityConfig {
                 System.out.println("로그아웃한 사용자: " + authentication.getName());
                 userServiceImpl.updateUserActiveStatus(authentication.getName(), false);  // active 상태 비활성화
             }
-            response.sendRedirect("/welcome"); // 로그아웃 후 리다이렉트 경로를 /welcome으로 설정
+            response.sendRedirect("/"); // 로그아웃 후 리다이렉트 경로를 /welcome으로 설정
         };
     }
 
