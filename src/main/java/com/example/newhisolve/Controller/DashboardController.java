@@ -38,6 +38,13 @@ public class DashboardController {
         List<Contest> contests = contestService.findByUser(user);
         model.addAttribute("user", user);
         model.addAttribute("contests", contests);
+
+        // 대회 상태 추가
+        contests.forEach(contest -> {
+            String status = contest.getStatus();
+            model.addAttribute("contestStatus_" + contest.getId(), status); // 각 대회 상태 추가
+        });
+
         return "dashboard";
     }
 }

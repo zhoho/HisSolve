@@ -71,4 +71,8 @@ public class Contest {
             return "진행 중";
         }
     }
+
+    public String getDuration() {
+        return startDate.toLocalDate() + " ~ " + dueDate.toLocalDate();
+    }
 }
