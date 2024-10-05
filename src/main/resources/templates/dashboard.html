@@ -56,44 +56,54 @@
         .card {
             position: relative;
             transition: transform 0.2s ease, box-shadow 0.2s ease;
-            min-height: 200px;
+            min-height: 250px; /* 카드 높이 조정 */
+            margin-bottom: 20px; /* 카드 간격 조정 */
+            text-align: center; /* 카드 내용 가운데 정렬 */
         }
         .card:hover {
             transform: translateY(-10px);
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
         }
-        .card-icon {
-            font-size: 3rem;
-            color: #37517e;
-        }
-        .text-primary {
-            color: #37517e !important;
-        }
-        .card-body {
-            display: flex;
-            align-items: center;
-        }
-        .card-image {
-            flex: 1;
-            font-size: 3rem;
-            margin-right: 20px;
-        }
         .card-content {
-            flex: 2;
+            padding: 15px;
         }
         .card-title {
             font-size: 1.5rem;
             color: #37517e;
-            white-space: normal;
-            overflow: visible;
+            margin-bottom: 10px;
         }
-
         .card-text {
             font-size: 1rem;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            max-width: 250px;
+            color: gray; /* 설명 텍스트 색상 */
+            margin-bottom: 5px; /* 설명과 상태 간격 조정 */
+        }
+        .contest-status {
+            font-size: 1.1rem;
+            font-weight: bold;
+            padding: 5px; /* 패딩 조정 */
+            /*border-radius: 50%; !* 동그랗게 만들기 위해 border-radius 사용 *!*/
+            display: inline-block; /* 텍스트 크기만큼만 채우기 위해 inline-block 사용 */
+            position: absolute; /* 절대 위치 지정 */
+            top: 10px; /* 카드 상단에서의 위치 조정 */
+            left: 10px; /* 카드 왼쪽에서의 위치 조정 */
+            /*height: auto; !* 동그란 모양을 위해 높이 설정 *!*/
+            /*width: auto; !* 동그란 모양을 위해 너비 설정 *!*/
+            text-align: center; /* 텍스트 가운데 정렬 */
+        }
+        .진행중 {
+            background-color: #d4edda; /* 진행 중 상태 색상 (초록색) */
+            color: #155724;
+            width:75px;
+        }
+        .종료됨 {
+            background-color: #f8d7da; /* 종료됨 상태 색상 (빨간색) */
+            color: #721c24;
+            width:60px;
+        }
+        .진행예정 {
+            background-color: #fff3cd; /* 진행 예정 상태 색상 (회색) */
+            color: #856404;
+            width:85px;
         }
 
         /* 컨테스트 코드 입력란과 검색 입력란을 같은 라인에 배치 */
@@ -162,16 +172,9 @@
         .autocomplete-item:hover {
             background-color: #f0f0f0;
         }
-        .text-info {
-            color: blue;
-        }
 
-        .text-danger {
-            color: red;
-        }
-
-        .text-success {
-            color: green;
+        .text-black {
+            color: black;
         }
 
     </style>
@@ -224,45 +227,48 @@
     </div>
     <div class="row" id="contestCards">
         <div class="col-lg-6 col-sm-12 my-3" th:if="${user.role == 'USER'}" th:each="contest : ${contests}">
-            <div class="card shadow-sm p-3">
-                <div class="card-body">
-                    <div class="card-image">
-                        <i class="fas fa-chalkboard-teacher card-icon"></i>
-                    </div>
+            <a th:href="@{/contest/{id}(id=${contest.id})}"
+               style="text-decoration: none; color: inherit;"
+               onclick="return handleContestClick('USER', '${contest.status}');"> <!-- 클릭 이벤트 추가 -->
+                <div class="card shadow-sm p-3">
                     <div class="card-content">
-                        <h5 class="card-title">
-                            <a th:href="@{/contest/{id}(id=${contest.id})}" class="text-primary" th:text="${contest.name}"></a>
-                        </h5>
-                        <p class="card-text text-muted" th:text="${contest.description}">Description</p>
-                    </div>
-                    <!-- 팝업으로 이름과 설명 표시 -->
-                    <div class="popup">
-                        <div class="popup-title" th:text="${contest.name}"></div>
-                        <div class="popup-description" th:text="${contest.description}"></div>
+                        <div class="contest-status"
+                             th:class="${contest.status == '진행 중' ? '진행중' : (contest.status == '종료됨' ? '종료됨' : '진행예정')}"
+                             th:text="${contest.status}"></div> <!-- 대회 상태 표시 추가 -->
+                        <h5 class="card-title" th:text="${contest.name}"></h5>
+                        <p class="card-text" th:text="${contest.description}">Description</p>
+                        <p class="card-text text-black" th:text="${contest.duration}"></p> <!-- 대회 기간 추가 -->
+                        <p class="card-text">참여자 수: <span th:text="${participantCounts[contest.id]}"></span></p>
                     </div>
                 </div>
-            </div>
+            </a>
         </div>
+
         <div class="col-lg-6 col-sm-12 my-3" th:if="${user.role == 'ADMIN'}" th:each="contest : ${contests}">
-            <div class="card shadow-sm p-3">
-                <div class="card-body">
-                    <div class="card-image">
-                        <i class="fas fa-chalkboard-teacher card-icon"></i>
-                    </div>
+            <a th:href="@{/admin_contest/{id}(id=${contest.id})}" style="text-decoration: none; color: inherit;"> <!-- admin은 모든 클릭 허용 -->
+                <div class="card shadow-sm p-3">
                     <div class="card-content">
-                        <h5 class="card-title">
-                            <a th:href="@{/admin_contest/{id}(id=${contest.id})}" class="text-primary" th:text="${contest.name}" style="color: #37517e;"></a>
-                        </h5>
-                        <p class="card-text text-muted" th:text="${contest.description}">Description</p>
-                    </div>
-                    <!-- 팝업으로 이름과 설명 표시 -->
-                    <div class="popup">
-                        <div class="popup-title" th:text="${contest.name}"></div>
-                        <div class="popup-description" th:text="${contest.description}"></div>
+                        <div class="contest-status"
+                             th:class="${contest.status == '진행 중' ? '진행중' : (contest.status == '종료됨' ? '종료됨' : '진행예정')}"
+                             th:text="${contest.status}"></div> <!-- 대회 상태 표시 추가 -->
+                        <h5 class="card-title" th:text="${contest.name}"></h5>
+                        <p class="card-text" th:text="${contest.description}">Description</p>
+                        <p class="card-text text-black" th:text="${contest.duration}"></p> <!-- 대회 기간 추가 -->
+                        <p class="card-text text-black">참여자 수: <span th:text="${participantCounts[contest.id]}"></span></p>
                     </div>
                 </div>
-            </div>
+            </a>
         </div>
+
+        <script>
+            function handleContestClick(role, status) {
+                if (role === 'USER' && status !== '진행 중') {
+                    alert("대회가 진행 중이지 않으므로 이동할 수 없습니다."); // 사용자에게 알림
+                    return false; // 클릭을 차단
+                }
+                return true; // 클릭 허용
+            }
+        </script>
     </div>
 </div>
 
@@ -281,19 +287,15 @@
         // 자동완성 목록 숨기기
         document.getElementById('autocompleteResults').innerHTML = '';
 
-        // 설치 버튼 색상 복원
-        const installButton = document.querySelector('.btn-primary');
-        installButton.style.backgroundColor = '#47b2e4'; // 원래 색상으로 변경
-        installButton.style.color = '#fff'; // 글자 색상도 원래대로
-
         // AJAX 요청
         fetch(`/contest/search?searchQuery=${encodeURIComponent(searchQuery)}`)
-            .then(response => response.json())  // JSON 형식으로 데이터를 받아옴
+            .then(response => response.json())
             .then(data => {
+                console.log(data);  // 추가된 부분
                 const searchResultsDiv = document.getElementById('searchResults');
                 const contestCardsDiv = document.getElementById('contestCards');
                 searchResultsDiv.innerHTML = '';
-                contestCardsDiv.style.display = 'none'; // 원래 카드 숨기기
+                contestCardsDiv.style.display = 'none';
 
                 // 검색 결과를 동적으로 생성
                 if (data.length === 0) {
@@ -301,27 +303,28 @@
                 } else {
                     data.forEach(contest => {
                         const contestCard = `
-                        <div class="col-lg-6 col-sm-12 my-3">
-                            <div class="card shadow-sm p-3">
-                                <div class="card-body">
-                                    <div class="card-image">
-                                        <i class="fas fa-chalkboard-teacher card-icon"></i>
-                                    </div>
-                                    <div class="card-content">
-                                        <h5 class="card-title">
-                                            <a href="/contest/${contest.id}" class="text-primary">${contest.name}</a>
-                                        </h5>
-                                        <p class="card-text text-muted">${contest.description}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    `;
+                <div class="col-lg-6 col-sm-12 my-3">
+    <div class="card shadow-sm p-3">
+        <a href="/contest/${contest.id}" style="text-decoration: none; color: inherit;"> <!-- 클릭 시 링크 이동 -->
+            <div class="card-content">
+               <div class="contest-status ${contest.status === '진행 중' ? '진행중' : (contest.status === '종료됨' ? '종료됨' : '진행예정')}">
+                    ${contest.status}
+                </div>
+                <h5 class="card-title">${contest.name}</h5>
+                <p class="card-text">${contest.description}</p>
+                <p class="card-text text-black">기간: <span>${contest.duration}</span></p> <!-- 기간 추가 -->
+                <p class="card-text text-black">참여자 수: <span>${contest.participantCount}</span></p> <!-- 참여자 수 추가 -->
+            </div>
+        </a>
+    </div>
+</div>
+
+                `;
                         searchResultsDiv.innerHTML += contestCard;
                     });
                 }
 
-                document.getElementById('backButtonContainer').style.display = 'block'; // 뒤로 가기 버튼 표시
+                document.getElementById('backButtonContainer').style.display = 'block';
             })
             .catch(error => console.error('Error:', error));
     });
@@ -371,7 +374,6 @@
                 .catch(error => console.error('Error:', error));
         }
     });
-
 </script>
 
 </body>

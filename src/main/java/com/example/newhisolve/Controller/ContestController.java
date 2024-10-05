@@ -19,6 +19,7 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.security.Principal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -220,14 +221,31 @@ public class ContestController {
 
     @GetMapping("/contest/search")
     @ResponseBody
-    public List<Contest> searchContests(@RequestParam("searchQuery") String searchQuery) {
-        return contestService.searchContestsByName(searchQuery);
+    public List<Map<String, Object>> searchContests(@RequestParam("searchQuery") String searchQuery) {
+        List<Contest> contests = contestService.searchContestsByName(searchQuery);
+
+        // 각 Contest 정보를 맵에 담아 응답에 포함
+        List<Map<String, Object>> contestResponse = new ArrayList<>();
+        for (Contest contest : contests) {
+            Map<String, Object> contestData = new HashMap<>();
+            contestData.put("id", contest.getId());
+            contestData.put("name", contest.getName());
+            contestData.put("description", contest.getDescription());
+            contestData.put("status", contest.getStatus());
+            contestData.put("participantCount", contest.getParticipantCount()); // 참여자 수 추가
+            contestData.put("duration", contest.getDuration()); // 기간 추가
+            contestResponse.add(contestData);
+        }
+
+        return contestResponse; // 수정된 대회 리스트 반환
     }
+
 
     @GetMapping("/contest/autocomplete")
     @ResponseBody
     public List<Contest> autocompleteContests(@RequestParam("searchQuery") String searchQuery) {
         return contestService.searchContestsByName(searchQuery);
     }
+
 
 }

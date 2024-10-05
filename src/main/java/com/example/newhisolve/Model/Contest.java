@@ -49,7 +49,7 @@ public class Contest {
     public Contest() {
     }
 
-    // 필드들을 초기화하는 생성자, 필요한 경우 추가 가능
+    // 필드들을 초기화하는 생성자
     public Contest(String name, String code, String language, String description, String problemCount, User admin, LocalDateTime startDate, LocalDateTime dueDate) {
         this.name = name;
         this.code = code;
@@ -70,5 +70,14 @@ public class Contest {
         } else {
             return "진행 중";
         }
+    }
+
+    public String getDuration() {
+        return startDate.toLocalDate() + " ~ " + dueDate.toLocalDate();
+    }
+
+    // 참여자 수를 반환하는 메서드 추가
+    public long getParticipantCount() {
+        return users.size(); // 참여자 수 계산
     }
 }
