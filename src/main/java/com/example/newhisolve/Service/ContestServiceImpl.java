@@ -60,6 +60,7 @@ public class ContestServiceImpl implements ContestService {
         Contest existingContest = contestRepository.findById(contest.getId())
                 .orElseThrow(() -> new RuntimeException("Contest not found"));
         existingContest.setName(contest.getName());
+        existingContest.setCode(contest.getCode());
         existingContest.setDescription(contest.getDescription());
         contestRepository.save(existingContest);
     }

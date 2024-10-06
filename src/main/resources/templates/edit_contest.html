@@ -54,6 +54,10 @@
                 <input type="text" class="form-control" id="contestName" name="name" th:value="${contest.name}" required>
             </div>
             <div class="form-group">
+                <label for="contestCode">Contest code</label>
+                <input type="text" class="form-control" id="contestCode" name="code" th:value="${contest.code}" required>
+            </div>
+            <div class="form-group">
                 <label for="contestDescription">Contest Description</label>
                 <textarea class="form-control" id="contestDescription" name="description" rows="3" required th:text="${contest.description}"></textarea>
             </div>
