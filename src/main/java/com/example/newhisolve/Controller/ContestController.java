@@ -80,6 +80,7 @@ public class ContestController {
     public String removeUser(@RequestParam Long contestId, @RequestParam Long userId) {
         contestService.removeUserFromContest(contestId, userId);
         submissionService.deleteSubmissionsByUserId(userId);
+        submissionService.deleteSavedCodeByUserId(userId);
 
         return "redirect:/admin_contest/" + contestId;
     }

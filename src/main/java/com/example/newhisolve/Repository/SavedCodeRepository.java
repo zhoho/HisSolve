@@ -9,4 +9,5 @@ import java.util.Optional;
 
 public interface SavedCodeRepository extends JpaRepository<SavedCode, Long> {
     Optional<SavedCode> findByProblemAndUser(Problem problem, User user);
+    void deleteByUserId(Long userId);
 }

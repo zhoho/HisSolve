@@ -32,6 +32,9 @@ public interface SubmissionService {
     @Transactional
     void deleteSubmissionsByUserId(Long userId);
 
+    @Transactional
+    void deleteSavedCodeByUserId(Long userId);
+
     List<Submission> findByProblemAndUser(Long problemId, Long userId);
 
     List<Submission> findSubmissionsByProblem(Problem problem);
