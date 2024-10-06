@@ -16,6 +16,7 @@ public interface SubmissionRepository extends JpaRepository<Submission, Long> {
     Optional<Submission> findByProblemAndUser(Problem problem, User user);
     List<Submission> findByProblemId(Long problemId);
     void deleteByProblemId(Long problemId);
+    void deleteByUserId(Long userId);
     List<Submission> findByProblemIdAndUserId(Long problemId, Long userId);
     List<Submission> findByProblem(Problem problem);
 

@@ -143,6 +143,11 @@ public class SubmissonServiceImpl implements SubmissionService {
         submissionRepository.deleteByProblemId(problemId);
     }
 
+    @Override
+    public void deleteSubmissionsByUserId(Long userId) {
+        submissionRepository.deleteByUserId(userId);
+    }
+
     // 특정 문제와 유저의 제출물 찾기
     @Override
     public List<Submission> findByProblemAndUser(Long problemId, Long userId) {

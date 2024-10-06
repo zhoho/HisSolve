@@ -29,6 +29,9 @@ public interface SubmissionService {
     @Transactional
     void deleteSubmissionsByProblemId(Long problemId);
 
+    @Transactional
+    void deleteSubmissionsByUserId(Long userId);
+
     List<Submission> findByProblemAndUser(Long problemId, Long userId);
 
     List<Submission> findSubmissionsByProblem(Problem problem);

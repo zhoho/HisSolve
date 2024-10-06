@@ -3,6 +3,7 @@ package com.example.newhisolve.Controller;
 import com.example.newhisolve.Model.Contest;
 import com.example.newhisolve.Model.User;
 import com.example.newhisolve.Service.ContestService;
+import com.example.newhisolve.Service.SubmissionService;
 import lombok.RequiredArgsConstructor;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -29,6 +30,7 @@ import java.util.Map;
 public class ContestController {
 
     private final ContestService contestService;
+    private final SubmissionService submissionService;
 
     @GetMapping("/contest/create")
     @PreAuthorize("hasRole('ADMIN')")
@@ -77,6 +79,8 @@ public class ContestController {
     @PreAuthorize("hasRole('ADMIN')")
     public String removeUser(@RequestParam Long contestId, @RequestParam Long userId) {
         contestService.removeUserFromContest(contestId, userId);
+        submissionService.deleteSubmissionsByUserId(userId);
+
         return "redirect:/admin_contest/" + contestId;
     }
 
