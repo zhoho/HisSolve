@@ -181,17 +181,6 @@
 </head>
 <body>
 <div th:replace="~{fragments :: nav}"></div>
-<div class="container-fluid user-info">
-    <div class="row">
-        <div class="col-md-8">
-            <p class="welcome-text">Welcome, <span th:text="${user.username}"></span> <span th:if="${user.role == 'USER'}">님</span>!</p>
-            <p class="email-text" th:text="${user.email}"></p>
-        </div>
-        <div class="col-md-4 edit-btn">
-            <a class="btn btn-sm" th:href="@{/profile/edit}">Edit</a>
-        </div>
-    </div>
-</div>
 <div class="container mt-4">
     <div class="row">
         <div class="col-md-12">
@@ -220,7 +209,6 @@
     </div>
 
     <div id="searchResults" class="row mt-4">
-        <!-- 검색 결과가 여기에 동적으로 렌더링됩니다 -->
     </div>
     <div id="backButtonContainer" class="text-center mt-3" style="display: none;">
         <button id="backButton" class="btn btn-secondary">Back</button>
@@ -229,15 +217,17 @@
         <div class="col-lg-6 col-sm-12 my-3" th:if="${user.role == 'USER'}" th:each="contest : ${contests}">
             <a th:href="@{/contest/{id}(id=${contest.id})}"
                style="text-decoration: none; color: inherit;"
-               onclick="return handleContestClick('USER', '${contest.status}');"> <!-- 클릭 이벤트 추가 -->
-                <div class="card shadow-sm p-3">
+               th:attr="data-status=${contest.status}"
+               onclick="return handleContestClick(this.dataset.status);">
+            <div class="card shadow-sm p-3">
                     <div class="card-content">
                         <div class="contest-status"
-                             th:class="${contest.status == '진행 중' ? '진행중' : (contest.status == '종료됨' ? '종료됨' : '진행예정')}"
-                             th:text="${contest.status}"></div> <!-- 대회 상태 표시 추가 -->
+                             th:class="${contest.status == '진행중' ? '진행중' : (contest.status == '종료됨' ? '종료됨' : '진행예정')}"
+                             th:text="${contest.status}">
+                        </div> <!-- 대회 상태 표시 추가 -->
                         <h5 class="card-title" th:text="${contest.name}"></h5>
                         <p class="card-text" th:text="${contest.description}">Description</p>
-                        <p class="card-text text-black" th:text="${contest.duration}"></p> <!-- 대회 기간 추가 -->
+                        <p class="card-text text-black" th:text="${contest.duration}"></p>
                         <p class="card-text">참여자 수: <span th:text="${participantCounts[contest.id]}"></span></p>
                     </div>
                 </div>
@@ -245,12 +235,14 @@
         </div>
 
         <div class="col-lg-6 col-sm-12 my-3" th:if="${user.role == 'ADMIN'}" th:each="contest : ${contests}">
-            <a th:href="@{/admin_contest/{id}(id=${contest.id})}" style="text-decoration: none; color: inherit;"> <!-- admin은 모든 클릭 허용 -->
+            <a th:href="@{/admin_contest/{id}(id=${contest.id})}" style="text-decoration: none; color: inherit;">
                 <div class="card shadow-sm p-3">
                     <div class="card-content">
                         <div class="contest-status"
-                             th:class="${contest.status == '진행 중' ? '진행중' : (contest.status == '종료됨' ? '종료됨' : '진행예정')}"
-                             th:text="${contest.status}"></div> <!-- 대회 상태 표시 추가 -->
+                             th:class="${contest.status == '진행중' ? '진행중' : (contest.status == '종료됨' ? '종료됨' : '진행예정')}"
+                             th:text="${contest.status}">
+
+                        </div> <!-- 대회 상태 표시 추가 -->
                         <h5 class="card-title" th:text="${contest.name}"></h5>
                         <p class="card-text" th:text="${contest.description}">Description</p>
                         <p class="card-text text-black" th:text="${contest.duration}"></p> <!-- 대회 기간 추가 -->
@@ -259,19 +251,8 @@
                 </div>
             </a>
         </div>
-
-        <script>
-            function handleContestClick(role, status) {
-                if (role === 'USER' && status !== '진행 중') {
-                    alert("대회가 진행 중이지 않으므로 이동할 수 없습니다."); // 사용자에게 알림
-                    return false; // 클릭을 차단
-                }
-                return true; // 클릭 허용
-            }
-        </script>
     </div>
 </div>
-
 <!-- Footer -->
 <div th:replace="~{fragments :: footer}"></div>
 
@@ -279,6 +260,15 @@
 <div th:replace="~{fragments :: scripts}"></div>
 
 <script>
+    function handleContestClick(status) {
+        // console.log("Contest Status:", status); //log 확인
+        if (status !== '진행 중') {
+            alert("대회가 진행 중이지 않으므로 이동할 수 없습니다.");
+            return false;
+        }
+        return true;
+    }
+
     // 검색 폼 제출 시 AJAX로 검색 요청 보내기
     document.getElementById('searchForm').addEventListener('submit', function(event) {
         event.preventDefault(); // 폼의 기본 제출 동작을 막음
@@ -304,21 +294,20 @@
                     data.forEach(contest => {
                         const contestCard = `
                 <div class="col-lg-6 col-sm-12 my-3">
-    <div class="card shadow-sm p-3">
-        <a href="/contest/${contest.id}" style="text-decoration: none; color: inherit;"> <!-- 클릭 시 링크 이동 -->
-            <div class="card-content">
-               <div class="contest-status ${contest.status === '진행 중' ? '진행중' : (contest.status === '종료됨' ? '종료됨' : '진행예정')}">
-                    ${contest.status}
-                </div>
-                <h5 class="card-title">${contest.name}</h5>
-                <p class="card-text">${contest.description}</p>
-                <p class="card-text text-black">기간: <span>${contest.duration}</span></p> <!-- 기간 추가 -->
-                <p class="card-text text-black">참여자 수: <span>${contest.participantCount}</span></p> <!-- 참여자 수 추가 -->
-            </div>
-        </a>
-    </div>
-</div>
-
+                    <div class="card shadow-sm p-3">
+                        <a href="/contest/${contest.id}" style="text-decoration: none; color: inherit;"> <!-- 클릭 시 링크 이동 -->
+                            <div class="card-content">
+                               <div class="contest-status ${contest.status === '진행중' ? '진행중' : (contest.status === '종료됨' ? '종료됨' : '진행예정')}">
+                                    ${contest.status}
+                                </div>
+                                <h5 class="card-title">${contest.name}</h5>
+                                <p class="card-text">${contest.description}</p>
+                                <p class="card-text text-black">기간: <span>${contest.duration}</span></p> <!-- 기간 추가 -->
+                                <p class="card-text text-black">참여자 수: <span>${contest.participantCount}</span></p> <!-- 참여자 수 추가 -->
+                            </div>
+                        </a>
+                    </div>
+                  </div>
                 `;
                         searchResultsDiv.innerHTML += contestCard;
                     });
