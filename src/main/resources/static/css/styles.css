@@ -3,39 +3,54 @@ body, html {
     height: 100%;
     margin: 0;
     font-family: 'Source Code Pro', monospace;
-    background: #edf2f4; /* 배경색 */
-    color: #2b2d42; /* 기본 텍스트 색상 */
-    display: flex;
-    flex-direction: column;
+    background: #edf2f4;
+    color: #2b2d42;
+    overflow: visible;
 }
 
-/* 네비게이션 바 스타일 */
-.navbar {
-    background-color: #37517e; /* 네비게이션 바 배경색 */
-    height: 100px; /* 네비게이션 바 높이 조정 */
+.sticky-nav {
+    position: sticky;
+    top: 0;
+    transition: background-color 0.3s ease; /* 부드러운 배경 전환 효과 */
+    z-index: 1000;
+    background-color: #37517e;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    height: 110px;
 }
+
+.navbar-fixed {
+    background-color: #37517e !important;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+/*.content {*/
+/*    margin-top: 100px;*/
+/*}*/
 
 .navbar-brand {
-    color: #edf2f4 !important; /* 로고 텍스트 색상 */
-    font-size: 1.5rem; /* 로고 텍스트 크기 증가 */
-    font-weight: bold; /* 로고 텍스트 볼드체 */
-    line-height: 100px; /* 로고 텍스트가 네비게이션 바 중앙에 오도록 수직 정렬 */
+    color: #edf2f4 !important;
+    font-size: 1.5rem;
+    font-weight: bold;
 }
 
 .navbar-nav .nav-link {
-    color: #edf2f4 !important; /* 네비게이션 바 텍스트 색상 */
-    font-size: 1.3rem; /* 네비게이션 바 텍스트 크기 증가 */
-    line-height: 100px; /* 텍스트가 네비게이션 바 중앙에 오도록 수직 정렬 */
-    margin: 0 15px; /* 메뉴 항목들 사이의 간격 추가 */
+    color: #edf2f4 !important;
+    font-size: 1.3rem;
+    margin: 0 15px;
 }
 
 .navbar-light .navbar-nav .nav-link:hover {
-    color: #8d99ae !important; /* 네비게이션 바 링크 호버 색상 */
+    color: #8d99ae !important;
 }
 
 .navbar-light .navbar-toggler-icon {
     filter: invert(1);
 }
+
+
 
 /* 푸터 스타일 */
 footer {
