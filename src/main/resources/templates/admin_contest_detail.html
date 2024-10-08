@@ -16,13 +16,10 @@
       background: linear-gradient(to right, #37517e, #000000);
       color: white;
       padding: 30px;
+      border-radius: 10px;
       display: flex;
       flex-direction: column;
       margin-top: -10px;
-      width: 100%;
-    }
-    .container-fluid {
-      padding: 0 !important; /* 패딩을 제거 */
     }
     .contest-header {
       display: flex;
@@ -100,7 +97,7 @@
 <body>
 <div th:replace="~{fragments :: nav}"></div>
 
-<div class="container-fluid">
+<div class="container mt-1">
   <div class="contest-banner">
     <div class="contest-header">
       <h1 th:text="${contest.name}"></h1>
@@ -112,8 +109,6 @@
       <p th:text="${contest.description}"></p>
     </div>
   </div>
-</div>
-<div class="container mt-2">
   <div class="d-flex justify-content-between">
     <a href="/dashboard" class="btn back-button"><i class="fas fa-arrow-left"></i> Back to dashboard</a>
     <a th:href="@{/contest/edit(contestId=${contest.id})}" class="btn edit-button"><i class="fas fa-edit"></i> Edit Contest</a>
@@ -177,7 +172,6 @@
 
     <div class="summary-container text-center">
       <a th:href="@{/admin_contest/rankDashboard/{id}(id=${contest.id})}" class="btn ranking-dashboard-button"><i class="fas fa-chart-bar"></i> Ranking Dashboard</a>
-      <a th:href="@{/contest/export(contestId=${contest.id})}" class="btn btn-success"><i class="fas fa-download"></i> Download results</a>
     </div>
   </div>
 </div>
