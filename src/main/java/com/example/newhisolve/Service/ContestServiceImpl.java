@@ -164,10 +164,15 @@ public class ContestServiceImpl implements ContestService {
                     // 문제의 모든 테스트케이스 가져옴
                     List<TestCase> testCases = problem.getTestCases();
 
-                    for (TestCase testCase : testCases) {
-                        // 제출한 결과와 예상 출력 비교
-                        if (submission.getResult().equals(testCase.getExpectedOutput())) {
-                            passedCount++;
+                    if (submission.getScore() == 100) {
+                        // 점수가 100점이면 모든 테스트케이스 통과
+                        passedCount = testCases.size();
+                    } else {
+                        // 각 테스트케이스의 결과를 비교하여 통과 여부를 확인
+                        for (TestCase testCase : testCases) {
+                            if (submission.getResult().equals(testCase.getExpectedOutput())) {
+                                passedCount++;
+                            }
                         }
                     }
 
@@ -185,6 +190,7 @@ public class ContestServiceImpl implements ContestService {
 
         return userPassedTestCasesMap;
     }
+
 
     @Override
     public Map<Long, List<Boolean>> getUserProblemSolvedStatus(Long contestId) {

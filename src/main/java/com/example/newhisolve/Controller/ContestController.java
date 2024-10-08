@@ -157,8 +157,17 @@ public class ContestController {
             Row contestNameRow = sheet.createRow(0);
             contestNameRow.createCell(0).setCellValue("Contest Name: " + contest.getName());
 
+            // 대회 기간 추가
+            Row contestDurationRow = sheet.createRow(1);
+            contestDurationRow.createCell(0).setCellValue("Contest Duration: "
+                    + contest.getStartDate().toLocalDate() + " ~ " + contest.getDueDate().toLocalDate());
+
+            // 엑셀 다운로드 시간 추가
+            Row downloadTimeRow = sheet.createRow(2);
+            downloadTimeRow.createCell(0).setCellValue("Downloaded At: " + LocalDate.now());
+
             // Header
-            Row headerRow = sheet.createRow(1);
+            Row headerRow = sheet.createRow(3); // 헤더는 3번째 줄부터 시작
             headerRow.createCell(0).setCellValue("Serial No.");
             headerRow.createCell(1).setCellValue("Name");
             headerRow.createCell(2).setCellValue("Email");
@@ -174,10 +183,10 @@ public class ContestController {
             headerRow.createCell(3 + maxProblems * 4).setCellValue("Total Score");
 
             // Body
-            int rowNum = 2;
+            int rowNum = 4; // 데이터는 4번째 줄부터 시작
             for (User user : users) {
                 Row row = sheet.createRow(rowNum);
-                row.createCell(0).setCellValue(rowNum - 1); // 일련번호
+                row.createCell(0).setCellValue(rowNum - 3); // 일련번호
                 row.createCell(1).setCellValue(user.getUsername());
                 row.createCell(2).setCellValue(user.getEmail());
 
@@ -222,6 +231,7 @@ public class ContestController {
             throw new RuntimeException("Failed to export data to Excel file", e);
         }
     }
+
 
 
     @GetMapping("/contest/search")
