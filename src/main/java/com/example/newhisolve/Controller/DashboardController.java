@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,6 +39,10 @@ public class DashboardController {
         }
 
         List<Contest> contests = contestService.findByUser(user);
+
+        // 역순으로 정렬
+        Collections.reverse(contests);
+
         model.addAttribute("user", user);
         model.addAttribute("contests", contests);
 
@@ -47,7 +52,7 @@ public class DashboardController {
             long participantCount = contestService.getParticipantCount(contest.getId());
             participantCounts.put(contest.getId(), participantCount);
         }
-        model.addAttribute("participantCounts", participantCounts); // 모델에 참여자 수 추가
+        model.addAttribute("participantCounts", participantCounts);
 
         return "dashboard";
     }
