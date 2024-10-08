@@ -124,30 +124,6 @@
         </div>
         <button type="button" class="btn btn-lightblue mt-3" id="addCaseBtn">Add case</button>
       </div>
-      <div class="form-group grading-testcase-container">
-        <label class="font-weight-bold">Grading Test Cases</label>
-        <div id="gradingTestCasesContainer">
-          <div th:each="gradingTestCase, iterStat : ${problem.gradingTestCases}">
-            <div class="form-group row align-items-center">
-              <div class="col-md-5">
-                <label class="font-weight-bold">Input Cases</label>
-                <textarea class="form-control" name="gradingInputs[]" placeholder="Input case" th:text="${gradingTestCase.input}"></textarea>
-              </div>
-              <div class="col-md-5">
-                <label class="font-weight-bold">Output Cases</label>
-                <textarea class="form-control" name="gradingOutputs[]" placeholder="Output case" th:text="${gradingTestCase.expectedOutput}"></textarea>
-              </div>
-              <div class="col-md-1">
-                <input type="checkbox" name="isHidden[]" class="form-check-input" th:checked="${gradingTestCase.isHidden}"> Hidden
-              </div>
-              <div class="col-md-1 text-center">
-                <button type="button" class="delete-btn" onclick="removeTestCase(this)"><i class="fas fa-trash-alt"></i></button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <button type="button" class="btn btn-lightblue mt-3" id="addGradingCaseBtn">Add grading case</button>
-      </div>
       <div class="form-group">
         <label for="dueDate" class="font-weight-bold">Deadline</label>
         <input type="datetime-local" class="form-control" id="dueDate" name="dueDate" th:value="${formattedDueDate}" required>
@@ -211,7 +187,7 @@
     });
 
     let caseCount = /*[[${problem.testCases.size()}]]*/ 0;
-    let gradingCaseCount = /*[[${problem.gradingTestCases.size()}]]*/ 0;
+    // let gradingCaseCount = /*[[${problem.testCases.size()}]]*/ 0;
 
     document.getElementById('addCaseBtn').addEventListener('click', function () {
       caseCount++;
@@ -233,28 +209,6 @@
       `;
       document.getElementById('testCasesContainer').appendChild(testCaseDiv);
     });
-
-    document.getElementById('addGradingCaseBtn').addEventListener('click', function () {
-      gradingCaseCount++;
-      const gradingTestCaseDiv = document.createElement('div');
-      gradingTestCaseDiv.className = 'form-group row align-items-center';
-      gradingTestCaseDiv.innerHTML = `
-        <div class="col-md-5">
-          <textarea class="form-control" name="gradingInputs[]" placeholder="Input case"></textarea>
-        </div>
-        <div class="col-md-5">
-          <textarea class="form-control" name="gradingOutputs[]" placeholder="Output case"></textarea>
-        </div>
-        <div class="col-md-1">
-          <input type="checkbox" name="isHidden[]" class="form-check-input"> Hidden
-        </div>
-        <div class="col-md-1 text-center">
-          <button type="button" class="delete-btn" onclick="removeTestCase(this)"><i class="fas fa-trash-alt"></i></button>
-        </div>
-      `;
-      document.getElementById('gradingTestCasesContainer').appendChild(gradingTestCaseDiv);
-    });
-
     window.removeTestCase = function(button) {
       const testCaseDiv = button.closest('.form-group');
       if (testCaseDiv && testCaseDiv.parentElement) {

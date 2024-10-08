@@ -79,6 +79,39 @@ public class ProblemController {
         return "redirect:/admin_contest/" + contestId;
     }
 
+    @PostMapping("/problem/update")
+    @PreAuthorize("hasRole('ADMIN')")
+    public String updateProblem(@ModelAttribute Problem problem,
+                                @RequestParam Long contestId,
+                                @RequestParam List<String> inputs,
+                                @RequestParam List<String> outputs,
+                                @RequestParam("dueDate") String dueDate,
+                                Principal principal) {
+        User user = userService.findByUsername(principal.getName());
+        if (!user.getRole().equals("ADMIN")) {
+            return "redirect:/dashboard";
+        }
+
+        LocalDateTime localDateTime = LocalDateTime.parse(dueDate);
+        ZonedDateTime zonedDateTime = localDateTime.atZone(ZoneId.of("Asia/Seoul")).withZoneSameInstant(ZoneId.of("UTC"));
+        problem.setDueDate(zonedDateTime.toLocalDateTime());
+        problem.setLastModifiedDate(LocalDateTime.now());
+
+        List<TestCase> testCases = new ArrayList<>();
+        for (int i = 0; i < inputs.size(); i++) {
+            TestCase testCase = new TestCase();
+            testCase.setInput(inputs.get(i));
+            testCase.setExpectedOutput(outputs.get(i));
+            testCases.add(testCase);
+        }
+
+        problem.setTestcaseCount(inputs.size());
+        problem.setTestCases(testCases);
+
+        problemService.updateProblem(problem, contestId);
+
+        return "redirect:/admin_contest/" + contestId;
+    }
 
 
 
