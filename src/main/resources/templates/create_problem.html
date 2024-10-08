@@ -16,10 +16,12 @@
       background: linear-gradient(to right, #37517e, #000000);
       color: white;
       padding: 30px;
-      border-radius: 10px;
       display: flex;
       flex-direction: column;
       margin-top: -10px;
+    }
+    .container-fluid {
+      padding: 0 !important; /* 패딩을 제거 */
     }
     .contest-header {
       display: flex;
@@ -112,13 +114,15 @@
 <body>
 <div th:replace="~{fragments :: nav}"></div>
 
-<div class="container mt-1">
+<div class="container-fluid">
   <div class="contest-banner">
     <div class="contest-header">
       <h1>Create New Problem</h1>
     </div>
   </div>
+</div>
 
+<div class="container mt-1">
   <div class="main-container">
     <form th:action="@{/problem/create}" method="post" onsubmit="convertToUTC()">
       <div class="form-group">

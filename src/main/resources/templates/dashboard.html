@@ -172,24 +172,43 @@
         .autocomplete-item:hover {
             background-color: #f0f0f0;
         }
+        .background-container {
+            position: relative;
+            background-image: url(/img/contest_backimage.png); /* Static 경로 이미지 사용 시 */
+            background-size: 100% auto; /* 가로는 100%로, 세로는 자동으로 설정 */
+            background-position: center;
+            background-repeat: no-repeat; /* 이미지가 반복되지 않도록 설정 */
+            height: 250px; /* 높이 설정 */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
         .text-black {
             color: black;
         }
-
+        .main-message {
+            font-size: 3rem;
+            font-weight: bold;
+        }
+        .overlay-text {
+            width: 100%; /* 가로로 화면을 꽉 채움 */
+            text-align: center; /* 텍스트를 가운데 정렬 */
+            font-size: 3rem; /* 폰트 크기 조정 */
+            color: black; /* 텍스트 색상 */
+            font-weight: bold;
+        }
     </style>
 </head>
 <body th:attr="data-user-role=${user.role}">
 <div th:replace="~{fragments :: nav}"></div>
-<div class="container mt-4">
-    <div class="row">
-        <div class="col-md-12">
-            <h2>대회 목록</h2>
-        </div>
+<div class="container-fluid mt-0">
+    <div class="background-container main-message">
+        <div class="overlay-text">Contest</div>
     </div>
-
+</div>
+<div class="container mt-2">
     <div class="row mt-3 form-inline">
-        <!-- 검색 폼 -->
         <div class="search-form">
             <form id="searchForm">
                 <input id="searchQuery" class="form-control mr-2" type="text" placeholder="Search Contest" required>
@@ -234,7 +253,7 @@
             </a>
         </div>
 
-        <div class="col-lg-6 col-sm-12 my-3" th:if="${user.role == 'ADMIN'}" th:each="contest : ${contests}">
+        <div class="col-lg-12 col-sm-12 my-3" th:if="${user.role == 'ADMIN'}" th:each="contest : ${contests}">
             <a th:href="@{/admin_contest/{id}(id=${contest.id})}" style="text-decoration: none; color: inherit;">
                 <div class="card shadow-sm p-3">
                     <div class="card-content">

@@ -11,11 +11,13 @@
     body {
       background-color: #edf2f4;
     }
+    .container-fluid {
+      padding: 0 !important; /* 패딩을 제거 */
+    }
     .contest-banner { /* 수정: course-banner -> contest-banner */
       background: linear-gradient(to right, #37517e, #000000);
       color: white;
       padding: 30px;
-      border-radius: 10px;
       display: flex;
       flex-direction: column;
       margin-top: -10px;
@@ -83,8 +85,7 @@
 <body>
 <!-- Navigation Bar -->
 <div th:replace="~{fragments :: nav}"></div>
-
-<div class="container mt-1">
+<div class="container-fluid">
   <div class="contest-banner"> <!-- 수정: course-banner -> contest-banner -->
     <div class="contest-header"> <!-- 수정: course-header -> contest-header -->
       <h1 th:text="${contest.name}"></h1>
@@ -96,6 +97,8 @@
       <p th:text="${contest.description}"></p>
     </div>
   </div>
+</div>
+<div class="container mt-1">
   <a href="/dashboard" class="btn back-button"><i class="bi bi-arrow-left"></i> Back to dashboard</a>
   <div class="problem-container"> <!-- 수정: assignment-container -> problem-container -->
     <h2>문제 목록</h2> <!-- 수정: assignment 목록에서 문제 목록으로 -->
