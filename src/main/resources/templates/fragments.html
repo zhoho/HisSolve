@@ -27,12 +27,12 @@
                         <span th:text="${user.username} + ' ' + (${user.role} == 'ADMIN' ? '님' : '님')"></span>
                     </a>
                 </li>
-                <li class="nav-item" th:if="${user != null}">
-                    <a class="nav-link" th:href="@{/logout}" style="color: #edf2f4;">
-                        <img th:src="@{/img/logout.png}" alt="Logout Icon" style="width: 24px; height: 24px;"> Logout
-                    </a>
-                </li>
             </ul>
+        </div>
+        <div class="nav-item" th:if="${user != null}">
+            <a class="nav-link" th:href="@{/logout}" style="color: #edf2f4;">
+                <img th:src="@{/img/logout.png}" alt="Logout Icon" style="width: 24px; height: 24px;"> Logout
+            </a>
         </div>
     </div>
 </nav>

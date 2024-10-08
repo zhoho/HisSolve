@@ -26,10 +26,6 @@ body, html {
     z-index: 1000;
 }
 
-/*.content {*/
-/*    margin-top: 100px;*/
-/*}*/
-
 .navbar-brand {
     color: #edf2f4 !important;
     font-size: 1.5rem;
