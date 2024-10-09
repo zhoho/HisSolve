@@ -81,7 +81,6 @@
             background: linear-gradient(to right, #37517e, #000000);
             color: white;
             padding: 30px;
-            border-radius: 10px;
             display: flex;
             flex-direction: column;
             margin-top: -10px;
@@ -298,6 +297,9 @@
         .flex-item + .flex-item {
             margin-left: 10px;
         }
+        .container-fluid {
+            padding: 0 !important; /* 패딩을 제거 */
+        }
     </style>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
@@ -310,7 +312,7 @@
 </head>
 <body th:attr="data-user-id=${user.id}, data-contest-id=${problem.contest.id}">
 <div th:replace="~{fragments :: nav}"></div>
-<div class="basic-container">
+<div class="container-fluid">
     <div class="contest-banner">
         <div class="contest-header">
             <h1 th:text="${problem.title}"></h1>
@@ -320,8 +322,8 @@
             </div>
         </div>
     </div>
-    <a href="#" class="back-button" onclick="window.history.back(); return false;"><i class="bi bi-arrow-left"></i> Back to Contest</a>
 </div>
+<a href="#" class="back-button" onclick="window.history.back(); return false;"><i class="bi bi-arrow-left"></i> Back to Contest</a>
 <div class="outer-container">
     <div class="btn-container">
         <button class="btn btn-run" onclick="runCode()">Run</button>
@@ -387,7 +389,7 @@
                 <thead>
                 <tr>
                     <th>제출 시간</th>
-                    <th>grading 테스트 케이스 성공 유무</th>
+                    <th>테스트 케이스 성공 유무</th>
                     <th>사용 언어</th>
                     <th>View</th>
                 </tr>
@@ -479,12 +481,21 @@
             }
             const data = await response.json();
 
+            // 각 result를 출력해보기
+            console.log(data); // 전체 data 출력
+            data.forEach(result => {
+                console.log(result); // 각 result 출력
+            });
+
+            // Hidden이 아닌 테스트 케이스만 필터링 (is_hidden === 0)
+            const visibleTestCases = data.filter(result => result.isHidden === "0");
+
             const tableContainer = document.getElementById('results-table-container');
             if (!tableContainer) {
                 throw new Error('Element with id "results-table-container" not found');
             }
 
-            tableContainer.innerHTML = ''; // Clear previous results
+            tableContainer.innerHTML = ''; // 이전 결과 초기화
             const table = document.createElement('table');
             table.className = 'results-table';
 
@@ -500,7 +511,7 @@
             table.appendChild(thead);
 
             const tbody = document.createElement('tbody');
-            data.forEach(result => {
+            visibleTestCases.forEach(result => {
                 const row = document.createElement('tr');
                 const values = [
                     result.testNumber,
@@ -520,8 +531,8 @@
 
             tableContainer.appendChild(table);
 
-            const passedTests = data.filter(result => result.status === '통과').length;
-            totalTestCases = data.length;
+            const passedTests = visibleTestCases.filter(result => result.status === '통과').length;
+            totalTestCases = visibleTestCases.length;
             passedTestCases = passedTests;
 
             document.getElementById('submit-btn').disabled = false;
@@ -537,6 +548,8 @@
             hideLoadingSpinner('.btn-primary');
         }
     }
+
+
 
     async function runCode() {
         const code = window.editor.getValue();

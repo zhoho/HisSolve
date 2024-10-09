@@ -28,7 +28,6 @@ public class CompilerController {
             throw new IllegalArgumentException("The given id must not be null");
         }
 
-        // 모든 테스트케이스 (히든 포함) 가져오기
         List<TestCase> testCases = problemService.getTestCasesForProblem(problemId);
 
         // 코드 컴파일 및 실행

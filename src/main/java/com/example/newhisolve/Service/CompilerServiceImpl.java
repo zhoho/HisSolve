@@ -68,6 +68,7 @@ public class CompilerServiceImpl implements CompilerService {
                 result.put("input", actualInput);
                 result.put("expectedOutput", testCase.getExpectedOutput());
                 result.put("actualOutput", output.toString().trim());
+                result.put("isHidden", String.valueOf(testCase.isHidden() ? 1 : 0));
                 results.add(result);
             }
             deleteDirectory(tempDir);
