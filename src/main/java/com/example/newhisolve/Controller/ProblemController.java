@@ -51,12 +51,20 @@ public class ProblemController {
                                 @RequestParam("dueDate") String dueDate,
                                 Principal principal) {
 
+        if (inputs.size() != outputs.size()) {
+            throw new IllegalArgumentException("입력과 출력 리스트의 크기가 일치하지 않습니다.");
+        }
+
+        // isHidden이 null일 경우, false로 채움
         if (isHidden == null) {
             isHidden = new ArrayList<>(Collections.nCopies(inputs.size(), false));
         }
 
-        if (inputs.size() != outputs.size() || inputs.size() != isHidden.size()) {
-            throw new IllegalArgumentException("입력, 출력, 히든 리스트의 크기가 일치하지 않습니다.");
+        // isHidden 크기와 입력 크기가 다른 경우 isHidden을 입력 크기에 맞춤
+        if (isHidden.size() != inputs.size()) {
+            for (int i = isHidden.size(); i < inputs.size(); i++) {
+                isHidden.add(false); // 부족한 경우 false 추가
+            }
         }
 
         LocalDateTime localDateTime = LocalDateTime.parse(dueDate);
@@ -78,6 +86,7 @@ public class ProblemController {
 
         return "redirect:/admin_contest/" + contestId;
     }
+
 
     @PostMapping("/problem/update")
     @PreAuthorize("hasRole('ADMIN')")
