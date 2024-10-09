@@ -7,6 +7,8 @@ import com.example.newhisolve.Repository.SubmissionRepository;
 import com.example.newhisolve.Repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import com.example.newhisolve.Repository.SavedCodeRepository;
+
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -19,6 +21,7 @@ public class ContestServiceImpl implements ContestService {
     private final UserRepository userRepository;
     private final ProblemRepository problemRepository;
     private final SubmissionRepository submissionRepository;
+    private final SavedCodeRepository savedCodeRepository;
 
     @Override
     public Contest createContest(Contest contest, String adminUsername) {
@@ -260,4 +263,18 @@ public class ContestServiceImpl implements ContestService {
                 .map(contest -> contest.getUsers().size())
                 .orElse(0);
     }
+
+    @Override
+    public Map<Long, Long> getParticipantCountForProblems(Long contestId) {
+        List<Problem> problems = problemRepository.findByContestId(contestId);
+        Map<Long, Long> problemParticipantCounts = new HashMap<>();
+
+        for (Problem problem : problems) {
+            long participantCount = savedCodeRepository.countDistinctUsersByProblemId(problem.getId()); // 여기서 메서드 이름을 수정
+            problemParticipantCounts.put(problem.getId(), participantCount);
+        }
+
+        return problemParticipantCounts;
+    }
+
 }

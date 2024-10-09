@@ -72,6 +72,12 @@ public class ContestController {
         model.addAttribute("contest", contestEntity);
         model.addAttribute("users", contestEntity.getUsers());
         model.addAttribute("problems", contestService.findProblemsByContest(contestEntity));
+
+        // 문제별 참여자 수 계산
+        Map<Long, Long> problemParticipantCounts = contestService.getParticipantCountForProblems(id);
+        model.addAttribute("problemParticipantCounts", problemParticipantCounts); // 모델에 추가
+
+
         return "admin_contest_detail";
     }
 
@@ -261,6 +267,7 @@ public class ContestController {
     public List<Contest> autocompleteContests(@RequestParam("searchQuery") String searchQuery) {
         return contestService.searchContestsByName(searchQuery);
     }
+
 
 
 }

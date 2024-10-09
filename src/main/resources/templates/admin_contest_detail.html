@@ -131,7 +131,8 @@
                 <h5 class="card-title">
                   <a th:href="@{/admin_problem_detail/{id}(id=${problem.id})}" th:text="${problem.title}" style="color: #37517e;"></a>
                 </h5>
-                <p class="card-text" th:data-duedate="${problem.dueDate}"></p>
+                <p class="card-text" th:text="'참여자 수: ' + ${problemParticipantCounts[problem.id]}"></p> <!-- 참여자 수 표시 -->
+                <p class="card-text" th:text="'Due: ' + ${#temporals.format(problem.dueDate, 'yyyy. MM. dd. a hh:mm')}"></p> <!-- 하나의 due만 출력 -->
               </div>
             </div>
           </div>
@@ -213,22 +214,5 @@
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    const dueDates = document.querySelectorAll('.card-text');
-    const now = new Date();
-
-    dueDates.forEach(function (element) {
-      const dueDate = new Date(element.getAttribute('data-duedate'));
-      if (dueDate < now) {
-        element.style.color = 'red';
-      } else {
-        element.style.color = 'black';
-      }
-      const options = { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' };
-      element.textContent = 'Due: ' + dueDate.toLocaleDateString('ko-KR', options).replace(', ', ' ');
-    });
-  });
-</script>
 </body>
 </html>

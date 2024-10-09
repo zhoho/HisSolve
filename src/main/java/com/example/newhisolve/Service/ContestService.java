@@ -40,5 +40,7 @@ public interface ContestService {
 
     Map<Long, List<String>> getUserSubmissionTimes(Long contestId);
     long getParticipantCount(Long contestId);
+    Map<Long, Long> getParticipantCountForProblems(Long contestId);
+
 }
 
