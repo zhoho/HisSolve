@@ -1,42 +1,48 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title th:text="${contest.name}">Contest Details</title> <!-- 수정: course.name -> contest.name -->
+  <title th:text="${contest.name}">Contest Details</title>
   <!-- Bootstrap CSS -->
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;700&display=swap" rel="stylesheet">
   <link th:href="@{/css/styles.css}" rel="stylesheet">
   <style>
-    body {
-      background-color: #edf2f4;
+    body, html {
+      background-color: #ffffff;
+      height: 100%;
     }
     .container-fluid {
-      padding: 0 !important; /* 패딩을 제거 */
+      padding: 0 !important;
+      background-color: #ffffff;
     }
-    .contest-banner { /* 수정: course-banner -> contest-banner */
-      background: linear-gradient(to right, #37517e, #000000);
-      color: white;
+    .contest-banner {
+      background-image: url('/img/contest_backimage.png');
+      background-size: cover;
+      color: #2b2d42;
       padding: 30px;
       display: flex;
       flex-direction: column;
       margin-top: -10px;
+      position: relative;
+      height: 190px;
+      background-color: #ffffff;
     }
-    .contest-header { /* 수정: course-header -> contest-header */
+    .contest-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
       width: 100%;
     }
-    .contest-header h1, .contest-header .contest-code { /* 수정: course-code -> contest-code */
+    .contest-header h1, .contest-header .contest-code {
       font-size: 1.5rem;
       font-weight: bold;
     }
-    .contest-description { /* 수정: course-description -> contest-description */
+    .contest-description {
       margin-top: 10px;
     }
     .back-button {
-      background-color: #47b2e4;
+      background-color: #37517e;
       border: 0;
       color: #fff;
       transition: 0.4s;
@@ -50,28 +56,29 @@
       text-decoration: none;
       color: white;
     }
-    .problem-container { /* 수정: assignment-container -> problem-container */
-      background-color: #f3f5fa;
-      border: 1px solid #dfdfff;
-      padding: 20px;
+    .problem-container {
+      background-color: #edf2f4;
+      border: 1px solid #37517e;
+      padding: 20px; /* 문제 카드와 동일한 padding */
       margin-top: 20px;
       border-radius: 10px;
     }
-    .problem-container h2 { /* 수정: assignment-container h2 -> problem-container h2 */
+    .problem-container h2 {
       margin-bottom: 30px;
     }
-    .problem-card { /* 수정: assignment-card -> problem-card */
+    .problem-card {
       background-color: white;
       border: none;
       border-radius: 10px;
       margin-bottom: 20px;
       box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      padding: 20px; /* 카드 컨텐츠 내부의 padding 추가 */
     }
-    .problem-card h5 { /* 수정: assignment-card h5 -> problem-card h5 */
+    .problem-card h5 {
       color: #37517e;
       font-weight: bold;
     }
-    .problem-card p { /* 수정: assignment-card p -> problem-card p */
+    .problem-card p {
       margin-bottom: 0;
     }
     .due-date {
@@ -85,26 +92,26 @@
 <body>
 <!-- Navigation Bar -->
 <div th:replace="~{fragments :: nav}"></div>
-<div class="container-fluid">
-  <div class="contest-banner"> <!-- 수정: course-banner -> contest-banner -->
-    <div class="contest-header"> <!-- 수정: course-header -> contest-header -->
+<div class="container mt-1">
+  <div class="contest-banner"> <!-- 배너의 padding 조정 -->
+    <div class="contest-header">
       <h1 th:text="${contest.name}"></h1>
-      <div class="contest-code"> <!-- 수정: course-code -> contest-code -->
+      <div class="contest-code">
         <p>code: <span th:text="${contest.code}"></span></p>
       </div>
     </div>
-    <div class="contest-description"> <!-- 수정: course-description -> contest-description -->
+    <div class="contest-description">
       <p th:text="${contest.description}"></p>
     </div>
   </div>
 </div>
 <div class="container mt-1">
   <a href="/dashboard" class="btn back-button"><i class="bi bi-arrow-left"></i> Back to dashboard</a>
-  <div class="problem-container"> <!-- 수정: assignment-container -> problem-container -->
-    <h2>문제 목록</h2> <!-- 수정: assignment 목록에서 문제 목록으로 -->
+  <div class="problem-container">
+    <h2>문제 목록</h2>
     <div class="row">
       <div class="col-lg-6 col-sm-12 my-3" th:each="problem : ${problems}">
-        <div class="card problem-card"> <!-- 수정: assignment-card -> problem-card -->
+        <div class="card problem-card">
           <div class="card-body">
             <div class="card-image">
               <i class="fas fa-file-code card-icon"></i>

@@ -16,17 +16,23 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.30.1/min/vs/loader.js"></script>
     <link th:href="@{/css/styles.css}" rel="stylesheet">
     <style>
-        body {
-            background-color: #edf2f4;
+        body, html {
+            background-color: #ffffff; /* 전체 배경색 흰색 */
+            height: 100%;
+            margin: 0;
+            padding: 0;
         }
         .contest-banner {
-            background: linear-gradient(to right, #37517e, #000000);
-            color: white;
+            background-image: url('/img/contest_backimage.png');
+            background-size: cover;
+            color: #2b2d42;
             padding: 30px;
-            border-radius: 10px;
             display: flex;
             flex-direction: column;
             margin-top: -10px;
+            position: relative;
+            height: 190px;
+            background-color: #ffffff;
         }
         .contest-header {
             display: flex;
@@ -42,7 +48,7 @@
             margin-top: 10px;
         }
         .btn-lightblue {
-            background-color: #47b2e4;
+            background-color: #37517e;
             border: 0;
             color: #fff;
             transition: 0.4s;
