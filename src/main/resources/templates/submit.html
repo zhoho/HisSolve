@@ -97,11 +97,8 @@
             font-weight: bold;
         }
         .outer-container {
-            background-color: #F3F5FA;
-            padding: 20px;
-            margin: 20px auto;
-            width: 80%;
-            border: 1px solid #dfdfff;
+            padding: 5px;
+            width: 100%;
         }
         .basic-container {
             padding-right: 20px;
@@ -120,33 +117,27 @@
             flex-direction: row;
             flex-grow: 1;
             overflow: hidden;
+            width: 100%;
+            height: 100vh; /* 패널이 화면 전체를 차지하게 합니다 */
         }
-        .left-panel, .middle-panel, .right-panel {
-            padding: 10px;
-            box-sizing: border-box;
-        }
-        .left-panel {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            background-color: #EBECED;
-        }
-        .middle-panel {
-            flex: 3;
+        .middle-panel, .right-panel {
+            width: 50%; /* 기본 너비를 설정 */
             display: flex;
             flex-direction: column;
             background-color: white;
             margin-top: 20px;
-            overflow: auto;
+            height: 100%; /* 패널 높이 설정 */
+            overflow: hidden;
         }
-        .right-panel {
-            flex: 3;
-            display: flex;
-            flex-direction: column;
-            background-color: white;
-            margin-top: 20px;
-            overflow: auto;
+
+        .resizer {
+            width: 5px;
+            background-color: #ddd;
+            cursor: ew-resize;
+            position: relative;
+            z-index: 10;
         }
+
         .btn-container {
             display: flex;
             justify-content: center;
@@ -323,7 +314,7 @@
         </div>
     </div>
 </div>
-<a href="#" class="back-button" onclick="window.history.back(); return false;"><i class="bi bi-arrow-left"></i> Back to Contest</a>
+<!--<a href="#" class="back-button" onclick="window.history.back(); return false;"><i class="bi bi-arrow-left"></i> Back to Contest</a>-->
 <div class="outer-container">
     <div class="btn-container">
         <button class="btn btn-run" onclick="runCode()">Run</button>
@@ -331,23 +322,21 @@
         <button id="submit-btn" class="btn btn-danger" onclick="submitCode()" disabled>Submit</button>
         <button class="btn btn-third" onclick="saveCode()">Save</button>
         <div id="saved-time" class="saved-time"></div>
-    </div>
 
-    <div class="form-group">
-        <label for="language-select" class="font-weight-bold">Language</label>
-        <select id="language-select" class="form-control" onchange="changeLanguage(this)">
-            <option value="c">C</option>
-            <option value="python">Python</option>
-            <option value="java">Java</option>
-        </select>
+        <div class="form-group">
+            <label for="language-select" class="font-weight-bold">Language</label>
+            <select id="language-select" class="form-control" onchange="changeLanguage(this)">
+                <option value="c">C</option>
+                <option value="python">Python</option>
+                <option value="java">Java</option>
+            </select>
+        </div>
+
     </div>
 
     <div class="container-fluid">
         <div class="panel-wrapper">
             <div class="middle-panel">
-                <div id="editor"></div>
-            </div>
-            <div class="right-panel">
                 <div class="section-buttons">
                     <button id="console-btn" class="btn btn-secondary" onclick="showConsole()">Console</button>
                     <button id="problem-btn" class="btn btn-info" onclick="showProblemStatement()">Problem</button>
@@ -376,6 +365,10 @@
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="resizer"></div>
+            <div class="right-panel">
+                <div id="editor"></div>
             </div>
         </div>
         <div id="testcase-results">
@@ -1069,6 +1062,38 @@
     }
 
 
+</script>
+<script>
+    const resizer = document.querySelector('.resizer');
+    const leftPanel = document.querySelector('.middle-panel');
+    const rightPanel = document.querySelector('.right-panel');
+    let isResizing = false;
+
+    // 마우스를 클릭했을 때 크기 조정 시작
+    resizer.addEventListener('mousedown', function(e) {
+        isResizing = true;
+        document.addEventListener('mousemove', resizePanels);
+        document.addEventListener('mouseup', stopResizing);
+    });
+
+    // 패널 크기 조정 함수
+    function resizePanels(e) {
+        if (!isResizing) return;
+
+        const wrapperWidth = resizer.parentElement.getBoundingClientRect().width;
+        const newLeftWidth = e.clientX / wrapperWidth * 100; // 좌측 패널의 새로운 비율 계산
+
+        // 패널 크기 동적으로 변경
+        leftPanel.style.width = `${newLeftWidth}%`;
+        rightPanel.style.width = `${100 - newLeftWidth}%`;
+    }
+
+    // 마우스 클릭이 풀리면 크기 조정 종료
+    function stopResizing() {
+        isResizing = false;
+        document.removeEventListener('mousemove', resizePanels);
+        document.removeEventListener('mouseup', stopResizing);
+    }
 </script>
 <div th:replace="~{fragments :: footer}"></div>
 <div th:replace="~{fragments :: scripts}"></div>
