@@ -30,7 +30,7 @@
             </ul>
         </div>
         <div class="nav-item" th:if="${user != null}">
-            <a class="nav-link" th:href="@{/logout}" style="color: #edf2f4;">
+            <a class="nav-link" th:href="@{/logout}" style="color: #2b2d42;">
                 <img th:src="@{/img/logout.png}" alt="Logout Icon" style="width: 24px; height: 24px;"> Logout
             </a>
         </div>
@@ -39,13 +39,12 @@
 
 
 <!-- Footer Fragment -->
-<footer th:fragment="footer">
-    <footer class="text-center text-lg-start" style="background-color: #37517e;">
-        <div class="text-center p-3 footer-text" style="color: #edf2f4;">
-            © 2024 Porkmon walab.
-        </div>
-    </footer>
+<footer class="text-center text-lg-start" style="background-color: #edf2f4;">
+    <div class="text-center p-3 footer-text" style="color: #2b2d42;">
+        © 2024 Porkmon walab.
+    </div>
 </footer>
+
 
 <!-- Bootstrap JS and dependencies Fragment -->
 <script th:fragment="scripts">

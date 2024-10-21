@@ -9,17 +9,23 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
   <link th:href="@{/css/styles.css}" rel="stylesheet">
   <style>
-    body {
-      background-color: #edf2f4;
+    body, html {
+      background-color: #ffffff; /* 전체 배경색 흰색 */
+      height: 100%;
+      margin: 0;
+      padding: 0;
     }
     .contest-banner {
-      background: linear-gradient(to right, #37517e, #000000);
-      color: white;
+      background-image: url('/img/contest_backimage.png');
+      background-size: cover;
+      color: #2b2d42;
       padding: 30px;
-      border-radius: 10px;
       display: flex;
       flex-direction: column;
       margin-top: -10px;
+      position: relative;
+      height: 190px;
+      background-color: #ffffff;
     }
     .contest-header {
       display: flex;
@@ -35,7 +41,7 @@
       margin-top: 10px;
     }
     .back-button, .edit-button, .new-problem-button, .ranking-dashboard-button {
-      background-color: #47b2e4;
+      background-color: #37517e;
       border: 0;
       color: #fff;
       transition: 0.4s;

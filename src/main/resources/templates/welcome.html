@@ -28,21 +28,29 @@
             height: 100%;
             margin: 0;
             font-family: 'Source Code Pro', monospace;
-            background: #edf2f4;
-            color: #2b2d42;
+            background: #edf2f4; /* 배경색 적용 */
+            color: #2b2d42; /* 포인트 색상 적용 */
             display: flex;
             flex-direction: column;
         }
 
         /* 푸터 스타일 */
         footer {
-            color: #edf2f4;
+            background-color: #edf2f4; /* 푸터 배경색 */
+            color: #2b2d42; /* 푸터 텍스트 색상 */
             margin-top: auto; /* Push footer to the bottom */
             width: 100%;
             font-size: 1.2rem; /* 푸터 텍스트 크기 증가 */
         }
         .navbar {
             height: 110px;
+            background-color: #edf2f4 !important; /* 네비게이션 배경색 */
+        }
+        .navbar-brand {
+            color: #2b2d42 !important; /* 네비게이션 브랜드 색상 */
+        }
+        .navbar-nav .nav-link {
+            color: #2b2d42 !important; /* 네비게이션 링크 색상 */
         }
         .content {
             display: flex;
@@ -68,16 +76,16 @@
 </head>
 <body>
 <nav th:fragment="nav">
-    <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #37517e;">
+    <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #edf2f4;">
         <div class="container">
-            <a class="navbar-brand" href="/" style="color: #edf2f4;">Hisolve</a>
+            <a class="navbar-brand" href="/" style="color: #2b2d42;">Hisolve</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="https://walab.info:8443/HisnetLogin/hisnet-login?returnUrl=http://localhost:8080/login&accessKey=bcPZJPzxceIGPe6EQuxY">Login</a>
+                        <a class="nav-link" href="https://walab.info:8443/HisnetLogin/hisnet-login?returnUrl=http://localhost:8080/login&accessKey=bcPZJPzxceIGPe6EQuxY" style="color: #2b2d42;">Login</a>
                     </li>
                 </ul>
             </div>
@@ -93,7 +101,14 @@
     </div>
 </div>
 
-<div th:replace="~{fragments :: footer}"></div>
+<footer>
+    <div class="text-center text-lg-start" style="background-color: #edf2f4;">
+        <div class="text-center p-3 footer-text" style="color: #2b2d42;">
+            © 2024 Porkmon walab.
+        </div>
+    </div>
+</footer>
+
 <div th:replace="~{fragments :: scripts}"></div>
 </body>
 </html>

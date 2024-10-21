@@ -13,7 +13,7 @@ body, html {
     top: 0;
     transition: background-color 0.3s ease; /* 부드러운 배경 전환 효과 */
     z-index: 1000;
-    background-color: #37517e;
+    background-color: #ffffff;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     height: 110px;
 }
@@ -27,13 +27,13 @@ body, html {
 }
 
 .navbar-brand {
-    color: #edf2f4 !important;
+    color: #000000 !important;
     font-size: 1.5rem;
     font-weight: bold;
 }
 
 .navbar-nav .nav-link {
-    color: #edf2f4 !important;
+    color: #000000 !important;
     font-size: 1.3rem;
     margin: 0 15px;
 }
@@ -50,8 +50,8 @@ body, html {
 
 /* 푸터 스타일 */
 footer {
-    background-color: #37517e; /* 푸터 배경색 */
-    color: #edf2f4;
+    background-color: #edf2f4 !important; /* 푸터 배경색 */
+    color: #2b2d42 !important;
     margin-top: auto; /* 푸터를 하단에 배치 */
     width: 100%;
     font-size: 1.2rem; /* 푸터 텍스트 크기 증가 */
