@@ -166,7 +166,7 @@
         .background-container {
             position: relative;
             background-color: #ffffff; /* 배경 이미지를 유지하면서 흰색 배경을 설정 */
-            background-image: url(/img/contest_backimage.png);
+            background-image: url(/img/banner2.png);
             background-size: 100% auto;
             background-position: center;
             background-repeat: no-repeat;
@@ -175,7 +175,6 @@
             align-items: center;
             justify-content: center;
         }
-
 
         .text-black {
             color: black;
@@ -195,11 +194,9 @@
 </head>
 <body th:attr="data-user-role=${user.role}">
 <div th:replace="~{fragments :: nav}"></div>
-<div class="container-fluid mt-0">
     <div class="background-container main-message">
         <div class="overlay-text">Contest</div>
     </div>
-</div>
 <div class="container mt-2">
     <div class="row mt-3 form-inline">
         <div class="search-form">

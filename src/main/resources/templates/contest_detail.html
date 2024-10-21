@@ -1,132 +1,143 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title th:text="${contest.name}">Contest Details</title>
-  <!-- Bootstrap CSS -->
-  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;700&display=swap" rel="stylesheet">
-  <link th:href="@{/css/styles.css}" rel="stylesheet">
-  <style>
-    body, html {
-      background-color: #ffffff;
-      height: 100%;
-    }
-    .container-fluid {
-      padding: 0 !important;
-      background-color: #ffffff;
-    }
-    .contest-banner {
-      background-image: url('/img/contest_backimage.png');
-      background-size: cover;
-      color: #2b2d42;
-      padding: 30px;
-      display: flex;
-      flex-direction: column;
-      margin-top: -10px;
-      position: relative;
-      height: 190px;
-      background-color: #ffffff;
-    }
-    .contest-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      width: 100%;
-    }
-    .contest-header h1, .contest-header .contest-code {
-      font-size: 1.5rem;
-      font-weight: bold;
-    }
-    .contest-description {
-      margin-top: 10px;
-    }
-    .back-button {
-      background-color: #37517e;
-      border: 0;
-      color: #fff;
-      transition: 0.4s;
-      border-radius: 50px;
-      padding: 0.5rem 1rem;
-      font-size: 1rem;
-      margin: 20px 0;
-    }
-    .back-button:hover {
-      background-color: #138496;
-      text-decoration: none;
-      color: white;
-    }
-    .problem-container {
-      background-color: #edf2f4;
-      border: 1px solid #37517e;
-      padding: 20px; /* 문제 카드와 동일한 padding */
-      margin-top: 20px;
-      border-radius: 10px;
-    }
-    .problem-container h2 {
-      margin-bottom: 30px;
-    }
-    .problem-card {
-      background-color: white;
-      border: none;
-      border-radius: 10px;
-      margin-bottom: 20px;
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-      padding: 20px; /* 카드 컨텐츠 내부의 padding 추가 */
-    }
-    .problem-card h5 {
-      color: #37517e;
-      font-weight: bold;
-    }
-    .problem-card p {
-      margin-bottom: 0;
-    }
-    .due-date {
-      color: black;
-    }
-    .due-date.past-due {
-      color: red;
-    }
-  </style>
+    <title th:text="${contest.name}">Contest Details</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;700&display=swap" rel="stylesheet">
+    <link th:href="@{/css/styles.css}" rel="stylesheet">
+    <style>
+        body, html {
+            background-color: #ffffff;
+            height: 100%;
+            margin: 0;
+        }
+        .container-fluid {
+            padding: 0 !important;
+            background-color: #ffffff;
+        }
+        .contest-banner {
+            background-image: url('/img/banner2.png');
+            background-size: cover;
+            background-position: center;
+            color: #2b2d42;
+            padding: 0 30px;
+            display: flex;
+            align-items: center; /* 세로 중앙 정렬 */
+            justify-content: center; /* 가로 중앙 정렬 */
+            flex-direction: column;
+            width: 100vw; /* 화면에 꽉 차도록 설정 */
+            height: 250px; /* 배너 높이 설정 */
+            background-color: #ffffff;
+        }
+        .contest-header {
+            text-align: center;
+        }
+        .contest-header h1, .contest-header {
+            font-size: 3rem;
+            color: black;
+            font-weight: bold;
+        }
+        .contest-code {
+            font-size: 1.5rem;
+            color: black;
+            font-weight: bold;
+        }
+        .contest-description {
+            margin-top: 10px;
+            color: black;
+            font-weight: bold;
+        }
+        .back-button {
+            background-color: #37517e;
+            border: 0;
+            color: #fff;
+            transition: 0.4s;
+            border-radius: 50px;
+            padding: 0.5rem 1rem;
+            font-size: 1rem;
+            margin: 20px 0;
+        }
+        .back-button:hover {
+            background-color: #138496;
+            text-decoration: none;
+            color: white;
+        }
+        .problem-container {
+            background-color: #edf2f4;
+            border: 1px solid #37517e;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 10px;
+        }
+        .problem-container h2 {
+            margin-bottom: 30px;
+        }
+        .problem-card {
+            background-color: white;
+            border: none;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease; /* 카드 hover 시 효과 */
+            text-align: center;
+        }
+        .problem-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+        .problem-card h5 {
+            color: #37517e;
+            font-weight: bold;
+        }
+        .problem-card p {
+            margin-bottom: 0;
+            font-size: 1rem;
+            color: gray;
+        }
+        .due-date {
+            color: black;
+            margin-top: 10px;
+        }
+        .due-date.past-due {
+            color: red;
+        }
+    </style>
 </head>
 <body>
 <!-- Navigation Bar -->
 <div th:replace="~{fragments :: nav}"></div>
-<div class="container mt-1">
-  <div class="contest-banner"> <!-- 배너의 padding 조정 -->
-    <div class="contest-header">
-      <h1 th:text="${contest.name}"></h1>
-      <div class="contest-code">
-        <p>code: <span th:text="${contest.code}"></span></p>
-      </div>
-    </div>
-    <div class="contest-description">
-      <p th:text="${contest.description}"></p>
-    </div>
-  </div>
-</div>
-<div class="container mt-1">
-  <a href="/dashboard" class="btn back-button"><i class="bi bi-arrow-left"></i> Back to dashboard</a>
-  <div class="problem-container">
-    <h2>문제 목록</h2>
-    <div class="row">
-      <div class="col-lg-6 col-sm-12 my-3" th:each="problem : ${problems}">
-        <div class="card problem-card">
-          <div class="card-body">
-            <div class="card-image">
-              <i class="fas fa-file-code card-icon"></i>
+    <div class="contest-banner"> <!-- 배너의 크기를 화면에 꽉 차도록 설정하고 중앙 정렬 -->
+        <div class="contest-header">
+            <h1 th:text="${contest.name}"></h1>
+            <div class="contest-code">
+                <p>code: <span th:text="${contest.code}"></span></p>
             </div>
-            <div class="card-content">
-              <h5 class="card-title">
-                <a th:href="@{/problem/{id}(id=${problem.id})}" class="text-primary" th:text="${problem.title}" style="color: #37517e;"></a>
-              </h5>
-              <p class="card-text due-date" th:data-duedate="${problem.dueDate}"></p>
-            </div>
-          </div>
         </div>
-      </div>
+        <div class="contest-description">
+            <p th:text="${contest.description}"></p>
+        </div>
     </div>
-  </div>
+
+<div class="container mt-2">
+    <a href="/dashboard" class="btn back-button"><i class="bi bi-arrow-left"></i> Back to dashboard</a>
+    <div class="problem-container">
+        <h2>문제 목록</h2>
+        <div class="row">
+            <div class="col-lg-6 col-sm-12 my-3" th:each="problem : ${problems}">
+                <div class="card problem-card">
+                    <div class="card-content">
+                        <h5 class="card-title">
+                            <a th:href="@{/problem/{id}(id=${problem.id})}" class="text-primary" th:text="${problem.title}" style="color: #37517e;"></a>
+                        </h5>
+                        <p class="card-text due-date" th:data-duedate="${problem.dueDate}"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <!-- Footer -->
@@ -136,22 +147,22 @@
 <div th:replace="~{fragments :: scripts}"></div>
 
 <script>
-  document.addEventListener('DOMContentLoaded', function () {
-    const dueDates = document.querySelectorAll('.due-date');
-    const now = new Date();
+    document.addEventListener('DOMContentLoaded', function () {
+        const dueDates = document.querySelectorAll('.due-date');
+        const now = new Date();
 
-    dueDates.forEach(function (dueDate) {
-      const dateText = dueDate.getAttribute('data-duedate').trim();
-      const dueDateObject = new Date(dateText);
+        dueDates.forEach(function (dueDate) {
+            const dateText = dueDate.getAttribute('data-duedate').trim();
+            const dueDateObject = new Date(dateText);
 
-      if (dueDateObject < now) {
-        dueDate.classList.add('past-due');
-      }
+            if (dueDateObject < now) {
+                dueDate.classList.add('past-due');
+            }
 
-      const options = { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' };
-      dueDate.textContent = 'Due: ' + dueDateObject.toLocaleDateString('ko-KR', options).replace(', ', ' ');
+            const options = { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' };
+            dueDate.textContent = 'Due: ' + dueDateObject.toLocaleDateString('ko-KR', options).replace(', ', ' ');
+        });
     });
-  });
 </script>
 </body>
 </html>

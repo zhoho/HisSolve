@@ -10,35 +10,45 @@
   <link th:href="@{/css/styles.css}" rel="stylesheet">
   <style>
     body, html {
-      background-color: #ffffff; /* 전체 배경색 흰색 */
+      background-color: #ffffff;
       height: 100%;
       margin: 0;
-      padding: 0;
+    }
+    .container-fluid {
+      padding: 0 !important;
+      background-color: #ffffff;
     }
     .contest-banner {
-      background-image: url('/img/contest_backimage.png');
+      background-image: url('/img/banner2.png');
       background-size: cover;
+      background-position: center;
       color: #2b2d42;
-      padding: 30px;
+      padding: 0 30px;
       display: flex;
+      align-items: center;
+      justify-content: center;
       flex-direction: column;
-      margin-top: -10px;
-      position: relative;
-      height: 190px;
+      width: 100vw;
+      height: 250px;
       background-color: #ffffff;
     }
     .contest-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      width: 100%;
+      text-align: center;
     }
-    .contest-header h1, .contest-header .contest-code {
+    .contest-header h1, .contest-header {
+      font-size: 3rem;
+      color: black;
+      font-weight: bold;
+    }
+    .contest-code {
       font-size: 1.5rem;
+      color: black;
       font-weight: bold;
     }
     .contest-description {
       margin-top: 10px;
+      color: black;
+      font-weight: bold;
     }
     .back-button, .edit-button, .new-problem-button, .ranking-dashboard-button {
       background-color: #37517e;
@@ -55,28 +65,39 @@
       text-decoration: none;
       color: white;
     }
-    .section-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
     .main-container {
-      background-color: #f3f5fa;
-      border: 1px solid #dfdfff;
+      background-color: #edf2f4;
+      border: 1px solid #37517e;
       padding: 20px;
       margin-top: 20px;
       border-radius: 10px;
     }
-    .problem-card, .student-card, .co-teacher-card {
+    .problem-container {
+      margin-bottom: 30px;
+    }
+    .problem-card {
       background-color: white;
       border: none;
       border-radius: 10px;
       margin-bottom: 20px;
       box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      text-align: center;
     }
-    .card-body {
-      display: flex;
-      align-items: center;
+
+    .problem-card h5 {
+      color: black;
+      font-weight: bold;
+    }
+
+    .problem-card p {
+      color: black;
+    }
+
+    .problem-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
     }
     .card-title {
       color: #37517e;
@@ -84,26 +105,18 @@
     }
     .card-text {
       margin-bottom: 0;
-      color: black;
-    }
-    .card-icon {
-      font-size: 3rem;
-      margin-right: 20px;
+      color: gray;
     }
     .summary-container {
       margin-top: 20px;
-      text-align: left;
-      padding-left: 15px;
-    }
-    .due-date {
-      color: red;
+      text-align: center;
     }
   </style>
 </head>
 <body>
 <div th:replace="~{fragments :: nav}"></div>
 
-<div class="container mt-1">
+
   <div class="contest-banner">
     <div class="contest-header">
       <h1 th:text="${contest.name}"></h1>
@@ -115,11 +128,9 @@
       <p th:text="${contest.description}"></p>
     </div>
   </div>
-  <div class="d-flex justify-content-between">
-    <a href="/dashboard" class="btn back-button"><i class="fas fa-arrow-left"></i> Back to dashboard</a>
-    <a th:href="@{/contest/edit(contestId=${contest.id})}" class="btn edit-button"><i class="fas fa-edit"></i> Edit Contest</a>
-  </div>
 
+<div class="container mt-2">
+  <a href="/dashboard" class="btn back-button"><i class="fas fa-arrow-left"></i> Back to dashboard</a>
   <div class="main-container">
     <div class="problem-container">
       <div class="section-header">
@@ -130,15 +141,12 @@
         <div class="col-lg-6 col-sm-12 my-3" th:each="problem : ${problems}">
           <div class="card problem-card">
             <div class="card-body">
-              <div class="card-image">
-                <i class="fas fa-file-code card-icon"></i>
-              </div>
               <div class="card-content">
                 <h5 class="card-title">
                   <a th:href="@{/admin_problem_detail/{id}(id=${problem.id})}" th:text="${problem.title}" style="color: #37517e;"></a>
                 </h5>
-                <p class="card-text" th:text="'참여자 수: ' + ${problemParticipantCounts[problem.id]}"></p> <!-- 참여자 수 표시 -->
-                <p class="card-text" th:text="'Due: ' + ${#temporals.format(problem.dueDate, 'yyyy. MM. dd. a hh:mm')}"></p> <!-- 하나의 due만 출력 -->
+                <p class="card-text" th:text="'참여자 수: ' + ${problemParticipantCounts[problem.id]}"></p>
+                <p class="card-text" th:text="'Due: ' + ${#temporals.format(problem.dueDate, 'yyyy. MM. dd. a hh:mm')}"></p>
               </div>
             </div>
           </div>
@@ -166,7 +174,6 @@
           <td th:text="${user.uniqueId}"></td>
           <td th:text="${user.email}"></td>
           <td>
-            <!-- 활동 중이면 초록색, 그렇지 않으면 회색 원 -->
             <i class="fas fa-circle" th:classappend="${user.active ? 'text-success' : 'text-secondary'}"></i>
           </td>
           <td>
@@ -177,7 +184,7 @@
       </table>
     </div>
 
-    <div class="summary-container text-center">
+    <div class="summary-container">
       <a th:href="@{/admin_contest/rankDashboard/{id}(id=${contest.id})}" class="btn ranking-dashboard-button"><i class="fas fa-chart-bar"></i> Ranking Dashboard</a>
     </div>
   </div>
@@ -210,7 +217,6 @@
     </div>
   </div>
 </div>
-
 
 <!-- Footer -->
 <div th:replace="~{fragments :: footer}"></div>
