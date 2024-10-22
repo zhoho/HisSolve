@@ -3,6 +3,7 @@
 <head>
     <title>Dashboard</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <link th:href="@{/css/styles.css}" rel="stylesheet">
@@ -13,26 +14,9 @@
         body, html {
             background: #ffffff;
         }
-        .user-info {
-            background-color: white;
-            padding: 20px 30px;
-            margin-top: 0;
-        }
-        .welcome-text {
-            font-size: 1.5rem;
-            font-weight: bold;
-        }
-        .email-text {
-            font-size: 1rem;
-            color: gray;
-        }
-        .edit-btn {
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-        }
+
         .edit-btn a {
-            background-color: #37517e; /* 버튼 색상 변경 */
+            background-color: #37517e;
             border: 0;
             color: #fff;
             transition: 0.4s;
@@ -42,64 +26,56 @@
             margin-right: 50px;
         }
         .edit-btn a:hover {
-            background-color: #1a1c28; /* 호버 시 색상 변경 */
+            background-color: #1a1c28;
             text-decoration: none;
             color: white;
         }
         .btn-primary {
-            background-color: #37517e; /* 버튼 배경색 변경 */
+            background-color: #37517e;
             border: 0;
             color: #fff;
             transition: 0.4s;
-            border-radius: 50px;
+            border-radius: 10px;
+            padding: 10px;
+            font-size: 1rem;
         }
         .btn-primary:hover {
-            background-color: #1a1c28; /* 버튼 호버 색상 변경 */
+            background-color: #1a1c28;
         }
         .card {
             position: relative;
             transition: transform 0.2s ease, box-shadow 0.2s ease;
-            min-height: 250px; /* 카드 높이 조정 */
-            margin-bottom: 20px; /* 카드 간격 조정 */
-            text-align: center; /* 카드 내용 가운데 정렬 */
+            min-height: 250px;
+            margin-bottom: 20px;
+            text-align: center;
         }
         .card:hover {
             transform: translateY(-10px);
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
         }
-        .card-content {
-            padding: 15px;
+        .card-header {
+            background-color: white;
         }
+
         .card-title {
             font-size: 1.5rem;
-            color: #37517e;
+            /*color: #37517e;*/
+            color: black;
+            font-weight: bold;
             margin-bottom: 10px;
         }
         .card-text {
             font-size: 1rem;
-            color: gray; /* 설명 텍스트 색상 */
-            margin-bottom: 5px; /* 설명과 상태 간격 조정 */
+            color: gray;
+            margin-bottom: 5px;
         }
 
-        .진행중 {
-            background-color: #d4edda; /* 진행 중 상태 색상 (초록색) */
-            color: #155724;
-            width:75px;
-        }
-        .종료됨 {
-            background-color: #f8d7da; /* 종료됨 상태 색상 (빨간색) */
-            color: #721c24;
-            width:60px;
-        }
-        .진행예정 {
-            background-color: #fff3cd; /* 진행 예정 상태 색상 (회색) */
-            color: #856404;
-            width:85px;
-        }
-
-        /* 컨테스트 코드 입력란과 검색 입력란을 같은 라인에 배치 */
         .form-control {
             width: 100%;
+        }
+
+        .form-inline .form-control {
+            background: white;
         }
 
         .form-inline {
@@ -109,11 +85,11 @@
         }
 
         .search-form {
-            width: 60%; /* 검색란의 너비를 조정 */
+            width: 60%;
         }
 
         .contest-form {
-            width: 38%; /* 코드 입력란의 너비를 조정 */
+            width: 38%;
             display: flex;
             justify-content: flex-end;
         }
@@ -123,30 +99,10 @@
             width: 100%;
         }
 
-        /* 팝업 스타일 */
-        .popup {
-            position: absolute;
-            z-index: 10;
-            background-color: #fff;
-            border: 1px solid #ddd;
-            padding: 10px;
-            width: 300px;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-            display: none;
-        }
         .card:hover .popup {
             display: block;
         }
-        .popup-title {
-            font-weight: bold;
-            margin-bottom: 10px;
-            font-size: 1.2rem;
-        }
-        .popup-description {
-            font-size: 1rem;
-        }
 
-        /* 자동완성 목록 */
         .autocomplete-results {
             background-color: white;
             max-height: 200px;
@@ -165,7 +121,7 @@
         }
         .background-container {
             position: relative;
-            background-color: #ffffff; /* 배경 이미지를 유지하면서 흰색 배경을 설정 */
+            background-color: #ffffff;
             background-image: url(/img/banner2.png);
             background-size: 100% auto;
             background-position: center;
@@ -184,19 +140,19 @@
             font-weight: bold;
         }
         .overlay-text {
-            width: 100%; /* 가로로 화면을 꽉 채움 */
-            text-align: center; /* 텍스트를 가운데 정렬 */
-            font-size: 3rem; /* 폰트 크기 조정 */
-            color: black; /* 텍스트 색상 */
+            width: 100%;
+            text-align: center;
+            font-size: 3rem;
+            color: black;
             font-weight: bold;
         }
     </style>
 </head>
 <body th:attr="data-user-role=${user.role}">
 <div th:replace="~{fragments :: nav}"></div>
-    <div class="background-container main-message">
-        <div class="overlay-text">Contest</div>
-    </div>
+<div class="background-container main-message">
+    <div class="overlay-text">Contest</div>
+</div>
 <div class="container mt-2">
     <div class="row mt-3 form-inline">
         <div class="search-form">
@@ -207,7 +163,6 @@
             <div id="autocompleteResults" class="autocomplete-results"></div>
         </div>
 
-        <!-- 코드 입력란 -->
         <div class="contest-form">
             <form th:if="${user.role == 'USER'}" th:action="@{/contest/join}" method="post">
                 <input class="form-control" type="text" placeholder="Enter Contest code" name="code" required>
@@ -222,48 +177,60 @@
     <div id="backButtonContainer" class="text-center mt-3" style="display: none;">
         <button id="backButton" class="btn btn-secondary">Back</button>
     </div>
-    <div class="row" id="contestCards">
-        <div class="col-lg-12 col-sm-12 my-3" th:if="${user.role == 'USER'}" th:each="contest : ${contests}">
+    <!-- USER용 대회 목록 카드 -->
+    <div class="row" id="userContestCards"> <!-- USER용 id 설정 -->
+        <div class="col-lg-6 col-sm-12 my-3" th:if="${user.role == 'USER'}" th:each="contest : ${contests}">
             <a th:href="@{/contest/{id}(id=${contest.id})}"
                style="text-decoration: none; color: inherit;"
                th:attr="data-status=${contest.status}"
-               onclick="return handleContestClick(this.dataset.status);">
-                <div class="card shadow-sm p-3">
-                    <div class="card-content">
-                        <div class="contest-status"
-                             th:class="${contest.status == '진행중' ? '진행중' : (contest.status == '종료됨' ? '종료됨' : '진행예정')}"
-                             th:text="${contest.status}">
-                        </div> <!-- 대회 상태 표시 추가 -->
+               onclick="return handleContestClick(this.dataset.status);"
+               th:id="'contest-card-' + ${contest.id}">
+                <div class="card shadow-sm p-3" th:id="'contest-card-content-' + ${contest.id}">
+                    <div class="card-header">
+                    <span class="badge"
+                          th:classappend="${contest.status == '진행 중' ? 'bg-warning' : (contest.status == '종료됨' ? 'bg-secondary' : 'bg-success')}"
+                          th:text="${contest.status}">
+                    </span>
+                    </div>
+                    <div class="card-body">
                         <h5 class="card-title" th:text="${contest.name}"></h5>
                         <p class="card-text" th:text="${contest.description}">Description</p>
-                        <p class="card-text">참여자 수: <span th:text="${participantCounts[contest.id]}"></span></p>
-                        <p class="card-text text-black" th:text="${contest.duration}"></p>
+                        <a th:href="@{/contest/{id}(id=${contest.id})}" class="btn btn-primary">이동</a>
+                    </div>
+                    <div class="card-footer text-body-secondary">
+                        <p th:text="${contest.duration}"></p>
                     </div>
                 </div>
             </a>
         </div>
+    </div>
 
-        <div class="col-lg-12 col-sm-12 my-3" th:if="${user.role == 'ADMIN'}" th:each="contest : ${contests}">
-            <a th:href="@{/admin_contest/{id}(id=${contest.id})}" style="text-decoration: none; color: inherit;">
-                <div class="card shadow-sm p-3">
-                    <div class="card-content">
-                        <div class="contest-status"
-                             th:class="${contest.status == '진행중' ? '진행중' : (contest.status == '종료됨' ? '종료됨' : '진행예정')}"
-                             th:text="${contest.status}">
-
-                        </div> <!-- 대회 상태 표시 추가 -->
+    <!-- ADMIN용 대회 목록 카드 -->
+    <div class="row" id="adminContestCards"> <!-- ADMIN용 id 설정 -->
+        <div class="col-lg-6 col-sm-12 my-3" th:if="${user.role == 'ADMIN'}" th:each="contest : ${contests}">
+            <a th:href="@{/admin_contest/{id}(id=${contest.id})}" style="text-decoration: none; color: inherit;"
+               th:id="'admin-contest-card-' + ${contest.id}">
+                <div class="card shadow-sm p-3" th:id="'admin-contest-card-content-' + ${contest.id}">
+                    <div class="card-header">
+                    <span class="badge"
+                          th:classappend="${contest.status == '진행 중' ? 'bg-warning' : (contest.status == '종료됨' ? 'bg-secondary' : 'bg-success')}"
+                          th:text="${contest.status}">
+                    </span>
+                    </div>
+                    <div class="card-body">
                         <h5 class="card-title" th:text="${contest.name}"></h5>
                         <p class="card-text" th:text="${contest.description}">Description</p>
-                        <p class="card-text text-black">참여자 수: <span th:text="${participantCounts[contest.id]}"></span></p>
-                        <p class="card-text text-black" th:text="${contest.duration}"></p> <!-- 대회 기간 추가 -->
-
+                        <a th:href="@{/admin_contest/{id}(id=${contest.id})}" class="btn btn-primary">관리 페이지로 이동</a>
+                    </div>
+                    <div class="card-footer text-body-secondary">
+                        <p th:text="${contest.duration}"></p>
                     </div>
                 </div>
             </a>
         </div>
     </div>
 </div>
-<!-- Footer -->
+    <!-- Footer -->
 <div th:replace="~{fragments :: footer}"></div>
 
 <!-- Bootstrap JS and dependencies -->
@@ -271,7 +238,6 @@
 
 <script>
     function handleContestClick(status) {
-        // console.log("Contest Status:", status); //log 확인
         if (status !== '진행 중') {
             alert("대회가 진행 중이지 않으므로 이동할 수 없습니다.");
             return false;
@@ -280,7 +246,7 @@
     }
 
     const userRole = document.body.dataset.userRole;
-    // 검색 폼 제출 시 AJAX로 검색 요청 보내기
+
     document.getElementById('searchForm').addEventListener('submit', function(event) {
         event.preventDefault(); // 폼의 기본 제출 동작을 막음
         const searchQuery = document.getElementById('searchQuery').value;
@@ -292,59 +258,39 @@
         fetch(`/contest/search?searchQuery=${encodeURIComponent(searchQuery)}`)
             .then(response => response.json())
             .then(data => {
-                console.log(data);  // 검색 결과 로그 출력
                 const searchResultsDiv = document.getElementById('searchResults');
                 const contestCardsDiv = document.getElementById('contestCards');
-                searchResultsDiv.innerHTML = '';
-                contestCardsDiv.style.display = 'none';
+                searchResultsDiv.innerHTML = '';  // 기존 검색 결과 초기화
+                contestCardsDiv.style.display = 'none';  // 원래 카드 목록 숨기기
 
                 // 검색 결과를 동적으로 생성
                 if (data.length === 0) {
                     searchResultsDiv.innerHTML = '<p>No contests found.</p>';
                 } else {
                     data.forEach(contest => {
-                        let contestCard = '';
-
-                        if (userRole === 'USER') {
-                            contestCard = `
-                            <div class="col-lg-6 col-sm-12 my-3">
-                                <div class="card shadow-sm p-3">
-                                    <a href="/contest/${contest.id}" style="text-decoration: none; color: inherit;"
-                                       data-status="${contest.status}"
-                                       onclick="return handleContestClick('${contest.status}');">
-                                        <div class="card-content">
-                                            <div class="contest-status ${contest.status === '진행중' ? '진행중' : (contest.status === '종료됨' ? '종료됨' : '진행예정')}">
-                                                ${contest.status}
-                                            </div>
-                                            <h5 class="card-title">${contest.name}</h5>
-                                            <p class="card-text">${contest.description}</p>
-                                            <p class="card-text text-black">참여자 수: <span>${contest.participantCount}</span></p>
-                                            <p class="card-text text-black"><span>${contest.duration}</span></p>
-                                        </div>
-                                    </a>
-                                </div>
+                        let contestCard = `
+                <div class="col-lg-6 col-sm-12 my-3">
+                    <div class="card shadow-sm p-3">
+                        <a href="/contest/${contest.id}" style="text-decoration: none; color: inherit;"
+                           data-status="${contest.status}"
+                           onclick="return handleContestClick('${contest.status}');">
+                            <div class="card-header">
+                                <span class="contest-status ${contest.status === '진행중' ? '진행중' : (contest.status === '종료됨' ? '종료됨' : '진행예정')}">
+                                    ${contest.status}
+                                </span>
                             </div>
-                        `;
-                        } else if (userRole === 'ADMIN') {
-                            contestCard = `
-                            <div class="col-lg-6 col-sm-12 my-3">
-                                <div class="card shadow-sm p-3">
-                                    <a href="/admin_contest/${contest.id}" style="text-decoration: none; color: inherit;">
-                                        <div class="card-content">
-                                            <div class="contest-status ${contest.status === '진행중' ? '진행중' : (contest.status === '종료됨' ? '종료됨' : '진행예정')}">
-                                                ${contest.status}
-                                            </div>
-                                            <h5 class="card-title">${contest.name}</h5>
-                                            <p class="card-text">${contest.description}</p>
-                                            <p class="card-text text-black">참여자 수: <span>${contest.participantCount}</span></p>
-                                            <p class="card-text text-black"><span>${contest.duration}</span></p>
-                                        </div>
-                                    </a>
-                                </div>
+                            <div class="card-body">
+                                <h5 class="card-title">${contest.name}</h5>
+                                <p class="card-text">${contest.description}</p>
+                                <a href="/contest/${contest.id}" class="btn btn-primary">이동</a>
                             </div>
-                        `;
-                        }
-
+                            <div class="card-footer text-body-secondary">
+                                <p>${contest.duration}</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                `;
                         searchResultsDiv.innerHTML += contestCard;
                     });
                 }
@@ -354,46 +300,34 @@
             .catch(error => console.error('Error:', error));
     });
 
-
-    // 뒤로 가기 버튼 클릭 시 원래 상태로 복원
     document.getElementById('backButton').addEventListener('click', function () {
-        // 검색 결과 숨기기
         document.getElementById('searchResults').innerHTML = '';
-        // 원래 카드 다시 표시
         document.getElementById('contestCards').style.display = 'flex';
-        // 뒤로 가기 버튼 숨기기
         document.getElementById('backButtonContainer').style.display = 'none';
-        // 검색어 입력란 초기화
         document.getElementById('searchQuery').value = '';
-        // 자동완성 목록 숨기기
         document.getElementById('autocompleteResults').innerHTML = '';
     });
 
     document.getElementById('searchQuery').addEventListener('input', function (event) {
         const searchQuery = event.target.value;
 
-        // 최소 입력 길이를 확인 (예: 2글자 이상일 때만 자동완성 실행)
         if (searchQuery.length >= 2) {
-            // AJAX 요청
             fetch(`/contest/autocomplete?searchQuery=${encodeURIComponent(searchQuery)}`)
                 .then(response => response.json())
                 .then(data => {
-                    // 자동완성 목록을 렌더링할 div 요소
                     const autocompleteDiv = document.getElementById('autocompleteResults');
-                    autocompleteDiv.innerHTML = ''; // 기존 목록 초기화
+                    autocompleteDiv.innerHTML = '';
 
-                    // 자동완성 결과가 있을 경우 렌더링
                     if (data.length > 0) {
-                        // 자동완성 목록 생성 부분
                         data.forEach(contest => {
                             const suggestion = document.createElement('div');
                             suggestion.textContent = contest.name;
-                            suggestion.classList.add('autocomplete-item'); // 스타일을 위한 클래스
+                            suggestion.classList.add('autocomplete-item');
                             suggestion.addEventListener('click', () => {
-                                document.getElementById('searchQuery').value = contest.name; // 검색창에 클릭한 항목 입력
-                                document.getElementById('autocompleteResults').innerHTML = ''; // 자동완성 목록 제거
+                                document.getElementById('searchQuery').value = contest.name;
+                                document.getElementById('autocompleteResults').innerHTML = '';
                             });
-                            autocompleteDiv.appendChild(suggestion); // 자동완성 항목 추가
+                            autocompleteDiv.appendChild(suggestion);
                         });
                     }
                 })
@@ -401,6 +335,5 @@
         }
     });
 </script>
-
 </body>
 </html>
