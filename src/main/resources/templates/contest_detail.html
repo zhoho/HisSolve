@@ -127,23 +127,26 @@
     <a href="/dashboard" class="btn back-button"><i class="bi bi-arrow-left"></i> Back to dashboard</a>
     <div class="row">
         <div class="col-lg-6 col-sm-12 my-3" th:each="problem : ${problems}">
-            <div class="card shadow-sm p-3">
-                <div class="card-header">
-                    <!-- 상태 표시 -->
-                    <span th:if="${problemStatusMap[problem.id]} == '진행 중'" class="badge bg-warning">진행 중</span>
-                    <span th:if="${problemStatusMap[problem.id]} == '제출 완료'" class="badge bg-success">제출 완료</span>
-                    <span th:if="${problemStatusMap[problem.id]} == '미진행'" class="badge bg-secondary">미진행</span>
+            <a th:href="@{/problem/{id}(id=${problem.id})}" class="card-link" style="text-decoration: none;">
+                <div class="card shadow-sm p-3">
+                    <div class="card-header">
+                        <!-- 상태 표시 -->
+                        <span th:if="${problemStatusMap[problem.id]} == '진행 중'" class="badge bg-warning">진행 중</span>
+                        <span th:if="${problemStatusMap[problem.id]} == '제출 완료'" class="badge bg-success">제출 완료</span>
+                        <span th:if="${problemStatusMap[problem.id]} == '미진행'" class="badge bg-secondary">미진행</span>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${problem.title}">문제 제목</h5>
+                    </div>
+                    <div class="card-footer text-body-secondary">
+                        <span class="due-date" th:text="'마감일: ' + ${#temporals.format(problem.dueDate, 'yyyy. MM. dd. a hh:mm')}"></span>
+                    </div>
                 </div>
-                <div class="card-body">
-                    <h5 class="card-title" th:text="${problem.title}">문제 제목</h5>
-                </div>
-                <div class="card-footer text-body-secondary">
-                    <span class="due-date" th:text="'마감일: ' + ${#temporals.format(problem.dueDate, 'yyyy. MM. dd. a hh:mm')}"></span>
-                </div>
-            </div>
+            </a>
         </div>
     </div>
 </div>
+
 
 <!-- Footer -->
 <div th:replace="~{fragments :: footer}"></div>
