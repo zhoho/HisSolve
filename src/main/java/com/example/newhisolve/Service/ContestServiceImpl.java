@@ -9,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import com.example.newhisolve.Repository.SavedCodeRepository;
 
-
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -25,7 +24,8 @@ public class ContestServiceImpl implements ContestService {
 
     @Override
     public Contest createContest(Contest contest, String adminUsername) {
-        User admin = userRepository.findByUsername(adminUsername).orElseThrow(() -> new RuntimeException("Admin not found"));
+        User admin = userRepository.findByUsername(adminUsername)
+                .orElseThrow(() -> new RuntimeException("Admin not found"));
         contest.setAdmin(admin);
         contest.setCode(UUID.randomUUID().toString().substring(0, 5));
         return contestRepository.save(contest);
@@ -33,15 +33,18 @@ public class ContestServiceImpl implements ContestService {
 
     @Override
     public void joinContest(String code, String userUsername) {
-        Contest contest = contestRepository.findByCode(code).orElseThrow(() -> new RuntimeException("Contest not found"));
-        User user = userRepository.findByUsername(userUsername).orElseThrow(() -> new RuntimeException("User not found"));
+        Contest contest = contestRepository.findByCode(code)
+                .orElseThrow(() -> new RuntimeException("Contest not found"));
+        User user = userRepository.findByUsername(userUsername)
+                .orElseThrow(() -> new RuntimeException("User not found"));
         contest.getUsers().add(user);
         contestRepository.save(contest);
     }
 
     @Override
     public Contest findById(Long id) {
-        return contestRepository.findById(id).orElseThrow(() -> new RuntimeException("Contest not found"));
+        return contestRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Contest not found"));
     }
 
     @Override
@@ -75,19 +78,17 @@ public class ContestServiceImpl implements ContestService {
 
     @Override
     public List<User> getSortedUsersByTotalScore(Long contestId) {
-        Contest contest = findById(contestId); // contestId로 Contest 객체 가져옴
-        List<User> users = contest.getUsers(); // Contest에서 참가한 User 목록 가져옴
+        Contest contest = findById(contestId);
+        List<User> users = contest.getUsers();
 
         return users.stream()
                 .sorted((user1, user2) -> {
-                    // 각 사용자에 대한 총 점수를 계산하여 비교
                     int score1 = getTotalScoreByUserAndContest(user1.getId(), contestId);
                     int score2 = getTotalScoreByUserAndContest(user2.getId(), contestId);
-                    return Integer.compare(score2, score1); // 높은 점수가 먼저 오도록 내림차순 정렬
+                    return Integer.compare(score2, score1);
                 })
                 .collect(Collectors.toList());
     }
-
 
     @Override
     public Map<Long, List<Integer>> getUserProblemScores(Long contestId) {
@@ -124,7 +125,6 @@ public class ContestServiceImpl implements ContestService {
         if (contestOptional.isPresent() && userOptional.isPresent()) {
             Contest contest = contestOptional.get();
             User user = userOptional.get();
-
             contest.getUsers().remove(user);
             contestRepository.save(contest);
         } else {
@@ -150,28 +150,21 @@ public class ContestServiceImpl implements ContestService {
                 .getUsers();
         List<Problem> problems = problemRepository.findByContestId(contestId);
 
-        // 각 사용자의 통과한 테스트케이스 수를 저장할 맵
         Map<Long, List<Integer>> userPassedTestCasesMap = new HashMap<>();
 
-        // 각 사용자의 각 문제에 대해 테스트케이스를 비교하여 통과한 수를 계산
         for (User user : users) {
             List<Integer> passedTestCasesPerProblem = new ArrayList<>();
-
             for (Problem problem : problems) {
                 Optional<Submission> submissionOpt = submissionRepository.findByProblemAndUser(problem, user);
 
                 if (submissionOpt.isPresent()) {
                     Submission submission = submissionOpt.get();
                     int passedCount = 0;
-
-                    // 문제의 모든 테스트케이스 가져옴
                     List<TestCase> testCases = problem.getTestCases();
 
                     if (submission.getScore() == 100) {
-                        // 점수가 100점이면 모든 테스트케이스 통과
                         passedCount = testCases.size();
                     } else {
-                        // 각 테스트케이스의 결과를 비교하여 통과 여부를 확인
                         for (TestCase testCase : testCases) {
                             if (submission.getResult().equals(testCase.getExpectedOutput())) {
                                 passedCount++;
@@ -179,21 +172,17 @@ public class ContestServiceImpl implements ContestService {
                         }
                     }
 
-                    // 문제당 통과한 테스트케이스 수를 저장
                     passedTestCasesPerProblem.add(passedCount);
                 } else {
-                    // 제출이 없으면 통과한 테스트케이스 수는 0
                     passedTestCasesPerProblem.add(0);
                 }
             }
 
-            // 사용자의 ID를 키로 하고 통과한 테스트케이스 수 리스트를 값으로 저장
             userPassedTestCasesMap.put(user.getId(), passedTestCasesPerProblem);
         }
 
         return userPassedTestCasesMap;
     }
-
 
     @Override
     public Map<Long, List<Boolean>> getUserProblemSolvedStatus(Long contestId) {
@@ -202,19 +191,15 @@ public class ContestServiceImpl implements ContestService {
                 .getUsers();
         List<Problem> problems = problemRepository.findByContestId(contestId);
 
-        // 각 사용자의 문제 해결 상태를 저장할 맵
         Map<Long, List<Boolean>> userSolvedStatusMap = new HashMap<>();
 
         for (User user : users) {
             List<Boolean> solvedStatusPerProblem = new ArrayList<>();
-
             for (Problem problem : problems) {
                 Optional<Submission> submissionOpt = submissionRepository.findByProblemAndUser(problem, user);
 
                 if (submissionOpt.isPresent()) {
                     Submission submission = submissionOpt.get();
-
-                    // 모든 테스트케이스를 통과했는지 확인
                     boolean isSolved = Integer.parseInt(submission.getPass_count()) == problem.getTestCases().size();
                     solvedStatusPerProblem.add(isSolved);
                 } else {
@@ -235,12 +220,10 @@ public class ContestServiceImpl implements ContestService {
                 .getUsers();
         List<Problem> problems = problemRepository.findByContestId(contestId);
 
-        // 각 사용자의 제출 시간을 저장할 맵
         Map<Long, List<String>> userSubmissionTimesMap = new HashMap<>();
 
         for (User user : users) {
             List<String> submissionTimesPerProblem = new ArrayList<>();
-
             for (Problem problem : problems) {
                 Optional<Submission> submissionOpt = submissionRepository.findByProblemAndUser(problem, user);
 
@@ -257,6 +240,7 @@ public class ContestServiceImpl implements ContestService {
 
         return userSubmissionTimesMap;
     }
+
     @Override
     public long getParticipantCount(Long contestId) {
         return contestRepository.findById(contestId)
@@ -270,11 +254,31 @@ public class ContestServiceImpl implements ContestService {
         Map<Long, Long> problemParticipantCounts = new HashMap<>();
 
         for (Problem problem : problems) {
-            long participantCount = savedCodeRepository.countDistinctUsersByProblemId(problem.getId()); // 여기서 메서드 이름을 수정
+            long participantCount = savedCodeRepository.countDistinctUsersByProblemId(problem.getId());
             problemParticipantCounts.put(problem.getId(), participantCount);
         }
 
         return problemParticipantCounts;
     }
 
+    @Override
+    public User findUserByUsername(String username) {
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found: " + username));
+    }
+
+    @Override
+    public String getProblemStatusForUser(Problem problem, User user) {
+        Optional<Submission> submission = submissionRepository.findByUserAndProblem(user, problem);
+        if (submission.isPresent()) {
+            return "제출 완료";
+        }
+
+        Optional<SavedCode> savedCode = savedCodeRepository.findByUserAndProblem(user, problem);
+        if (savedCode.isPresent()) {
+            return "진행 중";
+        }
+
+        return "미진행";
+    }
 }

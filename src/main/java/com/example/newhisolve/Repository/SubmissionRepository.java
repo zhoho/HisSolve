@@ -26,4 +26,6 @@ public interface SubmissionRepository extends JpaRepository<Submission, Long> {
 
     @Query("SELECT s FROM Submission s WHERE s.user.id = :userId AND s.problem.id = :problemId")
     Optional<Submission> findByUserIdAndProblemId(Long userId, Long problemId);
+
+    Optional<Submission> findByUserAndProblem(User user, Problem problem);
 }

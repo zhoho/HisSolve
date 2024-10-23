@@ -3,10 +3,10 @@
 <head>
   <title th:text="${contest.name}">Admin Contest Details</title>
   <!-- Bootstrap CSS -->
-  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;700&display=swap" rel="stylesheet">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+  <!-- Bootstrap Icons 추가 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
   <link th:href="@{/css/styles.css}" rel="stylesheet">
   <style>
     body, html {
@@ -14,42 +14,7 @@
       height: 100%;
       margin: 0;
     }
-    .container-fluid {
-      padding: 0 !important;
-      background-color: #ffffff;
-    }
-    .contest-banner {
-      background-image: url('/img/banner2.png');
-      background-size: cover;
-      background-position: center;
-      color: #2b2d42;
-      padding: 0 30px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      width: 100vw;
-      height: 250px;
-      background-color: #ffffff;
-    }
-    .contest-header {
-      text-align: center;
-    }
-    .contest-header h1, .contest-header {
-      font-size: 3rem;
-      color: black;
-      font-weight: bold;
-    }
-    .contest-code {
-      font-size: 1.5rem;
-      color: black;
-      font-weight: bold;
-    }
-    .contest-description {
-      margin-top: 10px;
-      color: black;
-      font-weight: bold;
-    }
+
     .back-button, .edit-button, .new-problem-button, .ranking-dashboard-button {
       background-color: #37517e;
       border: 0;
@@ -60,74 +25,120 @@
       font-size: 1rem;
       margin: 20px 0;
     }
+
     .back-button:hover, .edit-button:hover, .new-problem-button:hover, .ranking-dashboard-button:hover {
       background-color: #138496;
       text-decoration: none;
       color: white;
     }
-    .main-container {
-      background-color: #edf2f4;
-      border: 1px solid #37517e;
-      padding: 20px;
-      margin-top: 20px;
-      border-radius: 10px;
-    }
-    .problem-container {
-      margin-bottom: 30px;
-    }
-    .problem-card {
-      background-color: white;
-      border: none;
-      border-radius: 10px;
-      margin-bottom: 20px;
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-      padding: 20px;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-      text-align: center;
+
+    /* 배너 이미지와 텍스트 중앙 정렬을 위한 CSS */
+    .carousel-item {
+      position: relative;
     }
 
-    .problem-card h5 {
-      color: black;
+    .carousel-caption {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: white;
+      text-align: center;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+    }
+
+    .carousel-caption h1 {
+      font-size: 3rem;
       font-weight: bold;
     }
 
-    .problem-card p {
-      color: black;
+    .carousel-caption p {
+      font-size: 1.25rem;
     }
 
-    .problem-card:hover {
+    .carousel-caption .contest-code {
+      font-size: 1rem;
+      font-weight: bold;
+    }
+
+    .card {
+      position: relative;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      min-height: 250px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .card:hover {
       transform: translateY(-10px);
       box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
     }
+
+    .card-header {
+      background-color: white;
+    }
+
     .card-title {
-      color: #37517e;
+      font-size: 1.5rem;
+      color: black;
       font-weight: bold;
+      margin-bottom: 10px;
     }
+
     .card-text {
-      margin-bottom: 0;
+      font-size: 1rem;
       color: gray;
+      margin-bottom: 5px;
     }
-    .summary-container {
+
+    table.table {
       margin-top: 20px;
       text-align: center;
+    }
+
+    table.table th, table.table td {
+      vertical-align: middle;
     }
   </style>
 </head>
 <body>
+<!-- Navigation Bar -->
 <div th:replace="~{fragments :: nav}"></div>
 
-
-  <div class="contest-banner">
-    <div class="contest-header">
-      <h1 th:text="${contest.name}"></h1>
-      <div class="contest-code">
-        <p>Class code: <span th:text="${contest.code}"></span></p>
+<!-- 캐러셀 배너 -->
+<div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel">
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <img src="/img/banner1.jpg" class="d-block w-100" alt="First Image">
+      <!-- 텍스트가 포함될 부분 -->
+      <div class="carousel-caption">
+        <h1 th:text="${contest.name}">Contest Name</h1>
+        <div class="contest-code">
+          <p>Contest code: <span th:text="${contest.code}">Code</span></p>
+        </div>
+        <p th:text="${contest.description}">Description</p>
       </div>
     </div>
-    <div class="contest-description">
-      <p th:text="${contest.description}"></p>
+    <div class="carousel-item">
+      <img src="/img/banner2.jpg" class="d-block w-100" alt="Second Image">
+      <div class="carousel-caption">
+        <h1 th:text="${contest.name}">Contest Name</h1>
+        <div class="contest-code">
+          <p>Class code: <span th:text="${contest.code}">Code</span></p>
+        </div>
+        <p th:text="${contest.description}">Description</p>
+      </div>
     </div>
   </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
 
 <div class="container mt-2">
   <a href="/dashboard" class="btn back-button"><i class="fas fa-arrow-left"></i> Back to dashboard</a>
@@ -135,29 +146,31 @@
     <div class="problem-container">
       <div class="section-header">
         <h2>Problems</h2>
-        <a th:href="@{/problem/create(contestId=${contest.id})}" class="btn new-problem-button"><i class="fas fa-plus"></i>Create</a>
+        <a th:href="@{/problem/create(contestId=${contest.id})}" class="btn new-problem-button"><i class="fas fa-plus"></i> Create</a>
       </div>
       <div class="row">
         <div class="col-lg-6 col-sm-12 my-3" th:each="problem : ${problems}">
-          <div class="card problem-card">
+          <div class="card shadow-sm p-3">
+            <div class="card-header">
+              <!-- 참여자 수 표시 -->
+              <p class="card-text">참여자 수: <span th:text="${problemParticipantCounts[problem.id]}"></span></p>
+            </div>
             <div class="card-body">
-              <div class="card-content">
-                <h5 class="card-title">
-                  <a th:href="@{/admin_problem_detail/{id}(id=${problem.id})}" th:text="${problem.title}" style="color: #37517e;"></a>
-                </h5>
-                <p class="card-text" th:text="'참여자 수: ' + ${problemParticipantCounts[problem.id]}"></p>
-                <p class="card-text" th:text="'Due: ' + ${#temporals.format(problem.dueDate, 'yyyy. MM. dd. a hh:mm')}"></p>
-              </div>
+              <h5 class="card-title" th:text="${problem.title}">문제 제목</h5>
+            </div>
+            <div class="card-footer text-body-secondary">
+              <p th:text="'마감일: ' + ${#temporals.format(problem.dueDate, 'yyyy. MM. dd. a hh:mm')}"></p> <!-- 마감일 표시 -->
             </div>
           </div>
         </div>
       </div>
     </div>
 
+    <!-- Users Table -->
     <div class="users-container">
       <h2>Users</h2>
-      <table class="table table-hover">
-        <thead>
+      <table class="table table-hover table-bordered table-striped">
+        <thead class="thead-dark">
         <tr>
           <th>#</th>
           <th>Name</th>
@@ -174,31 +187,32 @@
           <td th:text="${user.uniqueId}"></td>
           <td th:text="${user.email}"></td>
           <td>
-            <i class="fas fa-circle" th:classappend="${user.active ? 'text-success' : 'text-secondary'}"></i>
+            <i class="bi bi-circle-fill"
+               th:class="${user.active} ? 'bi bi-circle-fill text-success' : 'bi bi-circle-fill text-secondary'"></i>
           </td>
           <td>
-            <button type="button" class="btn btn-third" data-toggle="modal" th:data-target="'#deleteUserModal-' + ${user.id}">Remove</button>
+            <button type="button" class="btn-close" aria-label="Close" data-toggle="modal" th:data-target="'#deleteUserModal-' + ${user.id}"></button>
           </td>
         </tr>
         </tbody>
       </table>
     </div>
 
+    <!-- Ranking Dashboard Button -->
     <div class="summary-container">
       <a th:href="@{/admin_contest/rankDashboard/{id}(id=${contest.id})}" class="btn ranking-dashboard-button"><i class="fas fa-chart-bar"></i> Ranking Dashboard</a>
     </div>
   </div>
 </div>
 
+<!-- User Removal Modal -->
 <div th:each="user : ${users}">
   <div class="modal fade" th:id="'deleteUserModal-' + ${user.id}" tabindex="-1" role="dialog" aria-labelledby="deleteUserModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="deleteUserModalLabel">사용자 삭제</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
+          <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
         </div>
         <form th:action="@{/contest/removeUser}" method="post">
           <div class="modal-body">
@@ -223,8 +237,5 @@
 
 <!-- Bootstrap JS and dependencies -->
 <div th:replace="~{fragments :: scripts}"></div>
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

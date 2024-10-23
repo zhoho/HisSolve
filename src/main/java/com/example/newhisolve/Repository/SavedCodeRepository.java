@@ -16,6 +16,7 @@ public interface SavedCodeRepository extends JpaRepository<SavedCode, Long> {
     @Query("SELECT COUNT(DISTINCT sc.user) FROM SavedCode sc WHERE sc.problem.id = :problemId")
     long countDistinctUsersByProblemId(@Param("problemId") Long problemId);
 
+    Optional<SavedCode> findByUserAndProblem(User user, Problem problem);
 }
 
 

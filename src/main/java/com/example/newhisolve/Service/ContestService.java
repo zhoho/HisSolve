@@ -41,6 +41,8 @@ public interface ContestService {
     Map<Long, List<String>> getUserSubmissionTimes(Long contestId);
     long getParticipantCount(Long contestId);
     Map<Long, Long> getParticipantCountForProblems(Long contestId);
+    User findUserByUsername(String username);
+    String getProblemStatusForUser(Problem problem, User user);
 
 }
 

@@ -1,6 +1,7 @@
 package com.example.newhisolve.Controller;
 
 import com.example.newhisolve.Model.Contest;
+import com.example.newhisolve.Model.Problem;
 import com.example.newhisolve.Model.User;
 import com.example.newhisolve.Service.ContestService;
 import com.example.newhisolve.Service.SubmissionService;
@@ -58,10 +59,24 @@ public class ContestController {
     }
 
     @GetMapping("/contest/{id}")
-    public String viewContest(@PathVariable Long id, Model model) {
+    public String viewContest(@PathVariable Long id, Model model, Principal principal) {
         Contest contestEntity = contestService.findById(id);
         model.addAttribute("contest", contestEntity);
         model.addAttribute("problems", contestService.findProblemsByContest(contestEntity));
+
+        // 현재 사용자의 정보를 가져오기
+        User currentUser = contestService.findUserByUsername(principal.getName());
+
+        // 문제별 진행 상태 계산 (제출 완료, 진행 중, 미진행)
+        Map<Long, String> problemStatusMap = new HashMap<>();
+        for (Problem problem : contestService.findProblemsByContest(contestEntity)) {
+            String status = contestService.getProblemStatusForUser(problem, currentUser);
+            problemStatusMap.put(problem.getId(), status);
+        }
+
+        // 모델에 문제 상태 맵을 추가
+        model.addAttribute("problemStatusMap", problemStatusMap);
+
         return "contest_detail";
     }
 
@@ -76,7 +91,6 @@ public class ContestController {
         // 문제별 참여자 수 계산
         Map<Long, Long> problemParticipantCounts = contestService.getParticipantCountForProblems(id);
         model.addAttribute("problemParticipantCounts", problemParticipantCounts); // 모델에 추가
-
 
         return "admin_contest_detail";
     }
@@ -238,8 +252,6 @@ public class ContestController {
         }
     }
 
-
-
     @GetMapping("/contest/search")
     @ResponseBody
     public List<Map<String, Object>> searchContests(@RequestParam("searchQuery") String searchQuery) {
@@ -261,13 +273,10 @@ public class ContestController {
         return contestResponse; // 수정된 대회 리스트 반환
     }
 
-
     @GetMapping("/contest/autocomplete")
     @ResponseBody
     public List<Contest> autocompleteContests(@RequestParam("searchQuery") String searchQuery) {
         return contestService.searchContestsByName(searchQuery);
     }
-
-
 
 }
