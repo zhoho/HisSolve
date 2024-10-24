@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class NewHisolveApplication {
 public static void main(String[] args) {
         SpringApplication.run(NewHisolveApplication.class, args);
+        //testcommit
     }
 
 }
