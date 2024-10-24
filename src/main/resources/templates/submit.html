@@ -463,7 +463,7 @@
         const code = window.editor.getValue();
         showLoadingSpinner('.btn-primary');
         try {
-            const response = await fetch('/api/compile', {
+            const response = await fetch('/HisSolve/api/compile', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ problemId: problemId, code: code, language: language })
@@ -553,7 +553,7 @@
         }, 5000); // 5초 후에 실행
 
         try {
-            const response = await fetch('/api/runWithInput', {
+            const response = await fetch('/HisSolve/api/runWithInput', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ code: code, language: language, inputs: inputs })
@@ -595,7 +595,7 @@
         const lastSavedDateUTC = new Date(lastSavedDate.getTime() - (lastSavedDate.getTimezoneOffset() * 60000));
 
         try {
-            const response = await fetch('/api/saveCode', {
+            const response = await fetch('/HisSolve/api/saveCode', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -626,7 +626,7 @@
         const lastSavedDateUTC = new Date(lastSavedDate.getTime() - (lastSavedDate.getTimezoneOffset() * 60000));
 
         try {
-            const response = await fetch('/api/saveCode', {
+            const response = await fetch('/HisSolve/api/saveCode', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -660,7 +660,7 @@
 
     async function getSavedCode() {
         try {
-            const response = await fetch(`/api/getSavedCode?problemId=${problemId}&userId=${userId}`);
+            const response = await fetch(`/HisSolve/api/getSavedCode?problemId=${problemId}&userId=${userId}`);
             const text = await response.text();
 
             if (text === 'No saved code found') {
@@ -700,7 +700,7 @@
 
         try {
             // 모든 테스트 케이스 실행 및 채점
-            const response = await fetch('/api/submitWithHidden', {
+            const response = await fetch('/HisSolve/api/submitWithHidden', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -732,7 +732,7 @@
             alert('제출 실패!\n' + error.message);
         }
         try {
-            const response = await fetch('/api/submit', {
+            const response = await fetch('/HisSolve/api/submit', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -854,7 +854,7 @@
 
         let totalCount;
         try {
-            const response = await fetch(`/api/TestcaseCount?problemId=${problemId}`);
+            const response = await fetch(`/HisSolve/api/TestcaseCount?problemId=${problemId}`);
             if (!response.ok) {
                 throw new Error('Failed to fetch total grading test case count');
             }

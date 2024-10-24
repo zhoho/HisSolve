@@ -53,13 +53,13 @@
   <div class="problem-header">
     <h1 class="my-4" th:text="${problem.title}">Problem Title</h1>
     <div class="button-group">
-      <form action="#" th:action="@{/submission_view/{problemId}(problemId=${problem.id})}" method="get">
+      <form action="#" th:action="@{/HisSolve/submission_view/{problemId}(problemId=${problem.id})}" method="get">
         <button type="submit" class="btn btn-primary">제출자 보기</button>
       </form>
-      <form th:action="@{/problem/edit/{id}(id=${problem.id})}" method="get">
+      <form th:action="@{/HisSolve/problem/edit/{id}(id=${problem.id})}" method="get">
         <button type="submit" class="btn btn-secondary">문제 수정</button>
       </form>
-      <form th:action="@{/problem/delete/{id}(id=${problem.id})}" method="post">
+      <form th:action="@{/HisSolve/problem/delete/{id}(id=${problem.id})}" method="post">
         <button type="submit" class="btn btn-danger">문제 삭제</button>
       </form>
     </div>

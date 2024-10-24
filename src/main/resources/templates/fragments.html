@@ -10,28 +10,28 @@
 <!-- Navigation Bar Fragment -->
 <nav id="navbar" class="navbar navbar-expand-lg navbar-light sticky-nav">
     <div class="container">
-        <a class="navbar-brand" href="/dashboard" style="color: #edf2f4;">Hissolve</a>
+        <a class="navbar-brand" href="/HisSolve/dashboard" style="color: #edf2f4;">Hissolve</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" href="/dashboard" style="color: #edf2f4;">Home</a>
+                    <a class="nav-link" href="/HisSolve/dashboard" style="color: #edf2f4;">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/help" style="color: #edf2f4;">Help</a>
+                    <a class="nav-link" href="/HisSolve/help" style="color: #edf2f4;">Help</a>
                 </li>
                 <li class="nav-item" th:if="${user != null}">
-                    <a class="nav-link" href="/profile/edit" style="color: #edf2f4;">
+                    <a class="nav-link" href="/HisSolve/profile/edit" style="color: #edf2f4;">
                         <span th:text="${user.username} + ' ' + (${user.role} == 'ADMIN' ? '님' : '님')"></span>
                     </a>
                 </li>
             </ul>
         </div>
         <div class="nav-item" th:if="${user != null}">
-            <a class="nav-link" th:href="@{/logout}" style="color: #2b2d42;">
-                <img th:src="@{/img/logout.png}" alt="Logout Icon" style="width: 24px; height: 24px;"> Logout
+            <a class="nav-link" th:href="@{/HisSolve/logout}" style="color: #2b2d42;">
+                <img th:src="@{/HisSolve/img/logout.png}" alt="Logout Icon" style="width: 24px; height: 24px;"> Logout
             </a>
         </div>
     </div>

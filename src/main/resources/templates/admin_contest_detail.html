@@ -130,12 +130,12 @@
   </div>
 
 <div class="container mt-2">
-  <a href="/dashboard" class="btn back-button"><i class="fas fa-arrow-left"></i> Back to dashboard</a>
+  <a href="/HisSolve/dashboard" class="btn back-button"><i class="fas fa-arrow-left"></i> Back to dashboard</a>
   <div class="main-container">
     <div class="problem-container">
       <div class="section-header">
         <h2>Problems</h2>
-        <a th:href="@{/problem/create(contestId=${contest.id})}" class="btn new-problem-button"><i class="fas fa-plus"></i>Create</a>
+        <a th:href="@{/HisSolve/problem/create(contestId=${contest.id})}" class="btn new-problem-button"><i class="fas fa-plus"></i>Create</a>
       </div>
       <div class="row">
         <div class="col-lg-6 col-sm-12 my-3" th:each="problem : ${problems}">
@@ -143,7 +143,7 @@
             <div class="card-body">
               <div class="card-content">
                 <h5 class="card-title">
-                  <a th:href="@{/admin_problem_detail/{id}(id=${problem.id})}" th:text="${problem.title}" style="color: #37517e;"></a>
+                  <a th:href="@{/HisSolve/admin_problem_detail/{id}(id=${problem.id})}" th:text="${problem.title}" style="color: #37517e;"></a>
                 </h5>
                 <p class="card-text" th:text="'참여자 수: ' + ${problemParticipantCounts[problem.id]}"></p>
                 <p class="card-text" th:text="'Due: ' + ${#temporals.format(problem.dueDate, 'yyyy. MM. dd. a hh:mm')}"></p>
@@ -185,7 +185,7 @@
     </div>
 
     <div class="summary-container">
-      <a th:href="@{/admin_contest/rankDashboard/{id}(id=${contest.id})}" class="btn ranking-dashboard-button"><i class="fas fa-chart-bar"></i> Ranking Dashboard</a>
+      <a th:href="@{/HisSolve/admin_contest/rankDashboard/{id}(id=${contest.id})}" class="btn ranking-dashboard-button"><i class="fas fa-chart-bar"></i> Ranking Dashboard</a>
     </div>
   </div>
 </div>
@@ -200,7 +200,7 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <form th:action="@{/contest/removeUser}" method="post">
+        <form th:action="@{/HisSolve/contest/removeUser}" method="post">
           <div class="modal-body">
             <input type="hidden" name="contestId" th:value="${contest.id}" />
             <input type="hidden" name="userId" th:value="${user.id}" />

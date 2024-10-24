@@ -119,22 +119,17 @@ public class AuthController {
             System.out.println("토큰이 없습니다.");
             return "redirect:/error";
         }
-
         try {
             User user = hisnetLoginService.callHisnetLoginApi(token);
             model.addAttribute("user", user);
             session.setAttribute("user", user);
             authService.createOrUpdateUser(user);
-
-            System.out.println("tt" + user.getUniqueId());
-
             try {
                 UserDetails userDetails = userService.loadUserByuniqueId(user.getUniqueId());
                 System.out.println("user detail check " + userDetails);
                 UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(auth);
 
-                // 세션에 인증 정보 설정
                 session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, SecurityContextHolder.getContext());
 
                 logger.info("UserDetails: {}", userDetails);

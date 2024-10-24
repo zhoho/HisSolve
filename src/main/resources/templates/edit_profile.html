@@ -63,7 +63,7 @@
     </div>
 
     <div class="main-container">
-        <form th:action="@{/profile/update}" method="post" th:object="${user}">
+        <form th:action="@{/HisSolve/profile/update}" method="post" th:object="${user}">
             <div class="form-group">
                 <label for="username">Username</label>
                 <input type="text" id="username" th:field="*{username}" class="form-control" readonly />

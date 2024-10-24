@@ -167,5 +167,6 @@ public class SecurityConfig {
     public void configureSecurityContextHolder() {
         SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
     }
+
 }
 

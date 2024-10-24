@@ -18,7 +18,7 @@
   <h1 class="my-4">Sign Up</h1>
 
   <!-- `th:object`로 User 객체 매핑 -->
-  <form th:action="@{/register}" th:object="${user}" method="post">
+  <form th:action="@{/HisSolve/register}" th:object="${user}" method="post">
     <div class="form-group">
       <label for="username">Username</label>
       <input type="text" class="form-control" th:field="*{username}" id="username" required>

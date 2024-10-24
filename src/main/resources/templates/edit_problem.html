@@ -74,7 +74,7 @@
   </div>
 
   <div class="main-container">
-    <form th:action="@{/problem/update}" method="post" onsubmit="convertToKST()">
+    <form th:action="@{/HisSolve/problem/update}" method="post" onsubmit="convertToKST()">
       <input type="hidden" name="id" th:value="${problem.id}"/>
       <input type="hidden" name="contestId" th:value="${problem.contest.id}"/> <!-- contestId 숨겨진 필드 추가 -->
       <div class="form-group">
@@ -129,7 +129,7 @@
         <input type="datetime-local" class="form-control" id="dueDate" name="dueDate" th:value="${formattedDueDate}" required>
       </div>
       <button type="submit" class="btn btn-lightblue">Save</button>
-      <a th:href="@{/dashboard}" class="btn btn-lightblue">Cancel</a>
+      <a th:href="@{/HisSolve/dashboard}" class="btn btn-lightblue">Cancel</a>
       <button type="button" class="btn btn-danger" onclick="deleteProblem()">Delete</button>
     </form>
   </div>

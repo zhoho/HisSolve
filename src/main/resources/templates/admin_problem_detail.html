@@ -135,9 +135,9 @@
     </div>
 <div class="container mt-2">
     <div class="d-flex justify-content-between my-3">
-        <a th:href="@{/admin_contest/{contestId}(contestId=${problem.contest.id})}" class="btn btn-lightblue"><i class="fas fa-arrow-left"></i> Back to contest</a>
+        <a th:href="@{/HisSolve/admin_contest/{contestId}(contestId=${problem.contest.id})}" class="btn btn-lightblue"><i class="fas fa-arrow-left"></i> Back to contest</a>
         <div>
-            <a th:href="@{/problem/edit/{id}(id=${problem.id})}" class="btn btn-lightblue"><i class="fas fa-edit"></i> Edit problem</a>
+            <a th:href="@{/HisSolve/problem/edit/{id}(id=${problem.id})}" class="btn btn-lightblue"><i class="fas fa-edit"></i> Edit problem</a>
         </div>
     </div>
 
@@ -197,7 +197,7 @@
                 </tr>
                 </tbody>
             </table>
-            <a th:href="@{/results/download(problemId=${problem.id})}" class="btn btn-success">
+            <a th:href="@{/HisSolve/results/download(problemId=${problem.id})}" class="btn btn-success">
                 <i class="fas fa-download"></i> Results
             </a>
         </div>
@@ -216,7 +216,7 @@
     function showDetails(button) {
         const submissionId = button.getAttribute('data-id');
         const language = button.getAttribute('data-language');
-        window.location.href = `/submission_detail/${submissionId}?language=${language}`;
+        window.location.href = `/HisSolve/submission_detail/${submissionId}?language=${language}`;
     }
 </script>
 </body>

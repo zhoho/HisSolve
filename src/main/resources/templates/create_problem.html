@@ -124,7 +124,7 @@
 
 <div class="container mt-1">
   <div class="main-container">
-    <form th:action="@{/problem/create}" method="post" onsubmit="convertToUTC()">
+    <form th:action="@{/HisSolve/problem/create}" method="post" onsubmit="convertToUTC()">
       <div class="form-group">
         <label for="title" class="font-weight-bold">Name:</label>
         <input type="text" class="form-control" id="title" name="title" required>
@@ -178,7 +178,7 @@
       </div>
       <input type="hidden" name="contestId" th:value="${contest.id}" /> <!-- contestId를 동적으로 설정 -->
       <button type="submit" class="btn btn-lightblue">Create</button>
-      <a href="/dashboard" class="btn btn-lightblue">Cancel</a>
+      <a href="/HisSolve/dashboard" class="btn btn-lightblue">Cancel</a>
     </form>
   </div>
 </div>
