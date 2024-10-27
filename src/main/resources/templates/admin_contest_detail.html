@@ -150,18 +150,20 @@
       </div>
       <div class="row">
         <div class="col-lg-6 col-sm-12 my-3" th:each="problem : ${problems}">
-          <div class="card shadow-sm p-3">
-            <div class="card-header">
-              <!-- 참여자 수 표시 -->
-              <p class="card-text">참여자 수: <span th:text="${problemParticipantCounts[problem.id]}"></span></p>
+          <a th:href="@{/admin_problem_detail/{id}(id=${problem.id})}" style="text-decoration: none; color: inherit;">
+            <div class="card shadow-sm p-3">
+              <div class="card-header">
+                <!-- 참여자 수 표시 -->
+                <p class="card-text">참여자 수: <span th:text="${problemParticipantCounts[problem.id]}"></span></p>
+              </div>
+              <div class="card-body">
+                <h5 class="card-title" th:text="${problem.title}">문제 제목</h5>
+              </div>
+              <div class="card-footer text-body-secondary">
+                <p th:text="'마감일: ' + ${#temporals.format(problem.dueDate, 'yyyy. MM. dd. a hh:mm')}"></p>
+              </div>
             </div>
-            <div class="card-body">
-              <h5 class="card-title" th:text="${problem.title}">문제 제목</h5>
-            </div>
-            <div class="card-footer text-body-secondary">
-              <p th:text="'마감일: ' + ${#temporals.format(problem.dueDate, 'yyyy. MM. dd. a hh:mm')}"></p> <!-- 마감일 표시 -->
-            </div>
-          </div>
+          </a>
         </div>
       </div>
     </div>
