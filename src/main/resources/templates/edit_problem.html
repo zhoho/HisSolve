@@ -3,33 +3,31 @@
 <head>
   <title th:text="'Edit ' + ${problem.title}">Edit Problem</title>
   <!-- Bootstrap CSS -->
-  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Google Fonts -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;700&display=swap" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
   <link th:href="@{/css/styles.css}" rel="stylesheet">
   <style>
-    body {
-      background-color: #edf2f4;
+    body, html {
+      background-color: white;
     }
-    .contest-banner {
-      background: linear-gradient(to right, #37517e, #000000);
+    .carousel-caption {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
       color: white;
-      padding: 30px;
-      border-radius: 10px;
-      display: flex;
-      flex-direction: column;
-      margin-top: -10px;
+      text-align: center;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
     }
-    .contest-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      width: 100%;
-    }
-    .contest-header h1, .contest-header .contest-code {
-      font-size: 1.5rem;
+    .carousel-caption h1 {
+      font-size: 2.5rem;
       font-weight: bold;
+    }
+    .card-body-custom {
+      background-color: white;
+      padding: 30px;
+      margin-top: 20px;
     }
     .btn-lightblue {
       background-color: #47b2e4;
@@ -43,103 +41,143 @@
       text-decoration: none;
       color: white;
     }
-    .main-container {
-      background-color: #f3f5fa;
-      border: 1px solid #dfdfff;
-      padding: 20px;
-      margin-top: 20px;
-      border-radius: 10px;
+    .form-control {
+      background-color: white !important;
+      border: 1px solid #ced4da; /* 기본 테두리 색상 */
     }
-    .grading-testcase-container {
-      margin-top: 40px;
-      border-top: 2px solid #37517e;
-      padding-top: 20px;
+    .form-group label {
+      font-weight: bold;
+      color: #37517e;
     }
-    .delete-btn {
-      background: none;
-      border: none;
-      color: red;
-      font-size: 1.0rem;
+    .input-group-text {
+      background-color: #47b2e4;
+      color: white;
+      border-radius: 0.5rem 0 0 0.5rem;
     }
+    .btn-custom {
+      padding: 10px 20px;
+      font-size: 1rem;
+      border-radius: 50px;
+      font-weight: bold;
+      min-width: 100px; /* 버튼 크기 동일하게 */
+    }
+    .text-center {
+      padding: 30px;
+    }
+
   </style>
 </head>
 <body>
 <div th:replace="~{fragments :: nav}"></div>
 
-<div class="container mt-1">
-  <div class="contest-banner">
-    <div class="contest-header">
-      <h1 th:text="'Edit ' + ${problem.title}">Edit Problem</h1>
+<!-- 캐러셀 배너 -->
+<div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel">
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <img src="/img/banner1.jpg" class="d-block w-100" alt="First Image">
+      <div class="carousel-caption">
+        <h1 th:text="'Edit ' + ${problem.title}">Edit Problem</h1>
+      </div>
+    </div>
+    <div class="carousel-item">
+      <img src="/img/banner2.jpg" class="d-block w-100" alt="Second Image">
+      <div class="carousel-caption">
+        <h1 th:text="'Edit ' + ${problem.title}">Edit Problem</h1>
+      </div>
     </div>
   </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
 
-  <div class="main-container">
+<div class="container mt-1">
+  <div class="card">
+    <div class="card-body card-body-custom">
     <form th:action="@{/problem/update}" method="post" onsubmit="convertToKST()">
       <input type="hidden" name="id" th:value="${problem.id}"/>
-      <input type="hidden" name="contestId" th:value="${problem.contest.id}"/> <!-- contestId 숨겨진 필드 추가 -->
-      <div class="form-group">
-        <label for="title" class="font-weight-bold">Problem name:</label>
-        <input type="text" class="form-control" id="title" name="title" th:value="${problem.title}" required>
+      <input type="hidden" name="contestId" th:value="${problem.contest.id}"/>
+      <div class="mb-3">
+        <label for="title" class="form-label">Problem Name:</label>
+        <div class="input-group">
+          <span class="input-group-text"><i class="fas fa-trophy"></i></span>
+          <input type="text" class="form-control" id="title" name="title" th:value="${problem.title}" required>
+        </div>
       </div>
+
       <div class="form-group">
         <label class="font-weight-bold">Problem Statement</label>
         <ul class="nav nav-tabs" id="myTab" role="tablist">
           <li class="nav-item">
-            <a class="nav-link active" id="problem-statement-tab" data-toggle="tab" href="#problem-statement" role="tab" aria-controls="problem-statement" aria-selected="true">Problem Statement</a>
+            <a class="nav-link active" id="problem-statement-tab" data-bs-toggle="tab" href="#problem-statement" role="tab">Problem Statement</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" id="preview-tab" data-toggle="tab" href="#preview" role="tab" aria-controls="preview" aria-selected="false">Preview</a>
+            <a class="nav-link" id="preview-tab" data-bs-toggle="tab" href="#preview" role="tab">Preview</a>
           </li>
         </ul>
         <div class="tab-content" id="myTabContent">
-          <div class="tab-pane fade show active" id="problem-statement" role="tabpanel" aria-labelledby="problem-statement-tab">
-            <textarea class="form-control mt-3" rows="10" name="description" id="problemStatement" th:text="${problem.description}" placeholder="Use Markdown syntax to write the problem statement..."></textarea>
+          <div class="tab-pane fade show active" id="problem-statement" role="tabpanel">
+            <textarea class="form-control mt-3" rows="10" name="description" id="problemStatement" th:text="${problem.description}" placeholder="Use Markdown syntax..."></textarea>
           </div>
-          <div class="tab-pane fade" id="preview" role="tabpanel" aria-labelledby="preview-tab">
+          <div class="tab-pane fade" id="preview" role="tabpanel">
             <div class="mt-3" id="previewContent"></div>
           </div>
         </div>
       </div>
+
       <div class="form-group">
         <label class="font-weight-bold">Test Cases</label>
         <div id="testCasesContainer">
           <div th:each="testCase, iterStat : ${problem.testCases}">
             <div class="form-group row align-items-center">
               <div class="col-md-5">
-                <label class="font-weight-bold">Input Cases</label>
+                <label class="font-weight-bold">Input Case</label>
                 <textarea class="form-control" name="inputs[]" placeholder="Input case" th:text="${testCase.input}"></textarea>
               </div>
               <div class="col-md-5">
-                <label class="font-weight-bold">Output Cases</label>
+                <label class="font-weight-bold">Output Case</label>
                 <textarea class="form-control" name="outputs[]" placeholder="Output case" th:text="${testCase.expectedOutput}"></textarea>
               </div>
               <div class="col-md-1">
-                <input type="checkbox" name="isHidden[]" class="form-check-input" th:checked="${testCase.isHidden}"> Hidden
+                <div class="form-check">
+                  <input type="checkbox" class="form-check-input" name="isHidden[]" th:checked="${testCase.isHidden}">
+                  <label class="form-check-label">Hidden</label>
+                </div>
               </div>
               <div class="col-md-1 text-center">
-                <button type="button" class="delete-btn" onclick="removeTestCase(this)"><i class="fas fa-trash-alt"></i></button>
+                <button type="button" class="btn btn-outline-danger btn-sm" onclick="removeTestCase(this)"><i class="fas fa-trash-alt"></i></button>
               </div>
             </div>
           </div>
         </div>
-        <button type="button" class="btn btn-lightblue mt-3" id="addCaseBtn">Add case</button>
+        <button type="button" class="btn btn-lightblue mt-3" id="addCaseBtn">Add Case</button>
       </div>
+
       <div class="form-group">
-        <label for="dueDate" class="font-weight-bold">Deadline</label>
-        <input type="datetime-local" class="form-control" id="dueDate" name="dueDate" th:value="${formattedDueDate}" required>
+        <label for="dueDate" class="font-weight-bold">Due Date</label>
+        <div class="input-group">
+          <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+          <input type="datetime-local" class="form-control" id="dueDate" name="dueDate" th:value="${formattedDueDate}" required>
+        </div>
       </div>
-      <button type="submit" class="btn btn-lightblue">Save</button>
-      <a th:href="@{/dashboard}" class="btn btn-lightblue">Cancel</a>
-      <button type="button" class="btn btn-danger" onclick="deleteProblem()">Delete</button>
+
+      <div class="text-center">
+        <a href="/dashboard" class="btn btn-secondary btn-custom">Cancel</a>
+        <button type="submit" class="btn btn-primary btn-custom">Save</button>
+        <button type="button" class="btn btn-danger btn-custom" onclick="deleteProblem()">Delete</button>
+      </div>
     </form>
   </div>
 </div>
+</div>
 
-<!-- Footer -->
 <div th:replace="~{fragments :: footer}"></div>
 
-<!-- Bootstrap JS and dependencies -->
-<div th:replace="~{fragments :: scripts}"></div>
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <script>
   function deleteProblem() {
@@ -187,7 +225,6 @@
     });
 
     let caseCount = /*[[${problem.testCases.size()}]]*/ 0;
-    // let gradingCaseCount = /*[[${problem.testCases.size()}]]*/ 0;
 
     document.getElementById('addCaseBtn').addEventListener('click', function () {
       caseCount++;
@@ -201,14 +238,18 @@
           <textarea class="form-control" name="outputs[]" placeholder="Output case"></textarea>
         </div>
         <div class="col-md-1">
-          <input type="checkbox" name="isHidden[]" class="form-check-input"> Hidden
+          <div class="form-check">
+            <input type="checkbox" class="form-check-input" name="isHidden[]" value="true">
+            <label class="form-check-label">Hidden</label>
+          </div>
         </div>
         <div class="col-md-1 text-center">
-          <button type="button" class="delete-btn" onclick="removeTestCase(this)"><i class="fas fa-trash-alt"></i></button>
+          <button type="button" class="btn btn-outline-danger btn-sm" onclick="removeTestCase(this)"><i class="fas fa-trash-alt"></i></button>
         </div>
       `;
       document.getElementById('testCasesContainer').appendChild(testCaseDiv);
     });
+
     window.removeTestCase = function(button) {
       const testCaseDiv = button.closest('.form-group');
       if (testCaseDiv && testCaseDiv.parentElement) {
@@ -221,7 +262,7 @@
     const dueDateInput = document.getElementById('dueDate');
     const localDate = new Date(dueDateInput.value);
     const utcDate = new Date(localDate.getTime() - localDate.getTimezoneOffset() * 60000);
-    const offset = 9 * 60; // 한국 표준시 (KST) UTC+9
+    const offset = 9 * 60;
     const kstDate = new Date(utcDate.getTime() + offset * 60000);
     dueDateInput.value = kstDate.toISOString().slice(0, 16);
   }

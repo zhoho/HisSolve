@@ -14,7 +14,6 @@
         body, html {
             background: #ffffff;
         }
-
         .edit-btn a {
             background-color: #37517e;
             border: 0;
@@ -56,7 +55,6 @@
         .card-header {
             background-color: white;
         }
-
         .card-title {
             font-size: 1.5rem;
             /*color: #37517e;*/
@@ -69,31 +67,21 @@
             color: gray;
             margin-bottom: 5px;
         }
-
-
+        .form-control {
+            background-color: white !important;
+        }
         .form-inline .form-control {
             background: white;
         }
-
-
-
         .card:hover .popup {
             display: block;
         }
-
         .autocomplete-results {
             background-color: white;
             max-height: 200px;
             overflow-y: auto;
             width: 100%;
         }
-
-        .autocomplete-item {
-            padding: 8px;
-            cursor: pointer;
-            text-align: left;
-        }
-
     </style>
 </head>
 <body th:attr="data-user-role=${user.role}">
@@ -130,13 +118,14 @@
             </div>
 
             <!-- Contest Code Form -->
-            <div class="contest-form d-flex" style="width: 26%;">
+            <div class="contest-form d-flex justify-content-end" style="width: 26%;">
                 <form th:if="${user.role == 'USER'}" th:action="@{/contest/join}" method="post" class="d-flex w-100">
                     <input class="form-control me-2" type="text" placeholder="Enter Contest code" name="code" required>
                     <button class="btn btn-primary" type="submit">Enter</button>
                 </form>
-                <a class="btn btn-primary ms-2" th:if="${user.role == 'ADMIN'}" th:href="@{/contest/create}"> Create</a>
+                <a class="btn btn-primary" th:if="${user.role == 'ADMIN'}" th:href="@{/contest/create}">Create</a>
             </div>
+
         </div>
     </div>
 

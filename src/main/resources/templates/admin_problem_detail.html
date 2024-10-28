@@ -25,6 +25,21 @@
             text-align: center;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
         }
+
+        .carousel-caption h1 {
+            font-size: 3rem;
+            font-weight: bold;
+        }
+
+        .carousel-caption p {
+            font-size: 1.25rem;
+        }
+
+        .carousel-caption {
+            font-size: 1rem;
+            font-weight: bold;
+        }
+
         .carousel-caption h1 {
             font-size: 2.5rem;
             font-weight: bold;
@@ -67,8 +82,6 @@
             color: white;
             text-align: center;
         }
-        .pass-bg { background-color: #d4edda; }
-        .fail-bg { background-color: #f8d7da; }
     </style>
 </head>
 <body>
@@ -87,8 +100,8 @@
         <div class="carousel-item">
             <img src="/img/banner2.jpg" class="d-block w-100" alt="Second Image">
             <div class="carousel-caption">
-                <h1>Review Problem Details</h1>
-                <p>Manage test cases and view submissions</p>
+                <h1 th:text="${problem.title}"></h1>
+                <p th:text="'Due: ' + ${#temporals.format(problem.dueDate, 'yyyy-MM-dd HH:mm:ss')}"></p>
             </div>
         </div>
     </div>
@@ -116,16 +129,17 @@
             <div class="test-case-container">
                 <div th:each="testCase, iterStat : ${problem.testCases}">
                     <div class="d-flex">
-                        <div class="p-2 border flex-fill">
+                        <div class="p-2 border flex-fill position-relative">
                             <h6 th:text="'예제 입력 ' + ${iterStat.index + 1} + ':'"></h6>
                             <pre th:text="${testCase.input}"></pre>
+                            <!-- 히든 배지 표시 (컬럼 오른쪽 위) -->
+                            <span th:if="${testCase.hidden}" class="badge bg-warning text-dark position-absolute top-0 end-0">Hidden</span>
                         </div>
-                        <div class="p-2 border flex-fill">
+                        <div class="p-2 border flex-fill position-relative">
                             <h6 th:text="'예제 출력 ' + ${iterStat.index + 1} + ':'"></h6>
                             <pre th:text="${testCase.expectedOutput}"></pre>
-                        </div>
-                        <div th:if="${testCase.hidden}" class="p-2 border">
-                            <span class="badge bg-warning text-dark">Hidden</span>
+                            <!-- 히든 배지 표시 (컬럼 오른쪽 위) -->
+                            <span th:if="${testCase.hidden}" class="badge bg-warning text-dark position-absolute top-0 end-0">Hidden</span>
                         </div>
                     </div>
                 </div>
