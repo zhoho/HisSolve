@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -73,7 +74,8 @@ public class Contest {
     }
 
     public String getDuration() {
-        return startDate.toLocalDate() + " ~ " + dueDate.toLocalDate();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        return startDate.format(formatter) + " ~ " + dueDate.format(formatter);
     }
 
     // 참여자 수를 반환하는 메서드 추가
