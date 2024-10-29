@@ -3,75 +3,80 @@
 <head>
     <title>Hisolve</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"> <!-- Roboto 폰트 적용 -->
     <link th:href="@{/css/styles.css}" rel="stylesheet">
     <style>
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        .animated-text span {
-            display: inline-block;
-            opacity: 0;
-            animation: fadeIn 2s forwards;
-            animation-iteration-count: infinite; /* 무한 반복 설정 */
-        }
-        .animated-text span:nth-child(1) { animation-delay: 0.2s; }
-        .animated-text span:nth-child(2) { animation-delay: 0.4s; }
-        .animated-text span:nth-child(3) { animation-delay: 0.6s; }
-        .animated-text span:nth-child(4) { animation-delay: 0.8s; }
-        .animated-text span:nth-child(5) { animation-delay: 1.0s; }
-        .animated-text span:nth-child(6) { animation-delay: 1.2s; }
-        .animated-text span:nth-child(7) { animation-delay: 1.4s; }
-
+        /* 애니메이션 및 일반 텍스트의 폰트를 Roboto로 설정 */
         body, html {
             height: 100%;
             margin: 0;
-            font-family: 'Source Code Pro', monospace;
-            background: #edf2f4; /* 배경색 적용 */
-            color: #2b2d42; /* 포인트 색상 적용 */
+            font-family: 'Roboto', sans-serif; /* 폰트 설정 */
+            background: white;
+            color: #2b2d42;
             display: flex;
             flex-direction: column;
         }
 
+        /* 애니메이션 키프레임 정의 */
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        .animated-text span {
+            display: inline-block;
+            opacity: 0;
+            animation: fadeIn 2s forwards;
+            animation-delay: calc(var(--order) * 0.2s); /* 각 문자 초기 딜레이 */
+            animation-iteration-count: infinite;
+            animation-duration: 5s; /* 애니메이션 전체 길이 */
+        }
+
+        .animated-text span:nth-child(1) { --order: 1; }
+        .animated-text span:nth-child(2) { --order: 2; }
+        .animated-text span:nth-child(3) { --order: 3; }
+        .animated-text span:nth-child(4) { --order: 4; }
+        .animated-text span:nth-child(5) { --order: 5; }
+        .animated-text span:nth-child(6) { --order: 6; }
+        .animated-text span:nth-child(7) { --order: 7; }
+
+        /* 전체 애니메이션 후 3초간 정지하는 delay */
+        .animated-text {
+            animation-delay: 3s;
+        }
+
         /* 푸터 스타일 */
         footer {
-            background-color: #edf2f4; /* 푸터 배경색 */
-            color: #2b2d42; /* 푸터 텍스트 색상 */
-            margin-top: auto; /* Push footer to the bottom */
+            background-color: white;
+            color: #2b2d42;
+            margin-top: auto;
             width: 100%;
-            font-size: 1.2rem; /* 푸터 텍스트 크기 증가 */
+            font-size: 1.2rem;
         }
+
+        /* 네비게이션 바 스타일 */
         .navbar {
             height: 110px;
-            background-color: #edf2f4 !important; /* 네비게이션 배경색 */
+            background-color: white !important;
         }
-        .navbar-brand {
-            color: #2b2d42 !important; /* 네비게이션 브랜드 색상 */
+
+        .navbar-brand, .navbar-nav .nav-link {
+            color: #2b2d42 !important;
         }
-        .navbar-nav .nav-link {
-            color: #2b2d42 !important; /* 네비게이션 링크 색상 */
-        }
+
+        /* 메인 컨텐츠 스타일 */
         .content {
             display: flex;
             justify-content: center;
             align-items: center;
             flex-grow: 1;
-            /*background-image: url('/img/background.jpg');*/
             background-size: cover;
             background-position: center;
         }
-        .container {
-            padding-top: 60px;
-            padding-bottom: 60px;
-        }
-        .animated-text {
-            margin-top: 8px;
-        }
+
         .animated-text h1 {
             font-size: 7rem;
         }
-
     </style>
 </head>
 <body>

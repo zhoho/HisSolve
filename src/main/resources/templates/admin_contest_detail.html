@@ -39,9 +39,11 @@
 
     .carousel-caption {
       position: absolute;
-      top: 50%;
+      top: 40%;
       left: 50%;
       transform: translate(-50%, -50%);
+      padding-top: 20px;
+      padding-bottom: 20px;
       color: white;
       text-align: center;
       text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
@@ -158,11 +160,12 @@
           <a th:href="@{/admin_problem_detail/{id}(id=${problem.id})}" style="text-decoration: none; color: inherit;">
             <div class="card shadow-sm p-3">
               <div class="card-header">
-                <p class="card-text">참여인원: <span th:text="${problemParticipantCounts[problem.id]}+ '명'"></span></p>
-                <p class="card-text">정답인원: <span th:text="${problemSolvedUserCounts[problem.id]}+ '명'"></span></p>
+                <span class="badge bg-warning">총 테스트케이스: <span th:text="${problem.testcaseCount}"></span></span>
               </div>
               <div class="card-body">
                 <h5 class="card-title" th:text="${problem.title}">문제 제목</h5>
+                <p class="card-text">참여인원: <span th:text="${problemParticipantCounts[problem.id]}+ '명'"></span></p>
+                <p class="card-text">정답인원: <span th:text="${problemSolvedUserCounts[problem.id]}+ '명'"></span></p>
               </div>
               <div class="card-footer text-body-secondary">
                 <p th:text="'마감일: ' + ${#temporals.format(problem.dueDate, 'yyyy. MM. dd. a hh:mm')}"></p>
