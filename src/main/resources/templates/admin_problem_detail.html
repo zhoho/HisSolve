@@ -25,18 +25,15 @@
             text-align: center;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
         }
-
         .carousel-caption h1 {
             font-size: 3rem;
             font-weight: bold;
         }
-
         .carousel-caption p {
             font-size: 1.25rem;
             font-weight: normal;
             margin-top: 10px;
         }
-
         .btn-lightblue {
             background-color: #37517e;
             border: 0;
@@ -63,13 +60,11 @@
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
             margin-bottom: 20px;
         }
-
         .table th, .table td {
-            background-color: white !important; /* 헤더와 바디의 배경을 흰색으로 설정 */
-            color: black !important; /* 글자색을 검정으로 설정 */
+            background-color: white !important;
+            color: black !important;
             text-align: center;
         }
-
         .table th {
             background-color: #37517e;
             color: white;
@@ -118,6 +113,7 @@
         <!-- 문제 설명 -->
         <div class="problem-details">
             <h3 th:text="${problem.title}"></h3>
+            <!-- 문제 설명을 위한 Markdown 변환 -->
             <div id="description" th:text="${problem.description}"></div>
             <div class="test-case-container">
                 <div th:each="testCase, iterStat : ${problem.testCases}">
@@ -125,13 +121,11 @@
                         <div class="p-2 border flex-fill position-relative">
                             <h6 th:text="'예제 입력 ' + ${iterStat.index + 1} + ':'"></h6>
                             <pre th:text="${testCase.input}"></pre>
-                            <!-- 히든 배지 표시 (컬럼 오른쪽 위) -->
                             <span th:if="${testCase.hidden}" class="badge bg-warning text-dark position-absolute top-0 end-0">Hidden</span>
                         </div>
                         <div class="p-2 border flex-fill position-relative">
                             <h6 th:text="'예제 출력 ' + ${iterStat.index + 1} + ':'"></h6>
                             <pre th:text="${testCase.expectedOutput}"></pre>
-                            <!-- 히든 배지 표시 (컬럼 오른쪽 위) -->
                             <span th:if="${testCase.hidden}" class="badge bg-warning text-dark position-absolute top-0 end-0">Hidden</span>
                         </div>
                     </div>
@@ -181,7 +175,7 @@
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const descriptionElement = document.getElementById('description');
-        const markdownDescription = descriptionElement.innerText;
+        const markdownDescription = descriptionElement.textContent;
         descriptionElement.innerHTML = marked.parse(markdownDescription);
     });
 
