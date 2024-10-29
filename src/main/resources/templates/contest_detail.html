@@ -98,6 +98,7 @@
                     <p>Contest code: <span th:text="${contest.code}"></span></p>
                 </div>
                 <p th:text="${contest.description}">Description</p>
+                <p th:text="${contest.getDuration()}">Duration</p>
             </div>
         </div>
         <div class="carousel-item">
@@ -106,9 +107,10 @@
             <div class="carousel-caption">
                 <h1 th:text="${contest.name}">Contest Name</h1>
                 <div class="contest-code">
-                    <p>code: <span th:text="${contest.code}">Code</span></p>
+                    <p>Contest code: <span th:text="${contest.code}"></span></p>
                 </div>
                 <p th:text="${contest.description}">Description</p>
+                <p th:text="${contest.getDuration()}">Duration</p>
             </div>
         </div>
     </div>
@@ -130,13 +132,14 @@
             <a th:href="@{/problem/{id}(id=${problem.id})}" class="card-link" style="text-decoration: none;">
                 <div class="card shadow-sm p-3">
                     <div class="card-header">
-                        <!-- 상태 표시 -->
                         <span th:if="${problemStatusMap[problem.id]} == '진행 중'" class="badge bg-warning">진행 중</span>
                         <span th:if="${problemStatusMap[problem.id]} == '제출 완료'" class="badge bg-success">제출 완료</span>
                         <span th:if="${problemStatusMap[problem.id]} == '미진행'" class="badge bg-secondary">미진행</span>
                     </div>
                     <div class="card-body">
                         <h5 class="card-title" th:text="${problem.title}">문제 제목</h5>
+                        <p class="card-text">참여인원: <span th:text="${problemParticipantCounts[problem.id]}+ '명'"></span></p>
+                        <p class="card-text">정답인원: <span th:text="${problemSolvedUserCounts[problem.id]}+ '명'"></span></p>
                     </div>
                     <div class="card-footer text-body-secondary">
                         <span class="due-date" th:text="'마감일: ' + ${#temporals.format(problem.dueDate, 'yyyy. MM. dd. a hh:mm')}"></span>

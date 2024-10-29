@@ -28,4 +28,7 @@ public interface SubmissionRepository extends JpaRepository<Submission, Long> {
     Optional<Submission> findByUserIdAndProblemId(Long userId, Long problemId);
 
     Optional<Submission> findByUserAndProblem(User user, Problem problem);
+
+    @Query("SELECT COUNT(DISTINCT s.user.id) FROM Submission s WHERE s.problem.id = :problemId AND s.score = :score")
+    int countDistinctUsersByProblemAndScore(@Param("problemId") Long problemId, @Param("score") int score);
 }

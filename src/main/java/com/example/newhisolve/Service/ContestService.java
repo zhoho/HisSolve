@@ -43,6 +43,7 @@ public interface ContestService {
     Map<Long, Long> getParticipantCountForProblems(Long contestId);
     User findUserByUsername(String username);
     String getProblemStatusForUser(Problem problem, User user);
+    Map<Long, Integer> getProblemSolvedUserCounts(Long contestId);
 
 }
 

@@ -281,4 +281,18 @@ public class ContestServiceImpl implements ContestService {
 
         return "미진행";
     }
+
+    @Override
+    public Map<Long, Integer> getProblemSolvedUserCounts(Long contestId) {
+        List<Problem> problems = problemRepository.findByContestId(contestId);
+
+        Map<Long, Integer> problemSolvedUserCounts = new HashMap<>();
+
+        for (Problem problem : problems) {
+            int count = submissionRepository.countDistinctUsersByProblemAndScore(problem.getId(), 100);
+            problemSolvedUserCounts.put(problem.getId(), count);
+        }
+
+        return problemSolvedUserCounts;
+    }
 }

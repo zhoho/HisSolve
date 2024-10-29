@@ -74,6 +74,12 @@ public class ContestController {
             problemStatusMap.put(problem.getId(), status);
         }
 
+        Map<Long, Long> problemParticipantCounts = contestService.getParticipantCountForProblems(id);
+        Map<Long, Integer> problemSolvedUserCounts = contestService.getProblemSolvedUserCounts(id);
+
+        model.addAttribute("problemParticipantCounts", problemParticipantCounts);
+        model.addAttribute("problemSolvedUserCounts", problemSolvedUserCounts);
+
         // 모델에 문제 상태 맵을 추가
         model.addAttribute("problemStatusMap", problemStatusMap);
 
@@ -90,7 +96,10 @@ public class ContestController {
 
         // 문제별 참여자 수 계산
         Map<Long, Long> problemParticipantCounts = contestService.getParticipantCountForProblems(id);
-        model.addAttribute("problemParticipantCounts", problemParticipantCounts); // 모델에 추가
+        Map<Long, Integer> problemSolvedUserCounts = contestService.getProblemSolvedUserCounts(id);
+
+        model.addAttribute("problemParticipantCounts", problemParticipantCounts);
+        model.addAttribute("problemSolvedUserCounts", problemSolvedUserCounts);
 
         return "admin_contest_detail";
     }

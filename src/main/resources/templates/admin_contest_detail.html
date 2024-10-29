@@ -117,6 +117,8 @@
           <p>Contest code: <span th:text="${contest.code}">Code</span></p>
         </div>
         <p th:text="${contest.description}">Description</p>
+        <p th:text="${contest.getDuration()}">Duration</p>
+
       </div>
     </div>
     <div class="carousel-item">
@@ -124,9 +126,11 @@
       <div class="carousel-caption">
         <h1 th:text="${contest.name}">Contest Name</h1>
         <div class="contest-code">
-          <p>Class code: <span th:text="${contest.code}">Code</span></p>
+          <p>Contest code: <span th:text="${contest.code}">Code</span></p>
         </div>
         <p th:text="${contest.description}">Description</p>
+        <p th:text="${contest.getDuration()}">Duration</p>
+
       </div>
     </div>
   </div>
@@ -154,8 +158,8 @@
           <a th:href="@{/admin_problem_detail/{id}(id=${problem.id})}" style="text-decoration: none; color: inherit;">
             <div class="card shadow-sm p-3">
               <div class="card-header">
-                <!-- 참여자 수 표시 -->
-                <p class="card-text">참여자 수: <span th:text="${problemParticipantCounts[problem.id]}"></span></p>
+                <p class="card-text">참여인원: <span th:text="${problemParticipantCounts[problem.id]}+ '명'"></span></p>
+                <p class="card-text">정답인원: <span th:text="${problemSolvedUserCounts[problem.id]}+ '명'"></span></p>
               </div>
               <div class="card-body">
                 <h5 class="card-title" th:text="${problem.title}">문제 제목</h5>
