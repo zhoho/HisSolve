@@ -1,19 +1,16 @@
 # Use an official OpenJDK runtime as a parent image
-FROM openjdk:17-jdk-slim
+FROM tomcat:9-jdk17-openjdk
 
 # Set the working directory
 WORKDIR /app
 
-# Install Docker CLI
-RUN apt-get update && apt-get install -y \
-    docker.io \
-    && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y docker.io
 
-# Copy the current directory contents into the container at /app
-COPY build/libs/NewHisolve-0.0.1-SNAPSHOT.jar /app/app.jar
+# Copy the WAR file to the container
+COPY HisSolve.war /app/app.war
 
-# Make port 8080 available to the world outside this container
-EXPOSE 8080
+# Expose port 8080
+EXPOSE 9090
 
-# Run the jar file
-ENTRYPOINT ["java", "-jar", "app.jar"]
+# Run the Spring Boot application
+ENTRYPOINT ["java", "-jar", "/app/app.war"]

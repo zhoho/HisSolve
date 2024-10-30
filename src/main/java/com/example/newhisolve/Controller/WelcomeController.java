@@ -11,4 +11,8 @@ public class WelcomeController {
         return "welcome";
     }
 
+    @GetMapping("/HisSolve")
+    public String root(){
+        return "welcome";
+    }
 }

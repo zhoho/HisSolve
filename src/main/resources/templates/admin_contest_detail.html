@@ -7,7 +7,7 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
   <!-- Bootstrap Icons 추가 -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-  <link th:href="@{/css/styles.css}" rel="stylesheet">
+  <link th:href="@{/HisSolve/css/styles.css}" rel="stylesheet">
   <style>
     body, html {
       background-color: #ffffff;
@@ -111,7 +111,7 @@
 <div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel">
   <div class="carousel-inner">
     <div class="carousel-item active">
-      <img src="/img/banner1.jpg" class="d-block w-100" alt="First Image">
+      <img src="/HisSolve/img/banner1.jpg" class="d-block w-100" alt="First Image">
       <!-- 텍스트가 포함될 부분 -->
       <div class="carousel-caption">
         <h1 th:text="${contest.name}">Contest Name</h1>
@@ -124,7 +124,7 @@
       </div>
     </div>
     <div class="carousel-item">
-      <img src="/img/banner2.jpg" class="d-block w-100" alt="Second Image">
+      <img src="/HisSolve/img/banner2.jpg" class="d-block w-100" alt="Second Image">
       <div class="carousel-caption">
         <h1 th:text="${contest.name}">Contest Name</h1>
         <div class="contest-code">
@@ -151,13 +151,13 @@
   <div class="main-container">
     <div class="problem-container">
       <div class="d-flex justify-content-between align-items-center my-3">
-        <a href="/dashboard" class="btn back-button"><i class="fas fa-arrow-left"></i> Back to dashboard</a>
-        <a th:href="@{/problem/create(contestId=${contest.id})}" class="btn new-problem-button"><i class="fas fa-plus"></i> Create</a>
+        <a href="/HisSolve/dashboard" class="btn back-button"><i class="fas fa-arrow-left"></i> Back to dashboard</a>
+        <a th:href="@{/HisSolve/problem/create(contestId=${contest.id})}" class="btn new-problem-button"><i class="fas fa-plus"></i> Create</a>
       </div>
     </div>
     <div class="row">
         <div class="col-lg-6 col-sm-12 my-3" th:each="problem : ${problems}">
-          <a th:href="@{/admin_problem_detail/{id}(id=${problem.id})}" style="text-decoration: none; color: inherit;">
+          <a th:href="@{/HisSolve/admin_problem_detail/{id}(id=${problem.id})}" style="text-decoration: none; color: inherit;">
             <div class="card shadow-sm p-3">
               <div class="card-header">
                 <span class="badge bg-warning">총 테스트케이스: <span th:text="${problem.testcaseCount}"></span></span>
@@ -210,7 +210,7 @@
 
     <!-- Ranking Dashboard Button -->
     <div class="summary-container">
-      <a th:href="@{/admin_contest/rankDashboard/{id}(id=${contest.id})}" class="btn ranking-dashboard-button"><i class="fas fa-chart-bar"></i> Ranking Dashboard</a>
+      <a th:href="@{/HisSolve/admin_contest/rankDashboard/{id}(id=${contest.id})}" class="btn ranking-dashboard-button"><i class="fas fa-chart-bar"></i> Ranking Dashboard</a>
     </div>
   </div>
 </div>
@@ -224,7 +224,7 @@
           <h5 class="modal-title" id="deleteUserModalLabel">사용자 삭제</h5>
           <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
         </div>
-        <form th:action="@{/contest/removeUser}" method="post">
+        <form th:action="@{/HisSolve/contest/removeUser}" method="post">
           <div class="modal-body">
             <input type="hidden" name="contestId" th:value="${contest.id}" />
             <input type="hidden" name="userId" th:value="${user.id}" />

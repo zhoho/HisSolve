@@ -72,10 +72,11 @@ public class HisnetLoginService {
                     .role("USER")
                     .password("12345")
                     .hisnetToken(token)
+                    .active(true)
                     .build();
 
             // 활동 상태를 true로 업데이트
-            userService.updateUserActiveStatus(user.getUsername(), true);
+//            userService.updateUserActiveStatus(user.getUsername(), true);
 
             return user;
         } catch (HttpStatusCodeException e) {

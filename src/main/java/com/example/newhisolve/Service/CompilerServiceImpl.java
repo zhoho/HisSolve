@@ -17,7 +17,8 @@ public class CompilerServiceImpl implements CompilerService {
     public List<Map<String, String>> compileAndRun(Long assignmentId, String code, String language, List<TestCase> testCases) {
         List<Map<String, String>> results = new ArrayList<>();
         try {
-            File tempDir = new File("tempDir");
+            String sharedDir = "/tmp/tempDir";
+            File tempDir = new File(sharedDir);
             if (!tempDir.exists()) {
                 tempDir.mkdir();
             }
@@ -82,7 +83,8 @@ public class CompilerServiceImpl implements CompilerService {
     public List<Map<String, String>> gradingCompileAndRun(Long assignmentId, String code, String language, List<TestCase> gradingTestCases) {
         List<Map<String, String>> results = new ArrayList<>();
         try {
-            File tempDir = new File("tempDir");
+            String sharedDir = "/tmp/tempDir";
+            File tempDir = new File(sharedDir);
             if (!tempDir.exists()) {
                 tempDir.mkdir();
             }
@@ -151,7 +153,8 @@ public class CompilerServiceImpl implements CompilerService {
     public String runCodeWithInput(String code, String language, List<String> inputs) {
         try {
             // 임시 디렉토리 생성
-            File tempDir = new File("tempDir");
+            String sharedDir = "/tmp/tempDir";
+            File tempDir = new File(sharedDir);
             if (!tempDir.exists()) {
                 tempDir.mkdir();
             }
@@ -232,11 +235,29 @@ public class CompilerServiceImpl implements CompilerService {
 
     @Override
     public String getDockerCommand(String language, String filePath, String hostPath) {
+        String sharedDir = "/tmp";  // 호스트와 컨테이너 간 공유된 디렉토리
+        String workDir = "/tmp/tempDir";  // 컨테이너 내부에서 작업할 디렉토리
+        String containerFilePath = filePath;  // 파일명만 사용 (예: TempCode.c)
+        // 호스트의 파일 저장 경로와 컨테이너의 경로가 일치하도록 설정
+        // 파일은 /tmp/tempDir/TempCode.c에 저장됩니다.
         switch (language) {
-            case "python": return String.format("docker run --rm -i -v %s:/app -w /app python:3.8-slim python %s", hostPath, filePath);
-            case "java": return String.format("docker run --rm -i -v %s:/app -w /app openjdk:11-slim sh -c 'javac %s && java TempCode'", hostPath, filePath);
-            case "c": return String.format("docker run --rm -i -v %s:/app -w /app gcc:latest sh -c 'gcc -o TempCode %s && ./TempCode'", hostPath, filePath);
-            default: throw new IllegalArgumentException("Unsupported language: " + language);
+            case "python":
+                return String.format(
+                        "docker run --rm -i -v %s:%s -w %s python:3.8-slim python %s",
+                        sharedDir, sharedDir, workDir, containerFilePath
+                );
+            case "java":
+                return String.format(
+                        "docker run --rm -i -v %s:%s -w %s openjdk:11-slim sh -c 'javac %s && java TempCode'",
+                        sharedDir, sharedDir, workDir, containerFilePath
+                );
+            case "c":
+                return String.format(
+                        "docker run --rm -i -v %s:%s -w %s gcc:latest sh -c 'gcc -o TempCode %s && ./TempCode'",
+                        sharedDir, sharedDir, workDir, containerFilePath
+                );
+            default:
+                throw new IllegalArgumentException("Unsupported language: " + language);
         }
     }
 

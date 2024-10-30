@@ -7,7 +7,7 @@
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-    <link th:href="@{/css/styles.css}" rel="stylesheet">
+    <link th:href="@{/HisSolve/css/styles.css}" rel="stylesheet">
     <style>
         body {
             background-color: #edf2f4;
@@ -47,7 +47,7 @@
 <div class="container mt-1">
     <div class="main-container">
         <h2>Edit Contest</h2>
-        <form th:action="@{/contest/edit}" method="post">
+        <form th:action="@{/HisSolve/contest/edit}" method="post">
             <input type="hidden" name="id" th:value="${contest.id}">
             <div class="form-group">
                 <label for="contestName">Contest Name</label>
@@ -64,11 +64,11 @@
             <div class="d-flex justify-content-between">
                 <div>
                     <button type="submit" class="btn btn-lightblue">Save</button>
-                    <a th:href="@{/admin_contest/{contestId}(contestId=${contest.id})}" class="btn btn-lightblue">Cancel</a>
+                    <a th:href="@{/HisSolve/admin_contest/{contestId}(contestId=${contest.id})}" class="btn btn-lightblue">Cancel</a>
                 </div>
             </div>
         </form>
-        <form th:action="@{/contest/delete}" method="post" onsubmit="return confirm('Are you sure you want to delete this contest?');">
+        <form th:action="@{/HisSolve/contest/delete}" method="post" onsubmit="return confirm('Are you sure you want to delete this contest?');">
             <input type="hidden" name="contestId" th:value="${contest.id}">
             <button type="submit" class="btn btn-danger">Delete</button>
         </form>

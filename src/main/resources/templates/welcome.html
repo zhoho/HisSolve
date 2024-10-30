@@ -4,7 +4,7 @@
     <title>Hisolve</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"> <!-- Roboto 폰트 적용 -->
-    <link th:href="@{/css/styles.css}" rel="stylesheet">
+    <link th:href="@{/HisSolve/css/styles.css}" rel="stylesheet">
     <style>
         /* 애니메이션 및 일반 텍스트의 폰트를 Roboto로 설정 */
         body, html {
@@ -83,14 +83,15 @@
 <nav th:fragment="nav">
     <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #edf2f4;">
         <div class="container">
-            <a class="navbar-brand" href="/" style="color: #2b2d42;">Hissolve</a>
+            <a class="navbar-brand" href="/HisSolve/" style="color: #2b2d42;">Hissolve</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="https://walab.info:8443/HisnetLogin/hisnet-login?returnUrl=http://localhost:8080/login&accessKey=bcPZJPzxceIGPe6EQuxY" style="color: #2b2d42;">Login</a>
+                        <a class="nav-link" href="https://walab.info:8443/HisnetLogin/hisnet-login?returnUrl=http://walab.handong.edu/HisSolve/login&accessKey=bcPZJPzxceIGPe6EQuxY" style="color: #2b2d42;">Login</a>
+<!--                        <a class="nav-link" href="https://walab.info:8443/HisnetLogin/hisnet-login?returnUrl=http://localhost:8080/login&accessKey=bcPZJPzxceIGPe6EQuxY" style="color: #2b2d42;">Login</a>-->
                     </li>
                 </ul>
             </div>
