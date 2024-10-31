@@ -38,7 +38,7 @@ public class User {
     private List<Contest> enrolledContest;
 
     @Builder
-    public User(String username, String password, String role, String hisnetToken, String uniqueId, String email, String department) {
+    public User(String username, String password, String role, String hisnetToken, String uniqueId, String email, String department, boolean active) {
         this.username = username;
         this.password = password;
         this.role = role;
@@ -46,6 +46,7 @@ public class User {
         this.uniqueId = uniqueId;
         this.email = email;
         this.department = department;
+        this.active = active;
     }
 
     public User(String hisnetToken) {
@@ -63,5 +64,6 @@ public class User {
         this.setEmail(user.getEmail());
         this.setDepartment(user.getDepartment());
         this.setUniqueId(user.getUniqueId());
+        this.setActive(user.isActive());
     }
 }

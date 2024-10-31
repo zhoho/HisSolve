@@ -64,6 +64,7 @@ public class HisnetLoginService {
             }
 
             // 새로운 사용자 객체 생성
+            // 수정  필요 (상태도 들어가도록)
             User user = User.builder()
                     .username(name)
                     .uniqueId(uniqueId)
@@ -72,10 +73,11 @@ public class HisnetLoginService {
                     .role("USER")
                     .password("12345")
                     .hisnetToken(token)
+                    .active(true)
                     .build();
 
             // 활동 상태를 true로 업데이트
-            userService.updateUserActiveStatus(user.getUsername(), true);
+//            userService.updateUserActiveStatus(user.getUsername(), true);
 
             return user;
         } catch (HttpStatusCodeException e) {
