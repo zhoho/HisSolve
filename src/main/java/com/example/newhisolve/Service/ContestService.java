@@ -44,6 +44,6 @@ public interface ContestService {
     User findUserByUsername(String username);
     String getProblemStatusForUser(Problem problem, User user);
     Map<Long, Integer> getProblemSolvedUserCounts(Long contestId);
-
+    Contest getContestByProblemId(Long problemId);
 }
 

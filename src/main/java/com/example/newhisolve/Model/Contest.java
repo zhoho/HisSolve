@@ -32,6 +32,8 @@ public class Contest {
     private String description;
     private String problemCount;
 
+    private Boolean languageStatic;
+
     // Many-to-One 관계: 하나의 Contest는 한 명의 User(관리자)를 가짐
     @ManyToOne
     @JoinColumn(name = "admin_id")
@@ -51,7 +53,7 @@ public class Contest {
     }
 
     // 필드들을 초기화하는 생성자
-    public Contest(String name, String code, String language, String description, String problemCount, User admin, LocalDateTime startDate, LocalDateTime dueDate) {
+    public Contest(String name, String code, String language, String description, String problemCount, User admin, LocalDateTime startDate, LocalDateTime dueDate, Boolean languageStatic) {
         this.name = name;
         this.code = code;
         this.language = language;
@@ -60,6 +62,7 @@ public class Contest {
         this.admin = admin;
         this.startDate = startDate;
         this.dueDate = dueDate;
+        this.languageStatic = languageStatic;
     }
 
     public String getStatus() {
@@ -83,10 +86,12 @@ public class Contest {
         return dueDate.format(formatter);
     }
 
-
-
     // 참여자 수를 반환하는 메서드 추가
     public long getParticipantCount() {
         return users.size(); // 참여자 수 계산
+    }
+
+    public boolean isLanguageStatic() {
+        return languageStatic;
     }
 }

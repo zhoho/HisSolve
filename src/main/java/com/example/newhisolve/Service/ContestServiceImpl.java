@@ -312,4 +312,11 @@ public class ContestServiceImpl implements ContestService {
 
         return problemSolvedUserCounts;
     }
+
+    @Override
+    public Contest getContestByProblemId(Long problemId) {
+        Problem problem = problemRepository.findById(problemId)
+                .orElseThrow(() -> new IllegalArgumentException("이 Id에 맞는 Problem은 없음: " + problemId));
+        return problem.getContest();
+    }
 }

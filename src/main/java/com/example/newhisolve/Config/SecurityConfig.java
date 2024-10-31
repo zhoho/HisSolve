@@ -34,7 +34,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
                                 .requestMatchers("/", "/register", "/adminLogin", "/login", "/auth/**", "/api/compile", "/img/**", "/css/**", "/js/**").permitAll()
-                                .requestMatchers("/admin_contest/**", "/problem/create", "/contest/edit", "/admin_problem_detail/**", "/problem/edit/**").hasAuthority("ADMIN")
+                                .requestMatchers("/admin_contest/**", "/problem/create", "/contest/edit","/contest/create","/contest/delete", "/contest/export","/contest/removeUser", "/contest/create","/admin_problem_detail/**", "/problem/edit/**").hasAuthority("ADMIN")
                                 .requestMatchers("/submit", "/contest/**").hasAuthority("USER")
                                 .anyRequest().authenticated()
                 )
@@ -67,7 +67,7 @@ public class SecurityConfig {
     public LogoutSuccessHandler logoutSuccessHandler() {
         return (request, response, authentication) -> {
             if (authentication != null && authentication.getName() != null) {
-                System.out.println("로그아웃한 사용자: " + authentication.getName());
+//                System.out.println("로그아웃한 사용자: " + authentication.getName());
                 userServiceImpl.updateUserActiveStatus(authentication.getName(), false);  // active 상태 비활성화
             }
             response.sendRedirect("/"); // 로그아웃 후 리다이렉트 경로를 /welcome으로 설정
