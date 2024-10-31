@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -35,6 +34,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
                                 .requestMatchers("/", "/register", "/adminLogin", "/login", "/auth/**", "/api/compile", "/img/**", "/css/**", "/js/**").permitAll()
+                                .requestMatchers("/admin_contest/**", "/problem/create", "/contest/edit", "/admin_problem_detail/**", "/problem/edit/**").hasAuthority("ADMIN")
+                                .requestMatchers("/submit", "/contest/**").hasAuthority("USER")
                                 .anyRequest().authenticated()
                 )
                 .formLogin(formLogin ->
@@ -52,6 +53,10 @@ public class SecurityConfig {
                                 .deleteCookies("JSESSIONID")
                                 .permitAll()
                 )
+                .exceptionHandling(exceptionHandling ->
+                exceptionHandling
+                        .accessDeniedPage("/errorPage") // 403 에러 발생 시 리다이렉트할 페이지 설정
+        )
                 .csrf(csrf -> csrf.disable());
 
         return http.build();

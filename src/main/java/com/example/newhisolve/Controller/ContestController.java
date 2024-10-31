@@ -65,6 +65,7 @@ public class ContestController {
     }
 
     @GetMapping("/contest/{id}")
+    @PreAuthorize("hasRole('USER')")
     public String viewContest(@PathVariable Long id, Model model, Principal principal) {
         Contest contestEntity = contestService.findById(id);
         model.addAttribute("contest", contestEntity);
