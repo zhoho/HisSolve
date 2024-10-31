@@ -162,7 +162,7 @@
         <label for="dueDate" class="font-weight-bold">Due Date</label>
         <div class="input-group">
           <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
-          <input type="datetime-local" class="form-control" id="dueDate" name="dueDate" th:value="${formattedDueDate}" required>
+          <input type="datetime-local" class="form-control" id="dueDate" name="dueDate" th:value="${problem.getProblemDueDate()}" required>
         </div>
       </div>
 

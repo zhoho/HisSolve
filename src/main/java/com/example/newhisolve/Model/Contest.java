@@ -78,6 +78,13 @@ public class Contest {
         return startDate.format(formatter) + " ~ " + dueDate.format(formatter);
     }
 
+    public String getContestDueDate() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        return dueDate.format(formatter);
+    }
+
+
+
     // 참여자 수를 반환하는 메서드 추가
     public long getParticipantCount() {
         return users.size(); // 참여자 수 계산
