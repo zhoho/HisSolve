@@ -1,13 +1,10 @@
 package com.example.newhisolve.Service;
 
 import com.example.newhisolve.Model.*;
-import com.example.newhisolve.Repository.ProblemRepository;
-import com.example.newhisolve.Repository.ContestRepository;
-import com.example.newhisolve.Repository.SubmissionRepository;
-import com.example.newhisolve.Repository.UserRepository;
+import com.example.newhisolve.Repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import com.example.newhisolve.Repository.SavedCodeRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -21,7 +18,7 @@ public class ContestServiceImpl implements ContestService {
     private final ProblemRepository problemRepository;
     private final SubmissionRepository submissionRepository;
     private final SavedCodeRepository savedCodeRepository;
-
+    private final ContestUserRepository contestUserRepository;
     @Override
     public Contest createContest(Contest contest, String adminUsername) {
         User admin = userRepository.findByUsername(adminUsername)
@@ -37,8 +34,12 @@ public class ContestServiceImpl implements ContestService {
                 .orElseThrow(() -> new RuntimeException("Contest not found"));
         User user = userRepository.findByUsername(userUsername)
                 .orElseThrow(() -> new RuntimeException("User not found"));
-        contest.getUsers().add(user);
-        contestRepository.save(contest);
+        if (!contest.getUsers().contains(user)) {
+            contest.getUsers().add(user);
+            contestRepository.save(contest);
+        } else {
+            throw new RuntimeException("이미 이 콘테스트에 참가하셨습니다.");
+        }
     }
 
     @Override
@@ -112,9 +113,25 @@ public class ContestServiceImpl implements ContestService {
                 .orElse(0);
     }
 
+
     @Override
+    @Transactional
     public void deleteContest(Contest contest) {
+        List<Problem> problems = problemRepository.findByContest(contest);
+        // 1. submission 삭제
+        submissionRepository.deleteByContest(contest);
+        // 2. 각 problem에 대한 saved_code 삭제
+        for (Problem problem : problems) {
+            savedCodeRepository.deleteByProblem(problem);
+        }
+        // 3. problem 삭제
+        problemRepository.deleteByContest(contest);
+        // 4. contest_user 삭제
+        contestUserRepository.deleteByContest(contest);
+        // 5. contest 삭제
         contestRepository.delete(contest);
+
+//        todo contest내에 해당하는 problemid를 찾고 그 problemid에 해당하는 saved_code 삭제 및 problem_test_cases삭제
     }
 
     @Override
