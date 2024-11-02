@@ -120,7 +120,6 @@
         </div>
         <p th:text="${contest.description}">Description</p>
         <p th:text="${contest.getDuration()}">Duration</p>
-
       </div>
     </div>
     <div class="carousel-item">
@@ -132,7 +131,6 @@
         </div>
         <p th:text="${contest.description}">Description</p>
         <p th:text="${contest.getDuration()}">Duration</p>
-
       </div>
     </div>
   </div>
@@ -178,15 +176,15 @@
     </div>
 
     <!-- Users Table -->
-    <div class="users-container">
+  <div class="users-container">
       <h2>Users</h2>
       <table class="table table-hover table-bordered table-striped">
         <thead class="thead-dark">
         <tr>
           <th>#</th>
-          <th>Name</th>
-          <th>User_Id</th>
-          <th>Email</th>
+          <th>이름</th>
+          <th>학번</th>
+          <th>학부</th>
           <th>Status</th>
           <th>Remove User</th>
         </tr>
@@ -196,13 +194,13 @@
           <td th:text="${iterStat.count}"></td>
           <td th:text="${user.username}"></td>
           <td th:text="${user.uniqueId}"></td>
-          <td th:text="${user.email}"></td>
+          <td th:text="${user.department}"></td>
           <td>
             <i class="bi bi-circle-fill"
                th:class="${user.active} ? 'bi bi-circle-fill text-success' : 'bi bi-circle-fill text-secondary'"></i>
           </td>
           <td>
-            <button type="button" class="btn-close" aria-label="Close" data-toggle="modal" th:data-target="'#deleteUserModal-' + ${user.id}"></button>
+            <button type="button" class="btn-close" aria-label="Close" data-bs-toggle="modal" th:data-bs-target="'#deleteUserModal-' + ${user.id}"></button>
           </td>
         </tr>
         </tbody>
@@ -214,8 +212,6 @@
       <a th:href="@{/admin_contest/rankDashboard/{id}(id=${contest.id})}" class="btn ranking-dashboard-button"><i class="fas fa-chart-bar"></i> Ranking Dashboard</a>
     </div>
   </div>
-</div>
-
 <!-- User Removal Modal -->
 <div th:each="user : ${users}">
   <div class="modal fade" th:id="'deleteUserModal-' + ${user.id}" tabindex="-1" role="dialog" aria-labelledby="deleteUserModalLabel" aria-hidden="true">
@@ -223,7 +219,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="deleteUserModalLabel">사용자 삭제</h5>
-          <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <form th:action="@{/contest/removeUser}" method="post">
           <div class="modal-body">
