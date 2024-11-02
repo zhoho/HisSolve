@@ -128,8 +128,9 @@
 
         </div>
     </div>
-
-
+    <div th:if="${errorMessage}" class="alert alert-danger" role="alert">
+        <p th:text="${errorMessage}"></p>
+    </div>
     <div id="searchResults" class="row mt-4">
     </div>
     <div id="backButtonContainer" class="text-center mt-3" style="display: none;">

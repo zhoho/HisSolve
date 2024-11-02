@@ -6,8 +6,10 @@ import com.example.newhisolve.Model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import java.util.Optional;
+import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+@Repository
 public interface SavedCodeRepository extends JpaRepository<SavedCode, Long> {
     Optional<SavedCode> findByProblemAndUser(Problem problem, User user);
     void deleteByUserId(Long userId);
@@ -17,6 +19,7 @@ public interface SavedCodeRepository extends JpaRepository<SavedCode, Long> {
     long countDistinctUsersByProblemId(@Param("problemId") Long problemId);
 
     Optional<SavedCode> findByUserAndProblem(User user, Problem problem);
+    void deleteByProblem(Problem problem);
 }
 
 

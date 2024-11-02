@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Entity
@@ -28,13 +29,17 @@ public class Problem {
     private LocalDateTime lastModifiedDate;
 
     @ElementCollection
-    private List<TestCase> testCases; // 일반 테스트케이스와 히든테스트케이스를 하나의 리스트로 관리
+    private List<TestCase> testCases;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "contest_id")
     private Contest contest;
 
     @Column(name = "testcase_count")
     private Integer testcaseCount;
 
+    public String getProblemDueDate() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        return dueDate.format(formatter);
+    }
 }

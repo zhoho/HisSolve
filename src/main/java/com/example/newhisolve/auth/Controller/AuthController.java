@@ -126,7 +126,7 @@ public class AuthController {
             session.setAttribute("user", user);
             authService.createOrUpdateUser(user);
 
-            System.out.println("tt" + user.getUniqueId());
+//            System.out.println("tt" + user.getUniqueId());
 
             try {
                 UserDetails userDetails = userService.loadUserByuniqueId(user.getUniqueId());

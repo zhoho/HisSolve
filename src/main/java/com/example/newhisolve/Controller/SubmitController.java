@@ -1,7 +1,9 @@
 package com.example.newhisolve.Controller;
+import com.example.newhisolve.Model.Contest;
 import com.example.newhisolve.Model.Problem;
 import com.example.newhisolve.Model.Submission;
 import com.example.newhisolve.Model.User;
+import com.example.newhisolve.Service.ContestService;
 import com.example.newhisolve.Service.ProblemService;
 import com.example.newhisolve.Service.SubmissionService;
 import com.example.newhisolve.Service.UserService;
@@ -21,6 +23,7 @@ public class SubmitController {
     private final ProblemService problemService;
     private final UserService userService;
     private final SubmissionService submissionService;
+    private final ContestService contestService;
 
     @GetMapping("/submit")
     @PreAuthorize("hasRole('USER')")
@@ -30,8 +33,14 @@ public class SubmitController {
         User user = userService.getCurrentUser();
         model.addAttribute("language", language);
         model.addAttribute("user", user);
+
         Problem problem = problemService.getProblemById(problemId);
         model.addAttribute("problem", problem);
+
+        Contest contest = contestService.getContestByProblemId(problemId);
+        boolean languageStatic = contest.isLanguageStatic();
+        model.addAttribute("languageStatic", languageStatic);
+
         List<Submission> submissions = submissionService.findByProblemAndUser(problemId, user.getId());
         model.addAttribute("submissions", submissions);
 
