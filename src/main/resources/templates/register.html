@@ -7,7 +7,7 @@
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;700&display=swap" rel="stylesheet">
   <!-- 공통 CSS 파일 참조 -->
-  <link th:href="@{/css/styles.css}" rel="stylesheet">
+  <link th:href="@{/HisSolve/css/styles.css}" rel="stylesheet">
 </head>
 <body>
 <!-- Navigation Bar -->
@@ -18,7 +18,7 @@
   <h1 class="my-4">Sign Up</h1>
 
   <!-- `th:object`로 User 객체 매핑 -->
-  <form th:action="@{/register}" th:object="${user}" method="post">
+  <form th:action="@{/HisSolve/register}" th:object="${user}" method="post">
     <div class="form-group">
       <label for="username">Username</label>
       <input type="text" class="form-control" th:field="*{username}" id="username" required>

@@ -8,7 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <link th:href="@{/css/styles.css}" rel="stylesheet">
+    <link th:href="@{/HisSolve/css/styles.css}" rel="stylesheet">
     <style>
         body, html {
             background-color: white;
@@ -79,14 +79,14 @@
 <div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel">
     <div class="carousel-inner">
         <div class="carousel-item active">
-            <img src="/img/banner1.jpg" class="d-block w-100" alt="First Image">
+            <img src="/HisSolve/img/banner1.jpg" class="d-block w-100" alt="First Image">
             <div class="carousel-caption">
                 <h1 th:text="${problem.title}"></h1>
                 <p th:text="'Due: ' + ${#temporals.format(problem.dueDate, 'yyyy-MM-dd HH:mm:ss')}"></p>
             </div>
         </div>
         <div class="carousel-item">
-            <img src="/img/banner2.jpg" class="d-block w-100" alt="Second Image">
+            <img src="/HisSolve/img/banner2.jpg" class="d-block w-100" alt="Second Image">
             <div class="carousel-caption">
                 <h1 th:text="${problem.title}"></h1>
                 <p th:text="'Due: ' + ${#temporals.format(problem.dueDate, 'yyyy-MM-dd HH:mm:ss')}"></p>
@@ -105,8 +105,8 @@
 
 <div class="container mt-2">
     <div class="d-flex justify-content-between my-3">
-        <a th:href="@{/admin_contest/{contestId}(contestId=${problem.contest.id})}" class="btn btn-lightblue"><i class="fas fa-arrow-left"></i>Back to contest</a>
-        <a th:href="@{/problem/edit/{id}(id=${problem.id})}" class="btn btn-lightblue"><i class="fas fa-edit"></i>Edit problem</a>
+        <a th:href="@{/HisSolve/admin_contest/{contestId}(contestId=${problem.contest.id})}" class="btn btn-lightblue"><i class="fas fa-arrow-left"></i>Back to contest</a>
+        <a th:href="@{/HisSolve/problem/edit/{id}(id=${problem.id})}" class="btn btn-lightblue"><i class="fas fa-edit"></i>Edit problem</a>
     </div>
 
     <div class="main-container">
@@ -166,7 +166,7 @@
                 </tr>
                 </tbody>
             </table>
-            <a th:href="@{/results/download(problemId=${problem.id})}" class="btn btn-success"><i class="fas fa-download"></i> Results</a>
+            <a th:href="@{/HisSolve/results/download(problemId=${problem.id})}" class="btn btn-success"><i class="fas fa-download"></i> Results</a>
         </div>
     </div>
 </div>
@@ -182,7 +182,7 @@
     function showDetails(button) {
         const submissionId = button.getAttribute('data-id');
         const language = button.getAttribute('data-language');
-        window.location.href = `/submission_detail/${submissionId}?language=${language}`;
+        window.location.href = `/HisSolve/submission_detail/${submissionId}?language=${language}`;
     }
 </script>
 </body>

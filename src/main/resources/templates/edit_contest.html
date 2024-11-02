@@ -7,7 +7,7 @@
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-    <link th:href="@{/css/styles.css}" rel="stylesheet">
+    <link th:href="@{/HisSolve/css/styles.css}" rel="stylesheet">
     <style>
         body, html {
             background-color: white;
@@ -83,13 +83,13 @@
 <div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel">
     <div class="carousel-inner">
         <div class="carousel-item active">
-            <img src="/img/banner1.jpg" class="d-block w-100" alt="First Image">
+            <img src="/HisSolve/img/banner1.jpg" class="d-block w-100" alt="First Image">
             <div class="carousel-caption">
                 <h1>Edit Contest</h1>
             </div>
         </div>
         <div class="carousel-item">
-            <img src="/img/banner2.jpg" class="d-block w-100" alt="Second Image">
+            <img src="/HisSolve/img/banner2.jpg" class="d-block w-100" alt="Second Image">
             <div class="carousel-caption">
                 <h1>Edit Contest</h1>
             </div>
@@ -108,7 +108,7 @@
 <!-- Contest Form -->
 <div class="container mt-1">
     <div class="main-container">
-        <form th:action="@{/contest/edit}" th:object="${contest}" method="post">
+        <form th:action="@{/HisSolve/contest/edit}" th:object="${contest}" method="post">
             <input type="hidden" th:field="*{id}">
             <div class="card card-custom mb-4">
                 <div class="card-body card-body-custom">
@@ -166,11 +166,11 @@
                 </div>
             </div>
             <div class="text-center">
-                <a th:href="@{/admin_contest/{contestId}(contestId=${contest.id})}" class="btn btn-secondary btn-custom">Cancel</a>
+                <a th:href="@{/HisSolve/admin_contest/{contestId}(contestId=${contest.id})}" class="btn btn-secondary btn-custom">Cancel</a>
                 <button type="submit" class="btn btn-primary btn-custom">Save</button>
             </div>
         </form>
-        <form th:action="@{/contest/delete}" method="post" onsubmit="return confirm('컨테스트를 정말 삭제 하시겠습니까?');" style="display: inline;">
+        <form th:action="@{/HisSolve/contest/delete}" method="post" onsubmit="return confirm('컨테스트를 정말 삭제 하시겠습니까?');" style="display: inline;">
             <input type="hidden" name="contestId" th:value="${contest.id}">
             <div class="text-center mt-2">
                 <button type="submit" class="btn btn-danger btn-custom">Delete</button>

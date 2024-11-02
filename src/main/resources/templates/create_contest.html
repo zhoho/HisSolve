@@ -7,7 +7,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-    <link th:href="@{/css/styles.css}" rel="stylesheet">
+    <link th:href="@{/HisSolve/css/styles.css}" rel="stylesheet">
     <style>
         body, html {
             background-color: white;
@@ -89,13 +89,13 @@
 <div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel">
     <div class="carousel-inner">
         <div class="carousel-item active">
-            <img src="/img/banner1.jpg" class="d-block w-100" alt="First Image">
+            <img src="/HisSolve/img/banner1.jpg" class="d-block w-100" alt="First Image">
             <div class="carousel-caption">
                 <h1>Create Contest</h1>
             </div>
         </div>
         <div class="carousel-item">
-            <img src="/img/banner2.jpg" class="d-block w-100" alt="Second Image">
+            <img src="/HisSolve/img/banner2.jpg" class="d-block w-100" alt="Second Image">
             <div class="carousel-caption">
                 <h1>Create Contest</h1>
             </div>
@@ -114,7 +114,7 @@
 <!-- Contest Form -->
 <div class="container mt-1">
     <div class="main-container">
-        <form th:action="@{/contest/create}" th:object="${contest}" method="post">
+        <form th:action="@{/HisSolve/contest/create}" th:object="${contest}" method="post">
             <div class="card card-custom mb-4">
                 <div class="card-body card-body-custom">
                     <div class="mb-3">

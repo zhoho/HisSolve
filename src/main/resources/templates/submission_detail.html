@@ -6,7 +6,7 @@
     <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;700&display=swap" rel="stylesheet">
-    <link th:href="@{/css/styles.css}" rel="stylesheet">
+    <link th:href="@{/HisSolve/css/styles.css}" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
@@ -415,7 +415,7 @@
         const code = window.editor.getValue();
         showLoadingSpinner('.btn-primary');
         try {
-            const response = await fetch('/api/compile', {
+            const response = await fetch('/HisSolve/api/compile', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ problemId: problemId, code: code, language: language })
@@ -494,7 +494,7 @@
         }, 5000); // 5초 후에 실행
 
         try {
-            const response = await fetch('/api/runWithInput', {
+            const response = await fetch('/HisSolve/api/runWithInput', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ code: code, language: language, inputs: inputs })

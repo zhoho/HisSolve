@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <link th:href="@{/css/styles.css}" rel="stylesheet">
+    <link th:href="@{/HisSolve/css/styles.css}" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
@@ -530,7 +530,7 @@
         const code = window.editor.getValue();
         showLoadingSpinner('.btn-primary');
         try {
-            const response = await fetch('/api/compile', {
+            const response = await fetch('/HisSolve/api/compile', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ problemId: problemId, code: code, language: language })
@@ -626,7 +626,7 @@
         }, 5000); // 5초 후에 실행
 
         try {
-            const response = await fetch('/api/runWithInput', {
+            const response = await fetch('/HisSolve/api/runWithInput', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ code: code, language: language, inputs: inputs })
@@ -654,7 +654,7 @@
         const lastSavedDateUTC = new Date(lastSavedDate.getTime() - (lastSavedDate.getTimezoneOffset() * 60000));
 
         try {
-            const response = await fetch('/api/saveCode', {
+            const response = await fetch('/HisSolve/api/saveCode', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -685,7 +685,7 @@
         const lastSavedDateUTC = new Date(lastSavedDate.getTime() - (lastSavedDate.getTimezoneOffset() * 60000));
 
         try {
-            const response = await fetch('/api/saveCode', {
+            const response = await fetch('/HisSolve/api/saveCode', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -719,7 +719,7 @@
 
     async function getSavedCode() {
         try {
-            const response = await fetch(`/api/getSavedCode?problemId=${problemId}&userId=${userId}`);
+            const response = await fetch(`/HisSolve/api/getSavedCode?problemId=${problemId}&userId=${userId}`);
             const text = await response.text();
 
             if (text === 'No saved code found') {
@@ -754,7 +754,7 @@
 
         try {
             // 모든 테스트 케이스 실행 및 채점
-            const response = await fetch('/api/submitWithHidden', {
+            const response = await fetch('/HisSolve/api/submitWithHidden', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -781,7 +781,7 @@
 
         try {
             // 제출 데이터 저장
-            const response = await fetch('/api/submit', {
+            const response = await fetch('/HisSolve/api/submit', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -929,7 +929,7 @@
 
         let totalCount;
         try {
-            const response = await fetch(`/api/TestcaseCount?problemId=${problemId}`);
+            const response = await fetch(`/HisSolve/api/TestcaseCount?problemId=${problemId}`);
             if (!response.ok) {
                 throw new Error('Failed to fetch total grading test case count');
             }
