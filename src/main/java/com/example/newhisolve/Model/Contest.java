@@ -81,6 +81,11 @@ public class Contest {
         return startDate.format(formatter) + " ~ " + dueDate.format(formatter);
     }
 
+    public String getContestStartDate() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        return startDate.format(formatter);
+    }
+
     public String getContestDueDate() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         return dueDate.format(formatter);

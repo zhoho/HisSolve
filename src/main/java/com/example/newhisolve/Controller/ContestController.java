@@ -124,8 +124,8 @@ public class ContestController {
     @GetMapping("/contest/edit")
     @PreAuthorize("hasRole('ADMIN')")
     public String editContest(@RequestParam Long contestId, Model model) {
-        Contest contestEntity = contestService.findById(contestId);
-        model.addAttribute("contest", contestEntity);
+        Contest contest = contestService.findById(contestId);
+        model.addAttribute("contest", contest);
         return "edit_contest";
     }
 
