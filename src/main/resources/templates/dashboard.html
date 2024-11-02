@@ -138,6 +138,15 @@
     </div>
     <!-- USER용 대회 목록 카드 -->
     <div class="row" id="userContestCards"> <!-- USER용 id 설정 -->
+        <div class="col-12 text-center my-5" th:if="${contests.isEmpty()}">
+            <div class="alert alert-primary p-5" role="alert">
+                <h4 class="alert-heading">대회에 참여하세요!</h4>
+                <p>코드 검색란에 새로운 대회 코드를 입력해보세요.</p>
+                <hr>
+                <p class="mb-0">대회에 참가하여 실력을 테스트하고 경쟁에 참여하세요!</p>
+            </div>
+        </div>
+
         <div class="col-lg-6 col-sm-12 my-3" th:if="${user.role == 'USER'}" th:each="contest : ${contests}">
             <a th:href="@{/contest/{id}(id=${contest.id})}" style="text-decoration: none; color: inherit;" th:attr="data-status=${contest.status}" onclick="return handleContestClick(this.dataset.status);" th:id="'contest-card-' + ${contest.id}">
                 <div class="card shadow-sm p-3" th:id="'contest-card-content-' + ${contest.id}">
@@ -181,7 +190,7 @@
     </div>
 </div>
     <!-- Footer -->
-<div th:replace="~{fragments :: footer}"></div>
+<div th:replace="~{fragments :: footer}" style="position: fixed;"></div>
 
 <!-- Bootstrap JS and dependencies -->
 <div th:replace="~{fragments :: scripts}"></div>
