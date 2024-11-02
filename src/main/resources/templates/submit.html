@@ -332,12 +332,18 @@
                 <button id="submit-btn" class="btn btn-danger" onclick="submitCode()" disabled>Submit</button>
                 <button class="btn btn-secondary" onclick="saveCode()">Save</button>
                 <div id="saved-time" class="saved-time"></div>
-                <div class="form-group mx-2">
-                    <select id="language-select" class="form-select" onchange="changeLanguage(this)">
-                        <option value="c">C</option>
-                        <option value="python">Python</option>
-                        <option value="java">Java</option>
+
+                <div class="form-group">
+                    <label for="language-select" class="font-weight-bold">Language</label>
+                    <select id="language-select" class="form-control"
+                            onchange="changeLanguage(this)"
+                            th:if="${!languageStatic}"
+                            th:disabled="${languageStatic}">
+                        <option value="c" th:selected="${language == 'c'}">C</option>
+                        <option value="python" th:selected="${language == 'python'}">Python</option>
+                        <option value="java" th:selected="${language == 'java'}">Java</option>
                     </select>
+                    <p th:if="${languageStatic}" class="mt-2"><span th:text="${language}"></span></p>
                 </div>
             </div>
         </div>
