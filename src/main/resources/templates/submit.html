@@ -323,7 +323,7 @@
         <div class="contest-header">
             <h1 th:text="${problem.title}"></h1>
             <div class="contest-code">
-                <p>Due: <span id="due-date" th:text="${#temporals.format(problem.dueDate, 'yyyy-MM-dd HH:mm:ss')}"></span></p>
+                <p>Due: <span id="due-date" th:text="${problem.getProblemDueDate()}"></span></p>
                 <p>남은 시간: <span id="time-remaining"></span></p>
             </div>
             <div class="btn-container">
@@ -393,7 +393,7 @@
                         </thead>
                         <tbody>
                         <tr th:each="submission : ${submissions}">
-                            <td th:text="${#temporals.format(submission.submittedAt, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                            <td th:text="${submission.getSubmiteedAtTime()}"></td>
                             <td th:text="${submission.result}"></td>
                             <td th:text="${submission.language}"></td>
                             <td>
@@ -402,7 +402,7 @@
                                         th:data-code="${submission.code}"
                                         th:data-user="${submission.user.username}"
                                         th:data-result="${submission.result}"
-                                        th:data-submittedat="${#temporals.format(submission.submittedAt, 'yyyy-MM-dd HH:mm:ss')}"
+                                        th:data-submittedat="${submission.getSubmiteedAtTime()}"
                                         th:data-passcount="${submission.pass_count}"
                                         th:data-totalcount="${problem.testcaseCount}">
                                     <i class="fas fa-external-link-alt" aria-hidden="true"></i>

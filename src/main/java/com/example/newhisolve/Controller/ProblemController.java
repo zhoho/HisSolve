@@ -15,6 +15,8 @@ import java.security.Principal;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -66,7 +68,6 @@ public class ProblemController {
                 isHidden.add(false); // 부족한 경우 false 추가
             }
         }
-
         LocalDateTime localDateTime = LocalDateTime.parse(dueDate);
         problem.setDueDate(localDateTime);
 
@@ -102,8 +103,7 @@ public class ProblemController {
         }
 
         LocalDateTime localDateTime = LocalDateTime.parse(dueDate);
-        ZonedDateTime zonedDateTime = localDateTime.atZone(ZoneId.of("Asia/Seoul")).withZoneSameInstant(ZoneId.of("UTC"));
-        problem.setDueDate(zonedDateTime.toLocalDateTime());
+        problem.setDueDate(localDateTime);
         problem.setLastModifiedDate(LocalDateTime.now());
 
         List<TestCase> testCases = new ArrayList<>();

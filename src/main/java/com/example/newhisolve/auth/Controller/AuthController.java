@@ -130,7 +130,7 @@ public class AuthController {
 
             try {
                 UserDetails userDetails = userService.loadUserByuniqueId(user.getUniqueId());
-                System.out.println("user detail check " + userDetails);
+//                System.out.println("user detail check " + userDetails);
                 UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(auth);
 

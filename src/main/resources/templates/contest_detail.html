@@ -127,7 +127,7 @@
 
 <!-- 문제 목록 -->
 <div class="container mt-2">
-    <a href="/dashboard" class="btn back-button"><i class="bi bi-arrow-left"></i> Back to dashboard</a>
+    <a href="/HisSolve/dashboard" class="btn back-button"><i class="bi bi-arrow-left"></i> Back to dashboard</a>
     <div class="row">
         <div class="col-lg-6 col-sm-12 my-3" th:each="problem : ${problems}">
             <a th:href="@{/HisSolve/problem/{id}(id=${problem.id})}" class="card-link" style="text-decoration: none;">
