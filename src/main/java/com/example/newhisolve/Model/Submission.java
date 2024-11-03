@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Entity
 @Getter
@@ -56,4 +57,11 @@ public class Submission {
                 ", score=" + score +
                 '}';
     }
+
+    public String getSubmiteedAtTime() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        LocalDateTime adjustedTime = submittedAt.plusHours(9);
+        return adjustedTime.format(formatter);
+    }
+
 }

@@ -85,7 +85,7 @@ public class ProblemServiceImpl implements ProblemService {
         existingProblem.setTitle(problem.getTitle());
         existingProblem.setDueDate(problem.getDueDate());
         existingProblem.setDescription(problem.getDescription());
-        existingProblem.setTestCases(problem.getTestCases()); // 히든 테스트케이스도 함께 관리
+        existingProblem.setTestCases(problem.getTestCases());
         existingProblem.setLastModifiedDate(LocalDateTime.now());
 
         problemRepository.save(existingProblem); // 변경사항 저장
