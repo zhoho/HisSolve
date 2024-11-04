@@ -65,5 +65,6 @@ public class User {
         this.setDepartment(user.getDepartment());
         this.setUniqueId(user.getUniqueId());
         this.setActive(user.isActive());
+        this.setHisnetToken(user.hisnetToken);
     }
 }

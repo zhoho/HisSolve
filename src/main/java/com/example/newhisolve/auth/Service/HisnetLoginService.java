@@ -52,7 +52,7 @@ public class HisnetLoginService {
                 throw new IllegalArgumentException("응답 결과가 null입니다.");
             }
 
-//            System.out.println("API 응답: " + result);
+            System.out.println("API 응답: " + result);
 
             String uniqueId = (String) result.get("uniqueId");
             String name = (String) result.get("name");
@@ -71,7 +71,7 @@ public class HisnetLoginService {
                     .email(email)
                     .department(department)
                     .role("USER")
-                    .password("12345")
+                    .password("123456")
                     .hisnetToken(token)
                     .active(true)
                     .build();
