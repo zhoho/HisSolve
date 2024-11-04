@@ -60,7 +60,7 @@ public class Submission {
 
     public String getSubmiteedAtTime() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        LocalDateTime adjustedTime = submittedAt.plusHours(9);
+        LocalDateTime adjustedTime = submittedAt;
         return adjustedTime.format(formatter);
     }
 
