@@ -40,7 +40,7 @@ public class SecurityConfig {
                 )
                 .formLogin(formLogin ->
                         formLogin
-                                .loginPage("/adminLogin")
+                                .loginPage("/")
                                 .loginProcessingUrl("/login")
                                 .defaultSuccessUrl("/dashboard")
                                 .permitAll()
