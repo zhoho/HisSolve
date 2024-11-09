@@ -35,3 +35,9 @@ out/
 
 ### VS Code ###
 .vscode/
+
+nginx.conf
+
+docker-compose.yml
+
+resources/application.properties
