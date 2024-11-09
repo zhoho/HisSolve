@@ -1,4 +1,12 @@
 HELP.md
+
+nginx.conf
+
+docker-compose.yml
+
+resources/application.properties
+
+
 .gradle
 build/
 !gradle/wrapper/gradle-wrapper.jar
@@ -35,9 +43,3 @@ out/
 
 ### VS Code ###
 .vscode/
-
-nginx.conf
-
-docker-compose.yml
-
-resources/application.properties
