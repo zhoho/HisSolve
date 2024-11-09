@@ -1,5 +1,6 @@
 package com.example.newhisolve.Repository;
 
+import com.example.newhisolve.Model.Contest;
 import com.example.newhisolve.Model.Problem;
 import com.example.newhisolve.Model.Submission;
 import com.example.newhisolve.Model.User;
@@ -17,6 +18,7 @@ public interface SubmissionRepository extends JpaRepository<Submission, Long> {
     List<Submission> findByProblemId(Long problemId);
     void deleteByProblemId(Long problemId);
     void deleteByUserId(Long userId);
+    void deleteByContest(Contest contest);
     List<Submission> findByProblemIdAndUserId(Long problemId, Long userId);
     List<Submission> findByProblem(Problem problem);
 

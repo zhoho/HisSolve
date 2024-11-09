@@ -78,7 +78,7 @@
       <tr>
         <th>#</th>
         <th>Name</th>
-        <th>Email</th>
+        <th>학부</th>
         <th>Scores</th>
         <th>Total Score</th>
       </tr>
@@ -87,7 +87,7 @@
       <tr th:each="user, iterStat : ${users}">
         <td th:text="${iterStat.count}"></td>
         <td th:text="${user.username}"></td>
-        <td th:text="${user.email}"></td>
+        <td th:text="${user.department}"></td>
         <td>
           <span th:each="score : ${userProblemScores[user.id]}" th:text="${score} + ' '"></span>
         </td>

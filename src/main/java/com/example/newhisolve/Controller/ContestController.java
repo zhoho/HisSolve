@@ -14,6 +14,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -53,12 +54,18 @@ public class ContestController {
     }
 
     @PostMapping("/contest/join")
-    public String joinContest(@RequestParam String code, Principal principal) {
-        contestService.joinContest(code, principal.getName());
+    public String joinContest(@RequestParam String code, Principal principal, RedirectAttributes redirectAttributes) {
+        try {
+            contestService.joinContest(code, principal.getName());
+        } catch (RuntimeException e) {
+            // 에러 메시지 추가하기 (Flash 사용)
+            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+        }
         return "redirect:/dashboard";
     }
 
     @GetMapping("/contest/{id}")
+    @PreAuthorize("hasRole('USER')")
     public String viewContest(@PathVariable Long id, Model model, Principal principal) {
         Contest contestEntity = contestService.findById(id);
         model.addAttribute("contest", contestEntity);
@@ -117,8 +124,8 @@ public class ContestController {
     @GetMapping("/contest/edit")
     @PreAuthorize("hasRole('ADMIN')")
     public String editContest(@RequestParam Long contestId, Model model) {
-        Contest contestEntity = contestService.findById(contestId);
-        model.addAttribute("contest", contestEntity);
+        Contest contest = contestService.findById(contestId);
+        model.addAttribute("contest", contest);
         return "edit_contest";
     }
 

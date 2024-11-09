@@ -165,11 +165,12 @@
             <label for="dueDate" class="font-weight-bold">Due Date</label>
             <div class="input-group">
               <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
-              <input type="datetime-local" class="form-control" id="dueDate" name="dueDate" required>
+              <input type="datetime-local" class="form-control" id="dueDate" name="dueDate" required
+                     th:value="${contest.getContestDueDate()}">
             </div>
           </div>
           <input type="hidden" name="contestId" th:value="${contest.id}" />
-        </div>
+
       </div>
       <div class="text-center">
         <button type="submit" class="btn btn-lightblue">Create</button>

@@ -7,23 +7,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;700&display=swap" rel="stylesheet">
   <link th:href="@{/HisSolve/css/styles.css}" rel="stylesheet">
   <style>
-    body {
-      font-family: 'Source Code Pro', monospace;
-    }
-    .section-title {
-      margin-top: 20px;
-      text-align: center;
-    }
-    .faq-section {
-      padding-top: 2rem;
-    }
-    .faq-question {
-      font-weight: bold;
-      font-size: large;
-    }
-    .faq-answer {
-      margin-bottom: 1rem;
-    }
     .btn-blue {
       background-color: #007bff;
       color: white;
@@ -37,46 +20,18 @@
 <div th:replace="~{fragments :: nav}"></div>
 <div class="container" data-aos="fade-up">
   <div class="section-title">
-    <h2>Hisolve</h2>
-    <p class="font-weight-bold">Hisolve는 코딩 과제/대회 문제 제출, 채점이 가능한 서비스 입니다.</p>
+    <h2>Hissolve</h2>
+    <p class="font-weight-bold">Hissolve는 코딩 과제/대회 문제 제출, 채점이 가능한 서비스 입니다.</p>
   </div>
   <div class="text-center" id="topicLinkContainer">
-    <p class="mb-3 h5"><a href="https://github.com/zhoho/NewHisolve">github link</a></p>
-<!--    <p class="mb-3 h5"><a href="#user-accounts">Users & Accounts</a></p>-->
+<!--    <p class="mb-3 h5"><a href="https://github.com/zhoho/NewHisolve">github link</a></p>-->
   </div>
   <div class="text-center">
     <a class="btn btn-blue rounded-sm my-3 mb-5" href="https://docs.google.com/forms/d/e/1FAIpQLSfNRdegQYbuhE6YrMBnkMfl47lyIWolreXWaLpZ16UPRYUTdw/viewform?usp=sf_link"><b>Contact Us</b></a>
   </div>
-
-<!--  <div id="faqContainer">-->
-<!--    <div class="faq-section" id="assignments">-->
-<!--      <h3 class="text-blue">Assignments</h3>-->
-<!--      <div class="mt-3">-->
-<!--        <p class="faq-question" id="test-case-loading-2.1">-->
-<!--          Why aren't my submission test cases loading? There is a loading symbol which isn't going. <a href="#test-case-loading-2.1">#</a>-->
-<!--        </p>-->
-<!--        <p class="faq-answer">If the test cases have loading symbols instead of green check or red cross, try refreshing the assignment page. If the test cases still don't update, please contact us using the 'Contact Us' button above.</p>-->
-<!--      </div>-->
-<!--    </div>-->
-
-<!--    <div class="faq-section" id="user-accounts">-->
-<!--      <h3 class="text-blue">Users & Accounts</h3>-->
-<!--      <div class="mt-3">-->
-<!--        <p class="faq-question" id="how-to-change-user-type-1.1">-->
-<!--          Is changing the user type possible, especially in case I accidentally registered as the wrong type? <a href="#how-to-change-user-type-1.1">#</a>-->
-<!--        </p>-->
-<!--        <p class="faq-answer">Yes, changing the user type is possible, however, it requires <b>deleting your account</b> and registering again <i>(with the new user type)</i>. You can find the option to delete your account at the bottom of the <a href="/profile/edit">Profile</a> page.</p>-->
-
-<!--        <p class="faq-question" id="user-limits-1.2">-->
-<!--          What is the maximum number of classes a teacher can create? <a href="#user-limits-1.2">#</a>-->
-<!--        </p>-->
-
-<!--      </div>-->
-<!--    </div>-->
-<!--  </div>-->
 </div>
 
-<div th:replace="~{fragments :: footer}"></div>
+<!--<div th:replace="~{fragments :: footer}"></div>-->
 <div th:replace="~{fragments :: scripts}"></div>
 
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

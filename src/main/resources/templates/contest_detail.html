@@ -143,7 +143,7 @@
                         <p class="card-text">정답인원: <span th:text="${problemSolvedUserCounts[problem.id]}+ '명'"></span></p>
                     </div>
                     <div class="card-footer text-body-secondary">
-                        <span class="due-date" th:text="'마감일: ' + ${#temporals.format(problem.dueDate, 'yyyy. MM. dd. a hh:mm')}"></span>
+                        <span class="due-date" th:text="'마감일: ' + ${problem.getProblemDueDate()}"></span>
                     </div>
                 </div>
             </a>

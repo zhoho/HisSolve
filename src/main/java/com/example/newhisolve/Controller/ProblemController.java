@@ -15,6 +15,8 @@ import java.security.Principal;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -66,7 +68,6 @@ public class ProblemController {
                 isHidden.add(false); // 부족한 경우 false 추가
             }
         }
-
         LocalDateTime localDateTime = LocalDateTime.parse(dueDate);
         problem.setDueDate(localDateTime);
 
@@ -94,6 +95,7 @@ public class ProblemController {
                                 @RequestParam Long contestId,
                                 @RequestParam List<String> inputs,
                                 @RequestParam List<String> outputs,
+                                @RequestParam(required = false) List<Boolean> isHidden,
                                 @RequestParam("dueDate") String dueDate,
                                 Principal principal) {
         User user = userService.findByUsername(principal.getName());
@@ -102,19 +104,31 @@ public class ProblemController {
         }
 
         LocalDateTime localDateTime = LocalDateTime.parse(dueDate);
-        ZonedDateTime zonedDateTime = localDateTime.atZone(ZoneId.of("Asia/Seoul")).withZoneSameInstant(ZoneId.of("UTC"));
-        problem.setDueDate(zonedDateTime.toLocalDateTime());
+        problem.setDueDate(localDateTime);
         problem.setLastModifiedDate(LocalDateTime.now());
+
+        if (isHidden == null) {
+            isHidden = new ArrayList<>(Collections.nCopies(inputs.size(), false));
+        }
+
+        // isHidden 크기와 입력 크기가 다른 경우 isHidden을 입력 크기에 맞춤
+        if (isHidden.size() != inputs.size()) {
+            for (int i = isHidden.size(); i < inputs.size(); i++) {
+                isHidden.add(false); // 부족한 경우 false 추가
+            }
+        }
 
         List<TestCase> testCases = new ArrayList<>();
         for (int i = 0; i < inputs.size(); i++) {
             TestCase testCase = new TestCase();
             testCase.setInput(inputs.get(i));
             testCase.setExpectedOutput(outputs.get(i));
+            testCase.setHidden(isHidden.get(i));
             testCases.add(testCase);
         }
 
         problem.setTestcaseCount(inputs.size());
+        problem.setTestcaseCount(testCases.size());
         problem.setTestCases(testCases);
 
         problemService.updateProblem(problem, contestId);

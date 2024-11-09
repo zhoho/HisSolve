@@ -64,13 +64,14 @@ public class HisnetLoginService {
             }
 
             // 새로운 사용자 객체 생성
+            // 수정  필요 (상태도 들어가도록)
             User user = User.builder()
                     .username(name)
                     .uniqueId(uniqueId)
                     .email(email)
                     .department(department)
                     .role("USER")
-                    .password("12345")
+                    .password("123456")
                     .hisnetToken(token)
                     .active(true)
                     .build();
