@@ -11,11 +11,15 @@
 
 ---
 
+<img src="src/main/resources/static/img/hissolve_frontend.png">
 
-## Skills
+<img src="src/main/resources/static/img/hissolve_backend.png">
 
-## etc
+<img src="src/main/resources/static/img/hissolve_architecture.png">
 
-## Team
+
+---
+
+
 
 
