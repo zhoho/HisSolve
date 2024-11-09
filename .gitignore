@@ -4,8 +4,7 @@ nginx.conf
 
 docker-compose.yml
 
-resources/application.properties
-
+src/main/resources/application.properties
 
 .gradle
 build/
