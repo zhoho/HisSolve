@@ -32,7 +32,7 @@ public class Contest {
     private String description;
     private String problemCount;
 
-    private Boolean languageStatic;
+    private boolean languageStatic;
 
     // Many-to-One 관계: 하나의 Contest는 한 명의 User(관리자)를 가짐
     @ManyToOne

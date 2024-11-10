@@ -69,6 +69,10 @@ public class ContestServiceImpl implements ContestService {
         existingContest.setName(contest.getName());
         existingContest.setCode(contest.getCode());
         existingContest.setDescription(contest.getDescription());
+        existingContest.setLanguage(contest.getLanguage());
+        existingContest.setLanguageStatic(contest.isLanguageStatic());
+        existingContest.setStartDate(contest.getStartDate());
+        existingContest.setDueDate(contest.getDueDate());
         contestRepository.save(existingContest);
     }
 

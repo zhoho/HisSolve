@@ -95,6 +95,7 @@ public class ProblemController {
                                 @RequestParam List<String> inputs,
                                 @RequestParam List<String> outputs,
                                 @RequestParam("dueDate") String dueDate,
+                                @RequestParam(required = false) List<Boolean> isHidden,
                                 Principal principal) {
         User user = userService.findByUsername(principal.getName());
         if (!user.getRole().equals("ADMIN")) {
@@ -106,16 +107,28 @@ public class ProblemController {
         problem.setDueDate(zonedDateTime.toLocalDateTime());
         problem.setLastModifiedDate(LocalDateTime.now());
 
+        if (isHidden == null) {
+            isHidden = new ArrayList<>(Collections.nCopies(inputs.size(), false));
+        }
+        // isHidden 크기와 입력 크기가 다른 경우 isHidden을 입력 크기에 맞춤
+        if (isHidden.size() != inputs.size()) {
+            for (int i = isHidden.size(); i < inputs.size(); i++) {
+                isHidden.add(false); // 부족한 경우 false 추가
+            }
+        }
+
         List<TestCase> testCases = new ArrayList<>();
         for (int i = 0; i < inputs.size(); i++) {
             TestCase testCase = new TestCase();
             testCase.setInput(inputs.get(i));
             testCase.setExpectedOutput(outputs.get(i));
             testCases.add(testCase);
+            testCase.setHidden(isHidden.get(i));
         }
 
         problem.setTestcaseCount(inputs.size());
         problem.setTestCases(testCases);
+        problem.setTestcaseCount(testCases.size());
 
         problemService.updateProblem(problem, contestId);
 
