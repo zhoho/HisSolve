@@ -5,10 +5,7 @@ import com.example.newhisolve.Model.TestCase;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class CompilerServiceImpl implements CompilerService {
@@ -17,7 +14,7 @@ public class CompilerServiceImpl implements CompilerService {
     public List<Map<String, String>> compileAndRun(Long assignmentId, String code, String language, List<TestCase> testCases) {
         List<Map<String, String>> results = new ArrayList<>();
         try {
-            String sharedDir = "/tmp/tempDir";
+            String sharedDir = "/tmp/tempDir_" + UUID.randomUUID();
             File tempDir = new File(sharedDir);
             if (!tempDir.exists()) {
                 tempDir.mkdir();
@@ -83,7 +80,7 @@ public class CompilerServiceImpl implements CompilerService {
     public List<Map<String, String>> gradingCompileAndRun(Long assignmentId, String code, String language, List<TestCase> gradingTestCases) {
         List<Map<String, String>> results = new ArrayList<>();
         try {
-            String sharedDir = "/tmp/tempDir";
+            String sharedDir = "/tmp/tempDir_" + UUID.randomUUID();
             File tempDir = new File(sharedDir);
             if (!tempDir.exists()) {
                 tempDir.mkdir();
@@ -153,7 +150,7 @@ public class CompilerServiceImpl implements CompilerService {
     public String runCodeWithInput(String code, String language, List<String> inputs) {
         try {
             // 임시 디렉토리 생성
-            String sharedDir = "/tmp/tempDir";
+            String sharedDir = "/tmp/tempDir_" + UUID.randomUUID();
             File tempDir = new File(sharedDir);
             if (!tempDir.exists()) {
                 tempDir.mkdir();
@@ -235,11 +232,11 @@ public class CompilerServiceImpl implements CompilerService {
 
     @Override
     public String getDockerCommand(String language, String filePath, String hostPath) {
-        String sharedDir = "/tmp";  // 호스트와 컨테이너 간 공유된 디렉토리
-        String workDir = "/tmp/tempDir";  // 컨테이너 내부에서 작업할 디렉토리
-        String containerFilePath = filePath;  // 파일명만 사용 (예: TempCode.c)
+        String sharedDir = hostPath;  // 호스트와 컨테이너 간 공유된 디렉토리
+        String workDir = hostPath;    // 컨테이너 내부에서 작업할 디렉토리
+        String containerFilePath = filePath;  // 컨테이너 내부에서의 파일 경로
         // 호스트의 파일 저장 경로와 컨테이너의 경로가 일치하도록 설정
-        // 파일은 /tmp/tempDir/TempCode.c에 저장됩니다.
+
         switch (language) {
             case "python":
                 return String.format(
@@ -260,6 +257,7 @@ public class CompilerServiceImpl implements CompilerService {
                 throw new IllegalArgumentException("Unsupported language: " + language);
         }
     }
+
 
     @Override
     public void deleteDirectory(File directory) {
