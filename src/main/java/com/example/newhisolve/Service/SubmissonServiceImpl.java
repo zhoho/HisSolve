@@ -18,6 +18,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class SubmissonServiceImpl implements SubmissionService {
     private static final Logger logger = LoggerFactory.getLogger(SubmissionService.class);
 
@@ -28,7 +29,6 @@ public class SubmissonServiceImpl implements SubmissionService {
 
     // 제출 저장
     @Override
-    @Transactional
     public Submission saveSubmission(SubmissionDTO submissionDTO) {
         Optional<Problem> problemOptional = problemRepository.findById(submissionDTO.getProblemId());
         Optional<User> userOptional = userRepository.findById(submissionDTO.getUserId());
@@ -84,7 +84,6 @@ public class SubmissonServiceImpl implements SubmissionService {
 
     // 코드 저장
     @Override
-    @Transactional
     public SavedCode saveCode(SubmissionDTO submissionDTO) {
         Problem problem = problemRepository.findById(submissionDTO.getProblemId())
                 .orElseThrow(() -> new IllegalArgumentException("Assignment not found"));
@@ -120,6 +119,7 @@ public class SubmissonServiceImpl implements SubmissionService {
 
     // 제출물 ID로 제출물 찾기
     @Override
+    @Transactional(readOnly = true)
     public Optional<Submission> getSubmission(Long submissionId) {
         Optional<Submission> submissionOptional = submissionRepository.findById(submissionId);
         if (!submissionOptional.isPresent()) {
@@ -130,6 +130,7 @@ public class SubmissonServiceImpl implements SubmissionService {
 
     // 특정 문제 ID로 제출물 리스트 가져오기
     @Override
+    @Transactional(readOnly = true)
     public List<Submission> findByProblemId(Long problemId) {
         List<Submission> submissions = submissionRepository.findByProblemId(problemId);
         submissions.forEach(submission -> logger.info(submission.toString()));
@@ -138,7 +139,6 @@ public class SubmissonServiceImpl implements SubmissionService {
 
     // 문제 ID로 제출물 삭제
     @Override
-    @Transactional
     public void deleteSubmissionsByProblemId(Long problemId) {
         submissionRepository.deleteByProblemId(problemId);
     }
@@ -155,12 +155,14 @@ public class SubmissonServiceImpl implements SubmissionService {
 
     // 특정 문제와 유저의 제출물 찾기
     @Override
+    @Transactional(readOnly = true)
     public List<Submission> findByProblemAndUser(Long problemId, Long userId) {
         return submissionRepository.findByProblemIdAndUserId(problemId, userId);
     }
 
     // 특정 문제의 제출물 리스트 가져오기
     @Override
+    @Transactional(readOnly = true)
     public List<Submission> findSubmissionsByProblem(Problem problem) {
         return submissionRepository.findByProblem(problem);
     }
@@ -168,6 +170,7 @@ public class SubmissonServiceImpl implements SubmissionService {
 
     // 문제에 대한 모든 테스트케이스 가져오기
     @Override
+    @Transactional(readOnly = true)
     public List<TestCase> getTestCases(Long problemId) {
         Problem problem = problemRepository.findById(problemId)
                 .orElseThrow(() -> new IllegalArgumentException("Problem not found"));

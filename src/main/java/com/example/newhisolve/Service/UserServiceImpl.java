@@ -2,6 +2,7 @@ package com.example.newhisolve.Service;
 
 import com.example.newhisolve.Model.User;
 import com.example.newhisolve.Repository.UserRepository;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.Collections;
 
 @Service
+@Transactional
 public class UserServiceImpl implements UserService, UserDetailsService {
 
     private final UserRepository userRepository;
@@ -26,6 +28,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     // 현재 로그인된 사용자 가져오기
+    @Override
+    @Transactional(readOnly = true)
     public User getCurrentUser() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         return findByUsername(username);
@@ -41,12 +45,14 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     // 사용자명으로 사용자 찾기
     @Override
+    @Transactional(readOnly = true)
     public User findByUsername(String username) {
         return userRepository.findByUsername(username).orElse(null);
     }
 
     // 로그인 시 사용자 정보 로드
     @Override
+    @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다: " + username));
@@ -57,6 +63,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     // uniqueId로 사용자 찾기
+    @Override
+    @Transactional(readOnly = true)
     public UserDetails loadUserByuniqueId(String uniqueId) throws UsernameNotFoundException {
         User user = userRepository.findByUniqueId(uniqueId)
                 .orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다: " + uniqueId));

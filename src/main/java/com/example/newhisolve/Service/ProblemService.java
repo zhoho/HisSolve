@@ -2,8 +2,6 @@ package com.example.newhisolve.Service;
 
 import com.example.newhisolve.Model.Problem;
 import com.example.newhisolve.Model.TestCase;
-import jakarta.transaction.Transactional;
-
 import java.util.List;
 
 public interface ProblemService {
@@ -20,11 +18,9 @@ public interface ProblemService {
     Problem getProblemById(Long problemId);
 
     // 문제 삭제
-    @Transactional
     void deleteProblemById(Long id);
 
     // 문제 업데이트
-    @Transactional
     void updateProblem(Problem problem, Long contestId);
 
     int getProblemCountById(Long id);
