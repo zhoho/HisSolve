@@ -2,7 +2,7 @@ HELP.md
 
 nginx.conf
 
-docker-compose.yml
+#docker-compose.yml
 
 #src/main/resources/application.properties
 

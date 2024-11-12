@@ -1,10 +1,22 @@
 # Use an official OpenJDK runtime as a parent image
-FROM tomcat:9-jdk17-openjdk
+FROM openjdk:17-jdk-slim
+
+ENV TZ=Asia/Seoul
 
 # Set the working directory
 WORKDIR /app
 
-RUN apt-get update && apt-get install -y docker.io
+RUN apt-get update && \
+    apt-get install -y tzdata && \
+    ln -fs /usr/share/zoneinfo/$TZ /etc/localtime && \
+    echo $TZ > /etc/timezone && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+RUN apt-get update && \
+    apt-get install -y docker.io && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
 # Copy the WAR file to the container
 COPY HisSolve.war /app/app.war
@@ -13,4 +25,4 @@ COPY HisSolve.war /app/app.war
 EXPOSE 9090
 
 # Run the Spring Boot application
-ENTRYPOINT ["java", "-jar", "/app/app.war"]
+ENTRYPOINT ["java", "-Duser.timezone=Asia/Seoul", "-jar", "/app/app.war"]
