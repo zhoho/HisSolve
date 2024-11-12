@@ -81,14 +81,22 @@ public class ProblemServiceImpl implements ProblemService {
         Problem existingProblem = problemRepository.findById(problem.getId())
                 .orElseThrow(() -> new RuntimeException("Problem not found"));
 
-        // 문제 정보 업데이트
         existingProblem.setTitle(problem.getTitle());
         existingProblem.setDueDate(problem.getDueDate());
         existingProblem.setDescription(problem.getDescription());
-        existingProblem.setTestCases(problem.getTestCases());
+
+        List<TestCase> newTestCases = problem.getTestCases();
+
+        for (TestCase testCase : newTestCases) {
+            testCase.setProblem(existingProblem);
+        }
+
+        existingProblem.getTestCases().clear();
+        existingProblem.getTestCases().addAll(newTestCases);
+
         existingProblem.setLastModifiedDate(LocalDateTime.now());
 
-        problemRepository.save(existingProblem); // 변경사항 저장
+        problemRepository.save(existingProblem);
     }
 
     @Override

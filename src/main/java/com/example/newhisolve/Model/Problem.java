@@ -28,8 +28,9 @@ public class Problem {
     private LocalDateTime dueDate;
     private LocalDateTime lastModifiedDate;
 
-    @ElementCollection
+    @OneToMany(mappedBy = "problem", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TestCase> testCases;
+
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "contest_id")
