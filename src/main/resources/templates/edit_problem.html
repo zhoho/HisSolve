@@ -99,81 +99,81 @@
 <div class="container mt-1">
   <div class="card">
     <div class="card-body card-body-custom">
-    <form th:action="@{/HisSolve/problem/update}" method="post" onsubmit="convertToKST()">
-      <input type="hidden" name="id" th:value="${problem.id}"/>
-      <input type="hidden" name="contestId" th:value="${problem.contest.id}"/>
-      <div class="mb-3">
-        <label for="title" class="form-label">Problem Name:</label>
-        <div class="input-group">
-          <span class="input-group-text"><i class="fas fa-trophy"></i></span>
-          <input type="text" class="form-control" id="title" name="title" th:value="${problem.title}" required>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label class="font-weight-bold">Problem Statement</label>
-        <ul class="nav nav-tabs" id="myTab" role="tablist">
-          <li class="nav-item">
-            <a class="nav-link active" id="problem-statement-tab" data-bs-toggle="tab" href="#problem-statement" role="tab">Problem Statement</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" id="preview-tab" data-bs-toggle="tab" href="#preview" role="tab">Preview</a>
-          </li>
-        </ul>
-        <div class="tab-content" id="myTabContent">
-          <div class="tab-pane fade show active" id="problem-statement" role="tabpanel">
-            <textarea class="form-control mt-3" rows="10" name="description" id="problemStatement" th:text="${problem.description}" placeholder="Use Markdown syntax..."></textarea>
-          </div>
-          <div class="tab-pane fade" id="preview" role="tabpanel">
-            <div class="mt-3" id="previewContent"></div>
+      <form th:action="@{/HisSolve/problem/update}" method="post">
+        <input type="hidden" name="id" th:value="${problem.id}"/>
+        <input type="hidden" name="contestId" th:value="${problem.contest.id}"/>
+        <div class="mb-3">
+          <label for="title" class="form-label">Problem Name:</label>
+          <div class="input-group">
+            <span class="input-group-text"><i class="fas fa-trophy"></i></span>
+            <input type="text" class="form-control" id="title" name="title" th:value="${problem.title}" required>
           </div>
         </div>
-      </div>
 
-      <div class="form-group">
-        <label class="font-weight-bold">Test Cases</label>
-        <div id="testCasesContainer">
-          <div th:each="testCase, iterStat : ${problem.testCases}">
-            <div class="form-group row align-items-center">
-              <div class="col-md-5">
-                <label class="font-weight-bold">Input Case</label>
-                <textarea class="form-control" name="inputs[]" placeholder="Input case" th:text="${testCase.input}"></textarea>
-              </div>
-              <div class="col-md-5">
-                <label class="font-weight-bold">Output Case</label>
-                <textarea class="form-control" name="outputs[]" placeholder="Output case" th:text="${testCase.expectedOutput}"></textarea>
-              </div>
-              <div class="col-md-1">
-                <div class="form-check">
-                  <input type="checkbox" class="form-check-input" name="isHidden[]" th:checked="${testCase.isHidden}">
-                  <label class="form-check-label">Hidden</label>
-                </div>
-              </div>
-              <div class="col-md-1 text-center">
-                <button type="button" class="btn btn-outline-danger btn-sm" onclick="removeTestCase(this)"><i class="fas fa-trash-alt"></i></button>
-              </div>
+        <div class="form-group">
+          <label class="font-weight-bold">Problem Statement</label>
+          <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item">
+              <a class="nav-link active" id="problem-statement-tab" data-bs-toggle="tab" href="#problem-statement" role="tab">Problem Statement</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="preview-tab" data-bs-toggle="tab" href="#preview" role="tab">Preview</a>
+            </li>
+          </ul>
+          <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="problem-statement" role="tabpanel">
+              <textarea class="form-control mt-3" rows="10" name="description" id="problemStatement" th:text="${problem.description}" placeholder="Use Markdown syntax..."></textarea>
+            </div>
+            <div class="tab-pane fade" id="preview" role="tabpanel">
+              <div class="mt-3" id="previewContent"></div>
             </div>
           </div>
         </div>
-        <button type="button" class="btn btn-lightblue mt-3" id="addCaseBtn">Add Case</button>
-      </div>
 
-      <div class="form-group">
-        <label for="dueDate" class="font-weight-bold">Due Date</label>
-        <div class="input-group">
-          <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
-          <input type="datetime-local" class="form-control" id="dueDate" name="dueDate" th:value="${formattedDueDate}" required>
+        <div class="form-group">
+          <label class="font-weight-bold">Test Cases</label>
+          <div id="testCasesContainer">
+            <div th:each="testCase, iterStat : ${problem.testCases}">
+              <div class="form-group row align-items-center">
+                <div class="col-md-5">
+                  <label class="font-weight-bold">Input Case</label>
+                  <textarea class="form-control" name="inputs[]" placeholder="Input case" th:text="${testCase.input}"></textarea>
+                </div>
+                <div class="col-md-5">
+                  <label class="font-weight-bold">Output Case</label>
+                  <textarea class="form-control" name="outputs[]" placeholder="Output case" th:text="${testCase.expectedOutput}"></textarea>
+                </div>
+                <div class="col-md-1">
+                  <div class="form-check">
+                    <input type="checkbox" class="form-check-input" name="isHidden[]" th:checked="${testCase.isHidden}">
+                    <label class="form-check-label">Hidden</label>
+                  </div>
+                </div>
+                <div class="col-md-1 text-center">
+                  <button type="button" class="btn btn-outline-danger btn-sm" onclick="removeTestCase(this)"><i class="fas fa-trash-alt"></i></button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <button type="button" class="btn btn-lightblue mt-3" id="addCaseBtn">Add Case</button>
         </div>
-      </div>
 
-      <div class="text-center">
-        <a href="/HisSolve/dashboard" class="btn btn-secondary btn-custom">Cancel</a>
-        <button type="submit" class="btn btn-primary btn-custom">Save</button>
-        <button type="button" class="btn btn-danger btn-custom" onclick="deleteProblem()">Delete</button>
-      </div>
-    </form>
+        <div class="form-group">
+          <label for="dueDate" class="font-weight-bold">Due Date</label>
+          <div class="input-group">
+            <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+            <input type="datetime-local" class="form-control" id="dueDate" name="dueDate" th:value="${problem.getProblemDueDate()}" required>
+          </div>
+        </div>
+
+        <div class="text-center">
+          <a href="/HisSolve/dashboard" class="btn btn-secondary btn-custom">Cancel</a>
+          <button type="submit" class="btn btn-primary btn-custom">Save</button>
+          <button type="button" class="btn btn-danger btn-custom" onclick="deleteProblem()">Delete</button>
+        </div>
+      </form>
+    </div>
   </div>
-</div>
 </div>
 
 <div th:replace="~{fragments :: footer}"></div>
@@ -257,15 +257,6 @@
       }
     };
   });
-
-  function convertToKST() {
-    const dueDateInput = document.getElementById('dueDate');
-    const localDate = new Date(dueDateInput.value);
-    const utcDate = new Date(localDate.getTime() - localDate.getTimezoneOffset() * 60000);
-    const offset = 9 * 60;
-    const kstDate = new Date(utcDate.getTime() + offset * 60000);
-    dueDateInput.value = kstDate.toISOString().slice(0, 16);
-  }
 </script>
 </body>
 </html>

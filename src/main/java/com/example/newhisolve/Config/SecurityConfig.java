@@ -1,4 +1,3 @@
-
 package com.example.newhisolve.Config;
 
 import com.example.newhisolve.Service.UserServiceImpl;
@@ -34,12 +33,14 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
-                                .requestMatchers("/", "/register", "/adminLogin","/HisSolve/login", "/login", "/auth/**", "/api/compile", "/img/**", "/css/**", "/js/**").permitAll()
+                                .requestMatchers("/", "/register", "/adminLogin", "/login", "/auth/**", "/api/compile", "/img/**", "/css/**", "/js/**").permitAll()
+                                .requestMatchers("/admin_contest/**","/contest/edit/**", "/problem/create","/problem/delete/", "/contest/edit","/contest/create","/contest/delete", "/contest/export","/contest/removeUser","/admin_problem_detail/**", "/problem/edit/**").hasAuthority("ADMIN")
+                                .requestMatchers("/submit", "/contest/**").hasAuthority("USER")
                                 .anyRequest().authenticated()
                 )
                 .formLogin(formLogin ->
                         formLogin
-                                .loginPage("/adminLogin")
+                                .loginPage("/")
                                 .loginProcessingUrl("/login")
                                 .defaultSuccessUrl("/dashboard")
                                 .permitAll()
@@ -52,6 +53,10 @@ public class SecurityConfig {
                                 .deleteCookies("JSESSIONID")
                                 .permitAll()
                 )
+                .exceptionHandling(exceptionHandling ->
+                        exceptionHandling
+                                .accessDeniedPage("/errorPage") // 403 에러 발생 시 리다이렉트할 페이지 설정
+                )
                 .csrf(csrf -> csrf.disable());
 
         return http.build();
@@ -62,10 +67,10 @@ public class SecurityConfig {
     public LogoutSuccessHandler logoutSuccessHandler() {
         return (request, response, authentication) -> {
             if (authentication != null && authentication.getName() != null) {
-                System.out.println("로그아웃한 사용자: " + authentication.getName());
+//                System.out.println("로그아웃한 사용자: " + authentication.getName());
                 userServiceImpl.updateUserActiveStatus(authentication.getName(), false);  // active 상태 비활성화
             }
-            response.sendRedirect("/HisSolve/"); // 로그아웃 후 리다이렉트 경로를 /welcome으로 설정
+            response.sendRedirect("/"); // 로그아웃 후 리다이렉트 경로를 /welcome으로 설정
         };
     }
 
