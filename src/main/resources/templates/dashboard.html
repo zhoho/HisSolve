@@ -109,16 +109,16 @@
     <div class="row mt-3">
         <div class="col-12 d-flex justify-content-between align-items-center">
             <!-- Search Form -->
-            <div class="search-form d-flex align-items-center" style="width: 50%;">
-                <form id="searchForm" class="d-flex w-100">
-                    <input id="searchQuery" class="form-control me-2" type="text" placeholder="Search Contest" required>
-                    <button type="submit" class="btn btn-primary">Search</button>
-                </form>
-                <div id="autocompleteResults" class="autocomplete-results"></div>
-            </div>
+            <!--            <div class="search-form d-flex align-items-center" style="width: 50%;">-->
+            <!--                <form id="searchForm" class="d-flex w-100">-->
+            <!--                    <input id="searchQuery" class="form-control me-2" type="text" placeholder="Search Contest" required>-->
+            <!--                    <button type="submit" class="btn btn-primary">Search</button>-->
+            <!--                </form>-->
+            <!--                <div id="autocompleteResults" class="autocomplete-results"></div>-->
+            <!--            </div>-->
 
             <!-- Contest Code Form -->
-            <div class="contest-form d-flex justify-content-end" style="width: 26%;">
+            <div class="contest-form d-flex justify-content-end">
                 <form th:if="${user.role == 'USER'}" th:action="@{/HisSolve/contest/join}" method="post" class="d-flex w-100">
                     <input class="form-control me-2" type="text" placeholder="Enter Contest code" name="code" required>
                     <button class="btn btn-primary" type="submit">Enter</button>
@@ -128,8 +128,9 @@
 
         </div>
     </div>
-
-
+    <div th:if="${errorMessage}" class="alert alert-danger" role="alert">
+        <p th:text="${errorMessage}"></p>
+    </div>
     <div id="searchResults" class="row mt-4">
     </div>
     <div id="backButtonContainer" class="text-center mt-3" style="display: none;">
@@ -137,6 +138,15 @@
     </div>
     <!-- USER용 대회 목록 카드 -->
     <div class="row" id="userContestCards"> <!-- USER용 id 설정 -->
+        <div class="col-12 text-center my-5" th:if="${contests.isEmpty()}">
+            <div class="alert alert-primary p-5" role="alert">
+                <h4 class="alert-heading">대회에 참여하세요!</h4>
+                <p>코드 검색란에 새로운 대회 코드를 입력해보세요.</p>
+                <hr>
+                <p class="mb-0">대회에 참가하여 실력을 테스트하고 경쟁에 참여하세요!</p>
+            </div>
+        </div>
+
         <div class="col-lg-6 col-sm-12 my-3" th:if="${user.role == 'USER'}" th:each="contest : ${contests}">
             <a th:href="@{/HisSolve/contest/{id}(id=${contest.id})}" style="text-decoration: none; color: inherit;" th:attr="data-status=${contest.status}" onclick="return handleContestClick(this.dataset.status);" th:id="'contest-card-' + ${contest.id}">
                 <div class="card shadow-sm p-3" th:id="'contest-card-content-' + ${contest.id}">
@@ -179,7 +189,7 @@
         </div>
     </div>
 </div>
-    <!-- Footer -->
+<!-- Footer -->
 <div th:replace="~{fragments :: footer}"></div>
 
 <!-- Bootstrap JS and dependencies -->

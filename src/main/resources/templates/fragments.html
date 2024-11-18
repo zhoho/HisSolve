@@ -20,12 +20,12 @@
                     <a class="nav-link" href="/HisSolve/dashboard" style="color: #edf2f4;">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/HisSolve/help" style="color: #edf2f4;">Help</a>
+<!--                    <a class="nav-link" href="/HisSolve/help" style="color: #edf2f4;">Help</a>-->
                 </li>
                 <li class="nav-item" th:if="${user != null}">
-                    <a class="nav-link" href="/HisSolve/profile/edit" style="color: #edf2f4;">
+<!--                    <a class="nav-link" href="/HisSolve/profile/edit" style="color: #edf2f4;">-->
                         <span th:text="${user.username} + ' ' + (${user.role} == 'ADMIN' ? '님' : '님')"></span>
-                    </a>
+<!--                    </a>-->
                 </li>
             </ul>
         </div>

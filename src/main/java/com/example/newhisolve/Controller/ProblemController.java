@@ -127,9 +127,9 @@ public class ProblemController {
             testCases.add(testCase);
         }
 
-        problem.setTestcaseCount(inputs.size());
-        problem.setTestcaseCount(testCases.size());
+//        problem.setTestcaseCount(inputs.size());
         problem.setTestCases(testCases);
+        problem.setTestcaseCount(testCases.size());
 
         problemService.updateProblem(problem, contestId);
 
