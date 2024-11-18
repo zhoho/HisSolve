@@ -93,7 +93,7 @@ public class ProblemServiceImpl implements ProblemService {
 
         existingProblem.getTestCases().clear();
         existingProblem.getTestCases().addAll(newTestCases);
-
+        existingProblem.setTestcaseCount(problem.getTestcaseCount());
         existingProblem.setLastModifiedDate(LocalDateTime.now());
 
         problemRepository.save(existingProblem);

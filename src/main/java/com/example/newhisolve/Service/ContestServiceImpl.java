@@ -137,7 +137,7 @@ public class ContestServiceImpl implements ContestService {
         // 3. problem 삭제
         problemRepository.deleteByContest(contest);
         // 4. contest_user 삭제
-        contestUserRepository.deleteByContest(contest);
+//        contestUserRepository.deleteByContest(contest);
         // 5. contest 삭제
         contestRepository.delete(contest);
     }

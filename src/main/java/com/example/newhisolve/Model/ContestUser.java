@@ -16,12 +16,10 @@ public class ContestUser {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // Contest와의 ManyToOne 관계
     @ManyToOne
     @JoinColumn(name = "contest_id")
     private Contest contest;
 
-    // User와의 ManyToOne 관계
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;

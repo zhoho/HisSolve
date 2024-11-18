@@ -76,12 +76,15 @@ public class ProblemController {
             testCase.setInput(inputs.get(i));
             testCase.setExpectedOutput(outputs.get(i));
             testCase.setHidden(isHidden.get(i));
+            testCase.setProblem(problem); // Set the problem reference
             testCases.add(testCase);
         }
 
         problem.setTestCases(testCases);
-        problem.setTestcaseCount(testCases.size());  // 테스트 케이스의 개수를 설정
 
+
+        problem.setTestCases(testCases);
+        problem.setTestcaseCount(testCases.size());  // 테스트 케이스의 개수를 설정
         problemService.createProblem(problem, contestId);
 
         return "redirect:/admin_contest/" + contestId;
@@ -155,9 +158,9 @@ public class ProblemController {
         return "problem_view";
     }
 
-    @PostMapping("/problem/delete/{id}")
+    @PostMapping("/problem/delete")
     @PreAuthorize("hasRole('ADMIN')")
-    public String deleteProblem(@PathVariable Long id, Principal principal) {
+    public String deleteProblem(@RequestParam Long id, Principal principal) {
         User user = userService.findByUsername(principal.getName());
 
         if (!user.getRole().equals("ADMIN")) {

@@ -169,9 +169,15 @@
       <div class="text-center">
         <a href="/dashboard" class="btn btn-secondary btn-custom">Cancel</a>
         <button type="submit" class="btn btn-primary btn-custom">Save</button>
-        <button type="button" class="btn btn-danger btn-custom" onclick="deleteProblem()">Delete</button>
+<!--        <button type="button" class="btn btn-danger btn-custom" onclick="deleteProblem()">Delete</button>-->
       </div>
     </form>
+      <form th:action="@{/problem/delete}" method="post" onsubmit="return confirm('문제를 정말 삭제 하시겠습니까?');" style="display: inline;">
+        <input type="hidden" name="id" th:value="${problem.id}">
+        <div class="text-center mt-2">
+          <button type="submit" class="btn btn-danger btn-custom">Delete</button>
+        </div>
+      </form>
   </div>
 </div>
 </div>
@@ -180,27 +186,27 @@
 
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <script>
-  function deleteProblem() {
-    if (confirm('Are you sure you want to delete this problem?')) {
-      var problemId = /*[[${problem.id}]]*/ '0';
-      var contestId = /*[[${problem.contest.id}]]*/ '0';
-
-      fetch('/problem/delete/' + problemId, {
-        method: 'POST',
-      })
-              .then(response => {
-                if (response.ok) {
-                  window.location.href = '/admin_contest/' + contestId;
-                } else {
-                  alert('Failed to delete the problem.');
-                }
-              })
-              .catch(error => {
-                console.error('Error:', error);
-                alert('An error occurred while deleting the problem.');
-              });
-    }
-  }
+  // function deleteProblem() {
+  //   if (confirm('Are you sure you want to delete this problem?')) {
+  //     var problemId = /*[[${problem.id}]]*/ '0';
+  //     var contestId = /*[[${problem.contest.id}]]*/ '0';
+  //
+  //     fetch('/problem/delete/' + problemId, {
+  //       method: 'POST',
+  //     })
+  //             .then(response => {
+  //               if (response.ok) {
+  //                 window.location.href = '/admin_contest/' + contestId;
+  //               } else {
+  //                 alert('Failed to delete the problem.');
+  //               }
+  //             })
+  //             .catch(error => {
+  //               console.error('Error:', error);
+  //               alert('An error occurred while deleting the problem.');
+  //             });
+  //   }
+  // }
 
   document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.nav-link').forEach(link => {

@@ -3,8 +3,6 @@ package com.example.newhisolve.Model;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -34,7 +32,6 @@ public class Contest {
 
     private boolean languageStatic;
 
-    // Many-to-One 관계: 하나의 Contest는 한 명의 User(관리자)를 가짐
     @ManyToOne
     @JoinColumn(name = "admin_id")
     private User admin;

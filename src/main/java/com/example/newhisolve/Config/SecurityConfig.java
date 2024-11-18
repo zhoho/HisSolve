@@ -34,7 +34,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
                                 .requestMatchers("/", "/register", "/adminLogin", "/login", "/auth/**", "/api/compile", "/img/**", "/css/**", "/js/**").permitAll()
-                                .requestMatchers("/admin_contest/**","/contest/edit/**", "/problem/create","/problem/delete/", "/contest/edit","/contest/create","/contest/delete", "/contest/export","/contest/removeUser","/admin_problem_detail/**", "/problem/edit/**").hasAuthority("ADMIN")
+                                .requestMatchers("/admin_contest/**","/contest/edit/**", "/problem/create","/problem/delete", "/contest/edit","/contest/create","/contest/delete", "/contest/export","/contest/removeUser","/admin_problem_detail/**", "/problem/edit/**").hasAuthority("ADMIN")
                                 .requestMatchers("/submit", "/contest/**").hasAuthority("USER")
                                 .anyRequest().authenticated()
                 )
