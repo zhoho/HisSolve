@@ -168,13 +168,17 @@
             <div class="text-center">
                 <a th:href="@{/admin_contest/{contestId}(contestId=${contest.id})}" class="btn btn-secondary btn-custom">Cancel</a>
                 <button type="submit" class="btn btn-primary btn-custom">Save</button>
+                <button type="submit" class="btn btn-danger btn-custom"
+                        form="deleteForm"
+                        formaction="/contest/delete"
+                        formmethod="post"
+                        onclick="return confirm('컨테스트를 정말 삭제 하시겠습니까?');">
+                    Delete
+                </button>
             </div>
         </form>
-        <form th:action="@{/contest/delete}" method="post" onsubmit="return confirm('컨테스트를 정말 삭제 하시겠습니까?');" style="display: inline;">
+        <form th:action="@{/contest/delete}" method="post" id="deleteForm" style="display: none;">
             <input type="hidden" name="contestId" th:value="${contest.id}">
-            <div class="text-center mt-2">
-                <button type="submit" class="btn btn-danger btn-custom">Delete</button>
-            </div>
         </form>
     </div>
 </div>
