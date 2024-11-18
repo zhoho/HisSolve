@@ -10,10 +10,12 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 
 @Service
+@Transactional
 public class UserServiceImpl implements UserService, UserDetailsService {
 
     private final UserRepository userRepository;
@@ -25,7 +27,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    // 현재 로그인된 사용자 가져오기
+    @Override
     public User getCurrentUser() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         return findByUsername(username);
@@ -39,14 +41,14 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return userRepository.save(user);
     }
 
-    // 사용자명으로 사용자 찾기
     @Override
+    @Transactional(readOnly = true)
     public User findByUsername(String username) {
         return userRepository.findByUsername(username).orElse(null);
     }
 
-    // 로그인 시 사용자 정보 로드
     @Override
+    @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다: " + username));
@@ -56,7 +58,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 .build();
     }
 
-    // uniqueId로 사용자 찾기
+    @Override
+    @Transactional(readOnly = true)
     public UserDetails loadUserByuniqueId(String uniqueId) throws UsernameNotFoundException {
         User user = userRepository.findByUniqueId(uniqueId)
                 .orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다: " + uniqueId));
@@ -66,13 +69,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 .build();
     }
 
-    // 사용자 정보 업데이트
     @Override
     public void updateUser(User user) {
         userRepository.save(user);
     }
 
-    // 사용자 활동 상태를 업데이트하는 메서드
     public void updateUserActiveStatus(String username, boolean isActive) {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다: " + username));

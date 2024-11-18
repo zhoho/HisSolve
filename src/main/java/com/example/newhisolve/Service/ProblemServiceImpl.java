@@ -2,9 +2,9 @@ package com.example.newhisolve.Service;
 
 import com.example.newhisolve.Model.*;
 import com.example.newhisolve.Repository.*;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -12,12 +12,12 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class ProblemServiceImpl implements ProblemService {
 
     private final ProblemRepository problemRepository;
     private final ContestRepository contestRepository;
 
-    // 문제 생성
     @Override
     public Problem createProblem(Problem problem, Long contestId) {
         Contest contest = contestRepository.findById(contestId)
@@ -29,8 +29,8 @@ public class ProblemServiceImpl implements ProblemService {
         return problem;
     }
 
-    // 문제에 대한 모든 테스트케이스 가져오기
     @Override
+    @Transactional(readOnly = true)
     public List<TestCase> getTestCasesForProblem(Long problemId) {
         Problem problem = findById(problemId);
         return problem.getTestCases();
@@ -38,6 +38,7 @@ public class ProblemServiceImpl implements ProblemService {
 
     // 특정 문제 찾기
     @Override
+    @Transactional(readOnly = true)
     public Problem findById(Long id) {
         if (id == null) {
             throw new IllegalArgumentException("The given id must not be null");
@@ -58,6 +59,7 @@ public class ProblemServiceImpl implements ProblemService {
 
     // 문제 ID로 문제 가져오기
     @Override
+    @Transactional(readOnly = true)
     public Problem getProblemById(Long problemId) {
         Optional<Problem> problem = problemRepository.findById(problemId);
         if (problem.isPresent()) {
@@ -68,7 +70,6 @@ public class ProblemServiceImpl implements ProblemService {
     }
 
     // 문제 삭제
-    @Transactional
     @Override
     public void deleteProblemById(Long id) {
         problemRepository.deleteById(id);
@@ -76,7 +77,6 @@ public class ProblemServiceImpl implements ProblemService {
 
     // 문제 업데이트
     @Override
-    @Transactional
     public void updateProblem(Problem problem, Long contestId) {
         Problem existingProblem = problemRepository.findById(problem.getId())
                 .orElseThrow(() -> new RuntimeException("Problem not found"));
@@ -100,6 +100,7 @@ public class ProblemServiceImpl implements ProblemService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public int getProblemCountById(Long id) {
         return problemRepository.findTestcaseCountById(id);
     }

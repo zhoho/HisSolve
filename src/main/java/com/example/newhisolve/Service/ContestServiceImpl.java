@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class ContestServiceImpl implements ContestService {
 
     private final ContestRepository contestRepository;
@@ -43,12 +44,14 @@ public class ContestServiceImpl implements ContestService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Contest findById(Long id) {
         return contestRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Contest not found"));
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Contest> findByUser(User user) {
         if (user.getRole().equals("ADMIN")) {
             return contestRepository.findByAdmin(user);
@@ -58,6 +61,7 @@ public class ContestServiceImpl implements ContestService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Problem> findProblemsByContest(Contest contest) {
         return problemRepository.findByContest(contest);
     }
@@ -77,6 +81,7 @@ public class ContestServiceImpl implements ContestService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Contest> findContestsByAdmin(User admin) {
         return contestRepository.findByAdmin(admin);
     }
@@ -96,6 +101,7 @@ public class ContestServiceImpl implements ContestService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Map<Long, List<Integer>> getUserProblemScores(Long contestId) {
         List<User> users = contestRepository.findById(contestId)
                 .orElseThrow(() -> new RuntimeException("Contest not found"))
@@ -111,6 +117,7 @@ public class ContestServiceImpl implements ContestService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public int getScoreByUserAndProblem(Long userId, Long problemId) {
         return submissionRepository.findByUserIdAndProblemId(userId, problemId)
                 .map(submission -> Optional.ofNullable(submission.getScore()).orElse(0))
@@ -119,7 +126,6 @@ public class ContestServiceImpl implements ContestService {
 
 
     @Override
-    @Transactional
     public void deleteContest(Contest contest) {
         List<Problem> problems = problemRepository.findByContest(contest);
         // 1. submission 삭제
@@ -134,8 +140,6 @@ public class ContestServiceImpl implements ContestService {
         contestUserRepository.deleteByContest(contest);
         // 5. contest 삭제
         contestRepository.delete(contest);
-
-//        todo contest내에 해당하는 problemid를 찾고 그 problemid에 해당하는 saved_code 삭제 및 problem_test_cases삭제
     }
 
     @Override
@@ -154,17 +158,20 @@ public class ContestServiceImpl implements ContestService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public int getTotalScoreByUserAndContest(Long userId, Long contestId) {
         Integer totalScore = submissionRepository.findTotalScoreByUserAndContest(userId, contestId);
         return totalScore != null ? totalScore : 0;
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Contest> searchContestsByName(String searchQuery) {
         return contestRepository.findByNameContainingIgnoreCase(searchQuery);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Map<Long, List<Integer>> getUserTestCasesPassed(Long contestId) {
         List<User> users = contestRepository.findById(contestId)
                 .orElseThrow(() -> new RuntimeException("Contest not found"))
@@ -206,6 +213,7 @@ public class ContestServiceImpl implements ContestService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Map<Long, List<Boolean>> getUserProblemSolvedStatus(Long contestId) {
         List<User> users = contestRepository.findById(contestId)
                 .orElseThrow(() -> new RuntimeException("Contest not found"))
@@ -235,6 +243,7 @@ public class ContestServiceImpl implements ContestService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Map<Long, List<String>> getUserSubmissionTimes(Long contestId) {
         List<User> users = contestRepository.findById(contestId)
                 .orElseThrow(() -> new RuntimeException("Contest not found"))
@@ -263,6 +272,7 @@ public class ContestServiceImpl implements ContestService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public long getParticipantCount(Long contestId) {
         return contestRepository.findById(contestId)
                 .map(contest -> contest.getUsers().size())
@@ -270,6 +280,7 @@ public class ContestServiceImpl implements ContestService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Map<Long, Long> getParticipantCountForProblems(Long contestId) {
         List<Problem> problems = problemRepository.findByContestId(contestId);
         Map<Long, Long> problemParticipantCounts = new HashMap<>();
@@ -283,12 +294,14 @@ public class ContestServiceImpl implements ContestService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public User findUserByUsername(String username) {
         return userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found: " + username));
     }
 
     @Override
+    @Transactional(readOnly = true)
     public String getProblemStatusForUser(Problem problem, User user) {
         Optional<Submission> submission = submissionRepository.findByUserAndProblem(user, problem);
         if (submission.isPresent()) {
@@ -318,6 +331,7 @@ public class ContestServiceImpl implements ContestService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Contest getContestByProblemId(Long problemId) {
         Problem problem = problemRepository.findById(problemId)
                 .orElseThrow(() -> new IllegalArgumentException("이 Id에 맞는 Problem은 없음: " + problemId));
