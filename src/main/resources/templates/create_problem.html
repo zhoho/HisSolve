@@ -104,7 +104,7 @@
 <!-- Problem Form -->
 <div class="container mt-1">
   <div class="main-container">
-    <form th:action="@{/problem/create}" method="post" onsubmit="convertToUTC()">
+    <form th:action="@{/problem/create}" method="post">
       <div class="card card-custom mb-4">
         <div class="card-body card-body-custom">
           <div class="mb-3">
@@ -134,30 +134,27 @@
               </div>
             </div>
           </div>
-
-          <div class="form-group">
-            <label class="font-weight-bold">Test Cases</label>
-            <div id="testCasesContainer">
-              <div class="form-group row align-items-center">
-                <div class="col-md-5">
-                  <label class="font-weight-bold">Input Case</label>
-                  <textarea class="form-control" name="inputs[]" placeholder="Input case"></textarea>
-                </div>
-                <div class="col-md-5">
-                  <label class="font-weight-bold">Output Case</label>
-                  <textarea class="form-control" name="outputs[]" placeholder="Output case"></textarea>
-                </div>
-                <div class="col-md-1">
-                  <div class="form-check">
-                    <input type="checkbox" class="form-check-input" name="isHidden[]" value="true" id="isHidden-${caseCount}">
-                    <label class="form-check-label" for="isHidden-${caseCount}">Hidden</label>
-                  </div>
-                </div>
-                <div class="col-md-1 text-center">
-                  <button type="button" class="btn btn-outline-danger btn-sm" onclick="removeTestCase(this)"><i class="fas fa-trash-alt"></i></button>
-                </div>
+          <div class="form-group row align-items-center" data-index="${index}">
+            <div class="col-md-5">
+              <label class="font-weight-bold">Input Case</label>
+              <textarea class="form-control" name="testCases[${index}].input" placeholder="Input case"></textarea>
+            </div>
+            <div class="col-md-5">
+              <label class="font-weight-bold">Output Case</label>
+              <textarea class="form-control" name="testCases[${index}].expectedOutput" placeholder="Output case"></textarea>
+            </div>
+            <div class="col-md-1">
+              <input type="hidden" name="testCases[${index}].hidden" value="false">
+              <div class="form-check">
+                <input type="checkbox" class="form-check-input" name="testCases[${index}].hidden" value="true" id="isHidden-${index}">
+                <label class="form-check-label" for="isHidden-${index}">Hidden</label>
               </div>
             </div>
+            <div class="col-md-1 text-center">
+              <button type="button" class="btn btn-outline-danger btn-sm" onclick="removeTestCase(this)"><i class="fas fa-trash-alt"></i></button>
+            </div>
+          </div>
+        </div>
             <button type="button" class="btn btn-lightblue mt-3" id="addCaseBtn">Add Case</button>
           </div>
 
@@ -175,6 +172,7 @@
       <div class="text-center">
         <button type="submit" class="btn btn-lightblue">Create</button>
         <a href="/dashboard" class="btn btn-lightblue">Cancel</a>
+      </div>
       </div>
     </form>
   </div>
