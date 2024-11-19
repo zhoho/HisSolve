@@ -1,0 +1,67 @@
+body, html {
+    background-color: white;
+}
+.carousel-caption {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    text-align: center;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+}
+.carousel-caption h1 {
+    font-size: 2.5rem;
+    font-weight: bold;
+}
+.btn-lightblue {
+    background-color: #47b2e4;
+    border: 0;
+    color: #fff;
+    transition: 0.4s;
+    border-radius: 50px;
+}
+.btn-lightblue:hover {
+    background-color: #138496;
+    text-decoration: none;
+    color: white;
+}
+.main-container {
+    background-color: white;
+    padding: 20px;
+    margin-top: 20px;
+    border-radius: 10px;
+}
+.card-custom {
+    background-color: transparent;
+    margin-bottom: 20px;
+    box-shadow: none;
+}
+.card-body-custom {
+    padding: 1.5rem;
+}
+.form-group label {
+    font-weight: bold;
+    color: #37517e;
+}
+.input-group-text {
+    background-color: #47b2e4;
+    color: white;
+    border-radius: 0.5rem 0 0 0.5rem;
+}
+.form-control {
+    border: 1px solid #ced4da;
+    background-color: white;
+}
+.form-check-label {
+    margin-left: 10px;
+    font-size: 0.9rem;
+    color: #495057;
+}
+.btn-custom {
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 50px;
+    font-weight: bold;
+    min-width: 100px; /* 버튼 크기 동일하게 */
+}

@@ -1,0 +1,92 @@
+body, html {
+    background-color: #ffffff;
+    height: 100%;
+    margin: 0;
+}
+
+.back-button, .new-problem-button, .ranking-dashboard-button {
+    background-color: #37517e;
+    border: 0;
+    color: #fff;
+    transition: 0.4s;
+    border-radius: 50px;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    margin: 20px 0;
+}
+
+.back-button:hover, .edit-button:hover, .new-problem-button:hover, .ranking-dashboard-button:hover {
+    background-color: #138496;
+    text-decoration: none;
+    color: white;
+}
+
+/* 배너 이미지와 텍스트 중앙 정렬을 위한 CSS */
+.carousel-item {
+    position: relative;
+}
+
+.carousel-caption {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding-top: 20px;
+    padding-bottom: 20px;
+    color: white;
+    text-align: center;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+.carousel-caption h1 {
+    font-size: 3rem;
+    font-weight: bold;
+}
+
+.carousel-caption p {
+    font-size: 1.25rem;
+}
+
+.carousel-caption .contest-code {
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.card {
+    position: relative;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    min-height: 250px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.card-header {
+    background-color: white;
+}
+
+.card-title {
+    font-size: 1.5rem;
+    color: black;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.card-text {
+    font-size: 1rem;
+    color: gray;
+    margin-bottom: 5px;
+}
+
+table.table {
+    margin-top: 20px;
+    text-align: center;
+}
+
+table.table th, table.table td {
+    vertical-align: middle;
+}

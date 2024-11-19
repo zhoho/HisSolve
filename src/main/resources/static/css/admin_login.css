@@ -1,0 +1,65 @@
+.my_bg {
+    position: relative;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.6);
+}
+
+.my_bg::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    opacity: 0.4;
+    z-index: -1;
+}
+
+.login-container {
+    background-color: rgba(255, 255, 255, 0.9); /* 투명도 있는 흰색 배경 */
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    width: 100%;
+}
+
+.uni-logo img {
+    width: 150px; /* 로고 크기 조정 */
+    margin-bottom: 20px;
+}
+
+h2 {
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+    color: #333;
+}
+
+/* 입력 필드 스타일 */
+.form-control {
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* 로그인 버튼 스타일 */
+.btn-primary {
+    background-color: #2b2d42;
+    border: none;
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+}
+
+.btn-primary:hover {
+    background-color: #8d99ae;
+}
+
+.form-group label {
+    font-weight: bold;
+}

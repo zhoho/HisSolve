@@ -1,0 +1,43 @@
+body {
+    background-color: #edf2f4;
+}
+.course-banner {
+    background: linear-gradient(to right, #37517e, #000000);
+    color: white;
+    padding: 30px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    margin-top: -10px;
+}
+.course-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+.course-header h1 {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+.main-container {
+    background-color: #f3f5fa;
+    border: 1px solid #dfdfff;
+    padding: 20px;
+    margin-top: 20px;
+    border-radius: 10px;
+}
+.btn-primary {
+    background-color: #47b2e4;
+    border: 0;
+    color: #fff;
+    transition: 0.4s;
+    border-radius: 50px;
+}
+.btn-primary:hover {
+    background-color: #138496;
+}
+.form-group label {
+    font-weight: bold;
+    color: #37517e;
+}

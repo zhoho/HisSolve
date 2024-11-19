@@ -1,0 +1,23 @@
+.form-group label {
+    font-weight: 700;
+    color: #edf2f4;
+}
+.rounded {
+    border-radius: 0.5rem !important;
+}
+.card-custom {
+    background-color: #2E3440;
+    color: #edf2f4;
+    margin-bottom: 1rem;
+    border-radius: 0.5rem;
+}
+.card-custom .card-header {
+    background-color: #3B4252;
+    color: #edf2f4;
+    border-radius: 0.5rem 0.5rem 0 0;
+    padding: 1rem;
+    font-size: 1.25rem;
+}
+.card-custom .card-body {
+    padding: 1.5rem;
+}

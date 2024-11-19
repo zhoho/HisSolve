@@ -2,58 +2,10 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <title>Rank Dashboard</title>
-  <!-- Bootstrap CSS -->
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;700&display=swap" rel="stylesheet">
-  <!-- Custom CSS -->
   <link th:href="@{/css/styles.css}" rel="stylesheet">
-  <style>
-    body, html {
-      background-color: #ffffff; /* 전체 배경색 흰색 */
-      height: 100%;
-      margin: 0;
-      padding: 0;
-    }
-    .contest-banner {
-      background-image: url('/img/banner2.png'); /* 배경 이미지 추가 */
-      background-size: cover;
-      color: #2b2d42;
-      padding: 30px;
-      display: flex;
-      align-items: center; /* 세로 중앙 정렬 */
-      justify-content: center; /* 가로 중앙 정렬 */
-      flex-direction: column;
-      width: 100vw; /* 화면에 꽉 차도록 설정 */
-      height: 250px; /* 배너 높이 설정 */
-      background-color: #ffffff;
-    }
-    .contest-header h1 {
-      font-size: 3rem;
-      color: black;
-      font-weight: bold;
-      text-align: center;
-    }
-    .main-container {
-      background-color: #edf2f4;
-      border: 1px solid #37517e;
-      padding: 20px;
-      margin-top: 20px;
-      border-radius: 10px;
-    }
-    .table-hover tbody tr:hover {
-      background-color: #f1f1f1; /* 테이블 행 hover 시 효과 */
-    }
-    th {
-      background-color: #37517e;
-      color: white;
-      font-weight: bold;
-    }
-    td, th {
-      text-align: center; /* 텍스트 중앙 정렬 */
-      vertical-align: middle;
-    }
-  </style>
+  <link th:href="@{/css/rank_dashboard.css}" rel="stylesheet">
 </head>
 <body>
 <div th:replace="~{fragments :: nav}"></div>

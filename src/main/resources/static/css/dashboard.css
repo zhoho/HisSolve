@@ -1,0 +1,74 @@
+body {
+    background-color: #ffffff;
+}
+body, html {
+    background: #ffffff;
+}
+.edit-btn a {
+    background-color: #37517e;
+    border: 0;
+    color: #fff;
+    transition: 0.4s;
+    border-radius: 50px;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    margin-right: 50px;
+}
+.edit-btn a:hover {
+    background-color: #1a1c28;
+    text-decoration: none;
+    color: white;
+}
+.btn-primary {
+    background-color: #37517e;
+    border: 0;
+    color: #fff;
+    transition: 0.4s;
+    border-radius: 10px;
+    padding: 10px;
+    font-size: 1rem;
+}
+.btn-primary:hover {
+    background-color: #1a1c28;
+}
+.card {
+    position: relative;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    min-height: 250px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+.card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+.card-header {
+    background-color: white;
+}
+.card-title {
+    font-size: 1.5rem;
+    /*color: #37517e;*/
+    color: black;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+.card-text {
+    font-size: 1rem;
+    color: gray;
+    margin-bottom: 5px;
+}
+.form-control {
+    background-color: white !important;
+}
+.form-inline .form-control {
+    background: white;
+}
+.card:hover .popup {
+    display: block;
+}
+.autocomplete-results {
+    background-color: white;
+    max-height: 200px;
+    overflow-y: auto;
+    width: 100%;
+}

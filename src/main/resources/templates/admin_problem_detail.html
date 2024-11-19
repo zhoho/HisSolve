@@ -9,68 +9,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <link th:href="@{/css/styles.css}" rel="stylesheet">
-    <style>
-        body, html {
-            background-color: white;
-            margin: 0;
-            padding: 0;
-            height: 100%;
-        }
-        .carousel-caption {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: white;
-            text-align: center;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
-        }
-        .carousel-caption h1 {
-            font-size: 3rem;
-            font-weight: bold;
-        }
-        .carousel-caption p {
-            font-size: 1.25rem;
-            font-weight: normal;
-            margin-top: 10px;
-        }
-        .btn-lightblue {
-            background-color: #37517e;
-            border: 0;
-            color: #fff;
-            transition: 0.4s;
-            border-radius: 50px;
-        }
-        .btn-lightblue:hover {
-            background-color: #138496;
-            text-decoration: none;
-            color: white;
-        }
-        .main-container {
-            background-color: white;
-            padding: 20px;
-            margin-top: 20px;
-            border-radius: 10px;
-        }
-        .problem-details, .submissions-table {
-            background-color: white;
-            border: none;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px;
-        }
-        .table th, .table td {
-            background-color: white !important;
-            color: black !important;
-            text-align: center;
-        }
-        .table th {
-            background-color: #37517e;
-            color: white;
-            text-align: center;
-        }
-    </style>
+    <link th:href="@{/css/admin_problem_detail.css}" rel="stylesheet">
 </head>
 <body>
 <div th:replace="~{fragments :: nav}"></div>
